@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TimestampAligner-Node extension for KNIME Workbench
+Bundle-SymbolicName: de.cynav.cyface; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: timestampaligner.jar
+Bundle-Activator: de.cynav.cyface.TimestampAlignerNodePlugin
+Bundle-Vendor: Cyface
+Require-Bundle: org.eclipse.core.runtime,
+ org.knime.workbench.core,
+ org.knime.workbench.repository,
+ org.knime.base
+Bundle-ActivationPolicy: lazy
+Export-Package: de.cynav.cyface
+
