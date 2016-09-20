@@ -1,25 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
-<plugin>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?><plugin>
 
-   <!-- This is an example for providing an own category 
+   <!-- This is an example for providing an own category -->
       <extension
          point="org.knime.workbench.repository.categories">
       <category
-            description="Category containing my nodes"
-            icon="icons/default.png"
-            level-id="myNodes"
-            name="My nodes"
+            description="Category contains all nodes required to test and evaluate the Cyface process."
+            icon="cyface logo C-pfeil.jpg"
+            level-id="cyfaceNodes"
+            name="Cyface"
             path="/"/>
    </extension>
-   -->
    
-   <extension
-         point="org.knime.workbench.repository.nodes">
-      <node
-            category-path="/"
-            factory-class="de.cynav.cyface.TimestampAlignerNodeFactory"
-            id="de.cynav.cyface.TimestampAlignerNodeFactory"/>
-   </extension>
+   <extension point="org.knime.workbench.repository.nodes">
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory" id="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory" id="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
+</extension>
    
 </plugin>

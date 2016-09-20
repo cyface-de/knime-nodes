@@ -1,4 +1,4 @@
-package de.cynav.cyface;
+package de.cyface.timestamp;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
@@ -30,17 +30,17 @@ public class TimestampAlignerNodeFactory extends NodeFactory<TimestampAlignerNod
 	@Override
 	public NodeView<TimestampAlignerNodeModel> createNodeView(final int viewIndex,
 			final TimestampAlignerNodeModel nodeModel) {
-		throw new IndexOutOfBoundsException("This node supports now views.");
+		throw new IndexOutOfBoundsException("This node supports no views.");
 	}
 
 	@Override
 	public boolean hasDialog() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
-		return null;
+		return new TimestampAlignerNodeDialog();
 	}
 
 }

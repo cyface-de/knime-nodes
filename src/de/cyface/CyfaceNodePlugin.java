@@ -2,7 +2,7 @@
  * $Revision$ $Date$ $Author$
  *
  */
-package de.cynav.cyface;
+package de.cyface;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -16,14 +16,14 @@ import org.osgi.framework.BundleContext;
  *
  * @author Cyface
  */
-public class TimestampAlignerNodePlugin extends Plugin {
+public class CyfaceNodePlugin extends Plugin {
     // The shared instance.
-    private static TimestampAlignerNodePlugin plugin;
+    private static CyfaceNodePlugin plugin;
 
     /**
      * The constructor.
      */
-    public TimestampAlignerNodePlugin() {
+    public CyfaceNodePlugin() {
         super();
         plugin = this;
     }
@@ -57,7 +57,7 @@ public class TimestampAlignerNodePlugin extends Plugin {
      * 
      * @return Singleton instance of the Plugin
      */
-    public static TimestampAlignerNodePlugin getDefault() {
+    public static CyfaceNodePlugin getDefault() {
         return plugin;
     }
 
