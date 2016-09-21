@@ -41,7 +41,7 @@ node {
 			String recipient = 'klemens.muthmann@gmail.com'
 
 			mail subject: "${env.JOB_NAME} (${env.BUILD_NUMBER}) successful",
-			     body: "Build ${env.BUILD_URL} was successful."
+			     body: "Build ${env.BUILD_URL} was successful.",
 			     to: recipient,
 			     replyTo: recipient,
 			     from: 'noreply@cyface.de'
