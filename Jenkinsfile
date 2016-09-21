@@ -8,7 +8,10 @@ node {
         }
 
 	stage('Build') {
-		sh "mvn clean install"
+		// Requires the Pipeline Maven Plugin
+		withMaven(maven: 'M3') {
+			sh "mvn clean install"
+		}
 	}
 	// TODO this is a temporary fix until the Sonarqube plugin has been adapted to pipelines: https://github.com/jenkinsci/pipeline-plugin/blob/master/COMPATIBILITY.md
         // Requires the Credentials Binding plugin
