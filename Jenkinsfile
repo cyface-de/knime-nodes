@@ -13,8 +13,32 @@ node {
 			sh "mvn clean install"
 		}
 	}
-	// TODO this is a temporary fix until the Sonarqube plugin has been adapted to pipelines: https://github.com/jenkinsci/pipeline-plugin/blob/master/COMPATIBILITY.md
-        // Requires the Credentials Binding plugin
+        stage('Code Quality') {
+            parallel(
+                    'pmd': {
+                        // static code analysis
+                        withMaven(maven: 'M3') {
+                           sh "mvn pmd:pmd pmd:cpd'
+                        }
+                    },
+                    'checkstyle': {
+                        withMaven(maven: 'M3') {
+                           sh "mvn checkstyle:checkstyle'
+                        }
+                    },
+                    'findbugs': {
+                        withMaven(maven: 'M3') {
+                           sh "mvn findbugs:findbugs'
+                        }
+                    },
+                    'jacoco': {
+                        // Jacoco report rendering
+                        gradle.aggregateJaCoCoReports()
+                        //publish(target: [reportDir:'build/reports/jacoco/jacocoTestReport/html',reportFile: 'index.html', reportName: 'Code Coverage'])
+                        //step([$class: 'JaCoCoPublisher', execPattern: 'build/jacoco/*.exec', classPattern: 'build/classes/main', sourcePattern: 'src/main/java'])
+                    }
+            )
+        }
         stage('Publish Metrics to Sonarqube') {
             // requires SonarQube Scanner 2.8+
             def scannerHome = tool 'SonarQubeScanner2.8';
