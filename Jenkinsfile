@@ -18,24 +18,18 @@ node {
                     'pmd': {
                         // static code analysis
                         withMaven(maven: 'M3') {
-                           sh "mvn pmd:pmd pmd:cpd'
+                           sh "mvn pmd:pmd pmd:cpd"
                         }
                     },
                     'checkstyle': {
                         withMaven(maven: 'M3') {
-                           sh "mvn checkstyle:checkstyle'
+                           sh "mvn checkstyle:checkstyle"
                         }
                     },
                     'findbugs': {
                         withMaven(maven: 'M3') {
-                           sh "mvn findbugs:findbugs'
+                           sh "mvn findbugs:findbugs"
                         }
-                    },
-                    'jacoco': {
-                        // Jacoco report rendering
-                        gradle.aggregateJaCoCoReports()
-                        //publish(target: [reportDir:'build/reports/jacoco/jacocoTestReport/html',reportFile: 'index.html', reportName: 'Code Coverage'])
-                        //step([$class: 'JaCoCoPublisher', execPattern: 'build/jacoco/*.exec', classPattern: 'build/classes/main', sourcePattern: 'src/main/java'])
                     }
             )
         }
