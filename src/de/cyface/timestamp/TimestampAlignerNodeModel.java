@@ -5,18 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
-import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.LongValue;
-import org.knime.core.data.container.CloseableRowIterator;
-import org.knime.core.data.container.DataContainerException;
-import org.knime.core.data.def.DefaultRow;
-import org.knime.core.data.def.IntCell;
-import org.knime.core.data.def.LongCell;
-import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -26,13 +18,14 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
+import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
  * <p>
- * This is the model implementation of TimestampAligner. Takes two tables
- * with timestamp columns and and assigns to each column from the first table
- * the column from the second table with the closest previous timestamp.
+ * This is the model implementation of TimestampAligner. Takes two tables with
+ * timestamp columns and and assigns to each column from the first table the
+ * column from the second table with the closest previous timestamp.
  * </p>
  *
  * @author Klemens Muthmann
@@ -44,10 +37,15 @@ public class TimestampAlignerNodeModel extends NodeModel {
 	// the logger instance
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(TimestampAlignerNodeModel.class);
 
-	private final SettingsModelString firstTimestampColumnName = new SettingsModelString(CFGKEY_FIRST_TABLE_COLUMN_NAME, "");
-	private final SettingsModelString secondTimestampColumnName = new SettingsModelString(CFGKEY_SECOND_TABLE_COLUMN_NAME,"");
+	private final SettingsModelString firstTimestampColumnName = new SettingsModelString(CFGKEY_FIRST_TABLE_COLUMN_NAME,
+			"");
+	private final SettingsModelString secondTimestampColumnName = new SettingsModelString(
+			CFGKEY_SECOND_TABLE_COLUMN_NAME, "");
+	private final SettingsModelBoolean valueRangeAlignment = new SettingsModelBoolean(CFGKEY_VALUE_RANGE_ALIGNMENT_NAME,
+			false);
 	static final String CFGKEY_FIRST_TABLE_COLUMN_NAME = "de.cyface.knime.firsttablecolumnname";
 	static final String CFGKEY_SECOND_TABLE_COLUMN_NAME = "de.cyface.knime.secondtablecolumnname";
+	static final String CFGKEY_VALUE_RANGE_ALIGNMENT_NAME = "de.cyface.knime.valuerangealignment";
 	static final int FIRST_IN_PORT = 0;
 	static final int SECOND_IN_PORT = 1;
 
@@ -67,74 +65,20 @@ public class TimestampAlignerNodeModel extends NodeModel {
 		try {
 			BufferedDataTable firstTable = inData[FIRST_IN_PORT];
 			BufferedDataTable secondTable = inData[SECOND_IN_PORT];
-
-			DataTableSpec secondTableSpec = secondTable.getDataTableSpec();
-			DataTableSpec firstTableSpec = firstTable.getDataTableSpec();
-			BufferedDataContainer res = exec.createDataContainer(
-					createResultSpec(firstTableSpec, secondTableSpec));
-
-			CloseableRowIterator secondTableIter = secondTable.iterator();
-			int secondTableTimestampColumnIndex = secondTableSpec
-					.findColumnIndex(secondTimestampColumnName.getStringValue());
-			int firstTableTimestampColumnIndex = firstTableSpec
-					.findColumnIndex(firstTimestampColumnName.getStringValue());
-			DataRow currentSecondTableRow = secondTableIter.next();
-			long currentSecondTableTimestamp = getTimestamp(secondTimestampColumnName.getStringValue(),currentSecondTableRow, secondTableTimestampColumnIndex);
-			DataRow nextSecondTableRow = secondTableIter.next();
-			long nextSecondTableTimestamp = getTimestamp(secondTimestampColumnName.getStringValue(),nextSecondTableRow, secondTableTimestampColumnIndex);
-
-			for (DataRow row : firstTable) {
-				long timestamp = getTimestamp(firstTimestampColumnName.getStringValue(),row, firstTableTimestampColumnIndex);
-				if (timestamp < currentSecondTableTimestamp && timestamp < nextSecondTableTimestamp) {
-					continue;
-				} else if (timestamp >= currentSecondTableTimestamp
-						&& (nextSecondTableRow == null || timestamp < nextSecondTableTimestamp)) {
-					DataRow combinedRow = concatenateRows(row, currentSecondTableRow);
-					res.addRowToTable(combinedRow);
-				} else {
-					currentSecondTableRow = nextSecondTableRow;
-					currentSecondTableTimestamp = nextSecondTableTimestamp;
-					if (secondTableIter.hasNext()) {
-						nextSecondTableRow = secondTableIter.next();
-						nextSecondTableTimestamp = getTimestamp(secondTimestampColumnName.getStringValue(),nextSecondTableRow, secondTableTimestampColumnIndex);
-					} else {
-						nextSecondTableRow = null;
-					}
-					DataRow combinedRow = concatenateRows(row, currentSecondTableRow);
-					res.addRowToTable(combinedRow);
-				}
+			InputData input = new InputData(firstTable, secondTable, firstTimestampColumnName.getStringValue(),
+					secondTimestampColumnName.getStringValue());
+			if (valueRangeAlignment.getBooleanValue()) {
+				return new ExecutionWithAlignment().execute(input,
+						createResultSpec(firstTable.getDataTableSpec(), secondTable.getDataTableSpec()), exec);
+			} else {
+				return new ExecutionWithoutAlignment().execute(input,
+						createResultSpec(firstTable.getDataTableSpec(), secondTable.getDataTableSpec()), exec);
 			}
 
-			res.close();
-			return new BufferedDataTable[] { res.getTable() };
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-	}
-
-	private long getTimestamp(final String columnName, final DataRow row, final int timestampColumnIndex) {
-		if(row.getCell(timestampColumnIndex) instanceof LongCell) {
-		return ((LongCell) row.getCell(timestampColumnIndex)).getLongValue();
-		} else if(row.getCell(timestampColumnIndex) instanceof IntCell) {
-			return ((IntCell) row.getCell(timestampColumnIndex)).getLongValue();
-		} else {
-			throw new IllegalStateException(String.format("{} column of invalid type {}. Pleas use a type compatible to long values.", columnName,row.getCell(timestampColumnIndex).getType().getName()));
-		}
-	}
-
-	private DataRow concatenateRows(final DataRow firstRow, final DataRow secondRow) {
-		DataCell[] cells = new DataCell[firstRow.getNumCells() + secondRow.getNumCells()];
-		int i = 0;
-		for (DataCell cell : firstRow) {
-			cells[i] = cell;
-			i++;
-		}
-		for (DataCell cell : secondRow) {
-			cells[i] = cell;
-			i++;
-		}
-		return new DefaultRow(firstRow.getKey(), cells);
 	}
 
 	/**
@@ -161,50 +105,6 @@ public class TimestampAlignerNodeModel extends NodeModel {
 		return new DataTableSpec[] { createResultSpec(firstTable, secondTable) };
 	}
 
-	private DataTableSpec createResultSpec(final DataTableSpec firstTableSpec, final DataTableSpec secondTableSpec) {
-		DataColumnSpec[] colSpecs = new DataColumnSpec[firstTableSpec.getNumColumns()
-				+ secondTableSpec.getNumColumns()];
-
-		Map<String, Integer> names = new HashMap<>();
-
-		int i = 0;
-		while (i < firstTableSpec.getNumColumns()) {
-			colSpecs[i] = getColumnSpec(firstTableSpec, i, names);
-			i++;
-		}
-		while (i < firstTableSpec.getNumColumns() + secondTableSpec.getNumColumns()) {
-			colSpecs[i] = getColumnSpec(secondTableSpec, i - firstTableSpec.getNumColumns(), names);
-			i++;
-		}
-
-		return new DataTableSpec(colSpecs);
-	}
-
-	private DataColumnSpec getColumnSpec(final DataTableSpec tableSpec, final int columnSpecIndex,
-			final Map<String, Integer> names) {
-		DataColumnSpec columnSpec = tableSpec.getColumnSpec(columnSpecIndex);
-		Integer counter = names.get(columnSpec.getName());
-		if (counter == null) {
-			counter = 1;
-		} else {
-			String qualifiedName = "" + counter + "_" + columnSpec.getName();
-			DataColumnSpec qualifiedSpec = new DataColumnSpecCreator(qualifiedName, columnSpec.getType()).createSpec();
-			columnSpec = qualifiedSpec;
-			counter++;
-		}
-		names.put(columnSpec.getName(), counter);
-		return columnSpec;
-	}
-
-	private void checkForValidTimestampColumn(final DataTableSpec tableSpec, final String columnName)
-			throws InvalidSettingsException {
-		if (!tableSpec.containsName(columnName)
-				|| !tableSpec.getColumnSpec(columnName).getType().isCompatible(LongValue.class)) {
-			throw new InvalidSettingsException(
-					String.format("No valid timestamp column called %s in table %s", columnName, tableSpec.getName()));
-		}
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -212,7 +112,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 		firstTimestampColumnName.saveSettingsTo(settings);
 		secondTimestampColumnName.saveSettingsTo(settings);
-
+		valueRangeAlignment.saveSettingsTo(settings);
 	}
 
 	/**
@@ -222,14 +122,14 @@ public class TimestampAlignerNodeModel extends NodeModel {
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 		firstTimestampColumnName.loadSettingsFrom(settings);
 		secondTimestampColumnName.loadSettingsFrom(settings);
-
+		valueRangeAlignment.loadSettingsFrom(settings);
 	}
 
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 		firstTimestampColumnName.validateSettings(settings);
 		secondTimestampColumnName.validateSettings(settings);
-
+		valueRangeAlignment.validateSettings(settings);
 	}
 
 	/**
@@ -264,4 +164,47 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
 	}
 
+	private DataTableSpec createResultSpec(final DataTableSpec firstTableSpec, final DataTableSpec secondTableSpec) {
+		DataColumnSpec[] colSpecs = new DataColumnSpec[firstTableSpec.getNumColumns()
+				+ secondTableSpec.getNumColumns()];
+
+		Map<String, Integer> names = new HashMap<>();
+
+		int i = 0;
+		while (i < firstTableSpec.getNumColumns()) {
+			colSpecs[i] = getColumnSpec(firstTableSpec, i, names);
+			i++;
+		}
+		while (i < firstTableSpec.getNumColumns() + secondTableSpec.getNumColumns()) {
+			colSpecs[i] = getColumnSpec(secondTableSpec, i - firstTableSpec.getNumColumns(), names);
+			i++;
+		}
+
+		return new DataTableSpec(colSpecs);
+	}
+
+	private void checkForValidTimestampColumn(final DataTableSpec tableSpec, final String columnName)
+			throws InvalidSettingsException {
+		if (!tableSpec.containsName(columnName)
+				|| !tableSpec.getColumnSpec(columnName).getType().isCompatible(LongValue.class)) {
+			throw new InvalidSettingsException(
+					String.format("No valid timestamp column called %s in table %s", columnName, tableSpec.getName()));
+		}
+	}
+
+	private DataColumnSpec getColumnSpec(final DataTableSpec tableSpec, final int columnSpecIndex,
+			final Map<String, Integer> names) {
+		DataColumnSpec columnSpec = tableSpec.getColumnSpec(columnSpecIndex);
+		Integer counter = names.get(columnSpec.getName());
+		if (counter == null) {
+			counter = 1;
+		} else {
+			String qualifiedName = "" + counter + "_" + columnSpec.getName();
+			DataColumnSpec qualifiedSpec = new DataColumnSpecCreator(qualifiedName, columnSpec.getType()).createSpec();
+			columnSpec = qualifiedSpec;
+			counter++;
+		}
+		names.put(columnSpec.getName(), counter);
+		return columnSpec;
+	}
 }

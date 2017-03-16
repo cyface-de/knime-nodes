@@ -6,7 +6,9 @@ package de.cyface.timestamp;
 import org.knime.core.data.IntValue;
 import org.knime.core.data.LongValue;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
+import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
@@ -18,10 +20,14 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  * </p>
  * 
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  */
 public final class TimestampAlignerNodeDialog extends DefaultNodeSettingsPane {
+
+	private final static String FIRST_TABLE_LABEL = "Select the column to align.";
+	private final static String SECOND_TABLE_LABEL = "Select the column to align to.";
+	private final static String VALUE_RANGE_ALIGNMENT_LABEL = "Align value ranges";
 
 	/**
 	 * <p>
@@ -35,12 +41,14 @@ public final class TimestampAlignerNodeDialog extends DefaultNodeSettingsPane {
 
 		addDialogComponent(new DialogComponentColumnNameSelection(
 				new SettingsModelString(TimestampAlignerNodeModel.CFGKEY_FIRST_TABLE_COLUMN_NAME, "Select"),
-				"Select the column to align.", TimestampAlignerNodeModel.FIRST_IN_PORT, LongValue.class,
-				IntValue.class));
+				FIRST_TABLE_LABEL, TimestampAlignerNodeModel.FIRST_IN_PORT, LongValue.class, IntValue.class));
 		addDialogComponent(new DialogComponentColumnNameSelection(
 				new SettingsModelString(TimestampAlignerNodeModel.CFGKEY_SECOND_TABLE_COLUMN_NAME, "Select"),
-				"Select the column to align to.", TimestampAlignerNodeModel.SECOND_IN_PORT, LongValue.class,
-				IntValue.class));
+				SECOND_TABLE_LABEL, TimestampAlignerNodeModel.SECOND_IN_PORT, LongValue.class, IntValue.class));
+
+		addDialogComponent(new DialogComponentBoolean(
+				new SettingsModelBoolean(TimestampAlignerNodeModel.CFGKEY_VALUE_RANGE_ALIGNMENT_NAME, false),
+				VALUE_RANGE_ALIGNMENT_LABEL));
 	}
 
 }
