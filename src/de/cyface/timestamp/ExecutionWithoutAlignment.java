@@ -96,7 +96,7 @@ public class ExecutionWithoutAlignment implements Execution {
 		int i = 0;
 		for (DataCell cell : firstRow) {
 			if (i == firstRowAlignmentCellIndex) {
-				cells[i] = new LongCell(firstRowAlignedValue);
+				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(firstRowAlignedValue) : new IntCell((int) firstRowAlignedValue);
 			} else {
 				cells[i] = cell;
 			}
@@ -105,7 +105,7 @@ public class ExecutionWithoutAlignment implements Execution {
 		int j = 0;
 		for (DataCell cell : secondRow) {
 			if (j == secondRowAlignmentCellIndex) {
-				cells[i] = new LongCell(secondRowAlignedValue);
+				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(secondRowAlignedValue) : new IntCell((int) secondRowAlignedValue);
 			} else {
 				cells[i] = cell;
 			}

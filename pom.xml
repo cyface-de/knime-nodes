@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.cyface</groupId>
-	<artifactId>knime-nodes</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<artifactId>de.cyface.knime</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<tycho-version>0.26.0</tycho-version>
+		<tycho-version>1.0.0</tycho-version>
 	</properties>
 
 	<repositories>
