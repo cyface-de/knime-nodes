@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KNIME Shapefile Support
+Bundle-SymbolicName: de.bund.bfr.knime.esri;singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: de.bund.bfr.knime.esri.Activator
+Bundle-Vendor: German Federal Institute for Risk Assessment (BfR)
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.6.0,4.0.0)",
+ org.knime.workbench.core;bundle-version="[3.0.0,4.0.0)",
+ org.knime.workbench.repository;bundle-version="[3.0.0,4.0.0)",
+ org.knime.base;bundle-version="[3.0.0,4.0.0)",
+ com.google.guava;bundle-version="[19.0.0,20.0.0)",
+ org.geotools;bundle-version="[12.0.0,13.0.0)"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

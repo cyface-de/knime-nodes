@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./ESRI.png" type="Manipulator" xmlns="http://knime.org/node/v2.10"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+	<name>Coordinate Row Filter</name>
+
+	<shortDescription>
+		Filters geographic coordinates (latitude and longitude) that are within one of
+		the referenced polygons.
+	</shortDescription>
+
+	<fullDescription>
+		<intro>
+			Filters geographic coordinates (latitude and longitude) that are within one of the
+			referenced polygons.
+		</intro>
+
+		<tab name="Coordinates to filter">
+			<option name="Latitude Column">
+				Column with latitudes from the first input table.
+			</option>
+			<option name="Longitude Column">
+				Column with longitudes from the first input table.
+			</option>
+		</tab>
+		<tab name="Polygon">
+			<option name="Polygon Column">
+				Column with polygons from the second input table.
+			</option>
+		</tab>
+		<tab name="Polygon Coordinates">
+			<option name="Latitude Column">
+				Column with polygon latitudes from the third input table.
+			</option>
+			<option name="Longitude Column">
+				Column with polygon longitudes from the third input table.
+			</option>
+		</tab>
+	</fullDescription>
+
+	<ports>
+		<inPort index="0" name="Coordinates to filter">
+			Coordinates to filter.
+		</inPort>
+		<inPort index="1" name="Polygons">
+			Polygons.
+		</inPort>
+		<inPort index="2" name="Polygon Coordinates">
+			Polygon Coordinates.
+		</inPort>
+		<outPort index="0" name="Filtered Coordinates">
+			Filtered Coordinates.
+		</outPort>
+	</ports>
+</knimeNode>
