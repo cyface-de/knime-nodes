@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="./icon.png" type="Manipulator">
+    <name>Signal Smoothing</name>
+    
+    <shortDescription>
+        Applies a smoothing algorithm to an input signal.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>
+            <p>Takes a one dimensional input signal in the form of measurement values in a table column, applies a smoothing algorithm and returns the smoothed signal. The node expects the input table to have at least one input column compatible with double values and will either replace that column with the smoothed signal or place it in a new appended column. Currently supported smoothing algorithms are:</p>
+            <ul>
+                <li>Rectangular Smoothing: Replaces each value by the mean of its predecessor and successor. Keeps the first and the last value.</li>
+            </ul>
+        </intro>
+  		<option name="Filter Type">Choose the type of filter (smoothing algorithm) to use.</option>
+        <option name="Input Column">Choose the input column containing the input signal.</option>
+        <option name="Append new column or replace input column">Choose whether you want to replace the input column with the smoothed signal or append it in a new column.</option>
+        <option name="Appended column name">If you are appending the smoothed signal in a new column in the output table, choose a name for that column.</option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Input Signal Table">A table with at least one double compatible column serving as the input signal.</inPort>
+        <outPort index="0" name="Output with Smoothed Signal">The output table containing the smoothed signal either by replacing the input column or appended as a new column.</outPort>
+    </ports>    
+</knimeNode>
