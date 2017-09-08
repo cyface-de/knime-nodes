@@ -20,61 +20,89 @@ import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
+import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
+ * <p>
+ * A {@link NodeModel} for the smoothing node, which smoothes an input signal,
+ * writing the result to an output signal.
+ * </p>
+ * 
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
  */
 public class SmoothingNodeModel extends NodeModel {
 
+	/**
+	 * <p>
+	 * The executor used to either replace the input data or append results.
+	 * </p>
+	 */
 	private Execution executor;
 
-	private final static String FILTER_TYPE_SELECTION_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smoothing.settings.filtertype";
-	private final static String INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smoothing.settings.inputcol";
-	private final static String APPEND_REPLACE_CHOOSER_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smooting.settings.appendreplace";
-	private final static String APPEND_COLUMN_NAME_INPUT_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smoothing.appendcolumnname";
-
+	/**
+	 * <p>
+	 * Settings model with the type of filter to use for smoothing.
+	 * </p>
+	 */
 	private final SettingsModelString filterTypeSelectionSettingsModel;
+	/**
+	 * <p>
+	 * {@link SettingsModel} containing the name of the input column containing
+	 * the input signal.
+	 * </p>
+	 */
 	private final SettingsModelString inputColSelectionSettingsModel;
+	/**
+	 * <p>
+	 * {@link SettingsModel} with the selection on whether to append the result
+	 * signal to the input table or replace the input signal column.
+	 * </p>
+	 */
 	private final SettingsModelString appendReplaceChooserSettingsModel;
+	/**
+	 * <p>
+	 * The name of the column to append if the
+	 * {@link #appendColumnNameInputSettingsModel} is set to append.
+	 * </p>
+	 */
 	private final SettingsModelString appendColumnNameInputSettingsModel;
 
-	static SettingsModelString createFilterTypeSelectionSettingsModel() {
-		return new SettingsModelString(FILTER_TYPE_SELECTION_SETTINGS_MODEL_CONFIG_NAME, Filter.RECTANGULAR.getName());
-	}
-
-	static SettingsModelString createInputColSelectionSettingsModel() {
-		return new SettingsModelString(INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME, "");
-	}
-
-	static SettingsModelString createAppendReplaceChooserSettingsModel() {
-		return new SettingsModelString(APPEND_REPLACE_CHOOSER_SETTINGS_MODEL_CONFIG_NAME,
-				SmoothingNodeDialog.APPEND_OPTION);
-	}
-
-	static SettingsModelString createAppendColumnNameInputSettingsModel() {
-		return new SettingsModelString(APPEND_COLUMN_NAME_INPUT_SETTINGS_MODEL_CONFIG_NAME, "");
-	}
-
-	protected SmoothingNodeModel() {
+	/**
+	 * <p>
+	 * Creates a new completely initialized {@link SmoothingNodeModel}, ready to
+	 * be executed.
+	 * </p>
+	 * 
+	 * @param executor
+	 *            The executor used to either replace the input data or append
+	 *            results.
+	 * @param filterTypeSelectionSettingsModel
+	 *            {@link SettingsModel} with the type of filter to use for
+	 *            smoothing.
+	 * @param inputColSelectionSettingsModel
+	 *            {@link SettingsModel} containing the name of the input column
+	 *            containing the input signal.
+	 * @param appendReplaceChooserSettingsModel
+	 *            {@link SettingsModel} with the selection on whether to append
+	 *            the result signal to the input table or replace the input
+	 *            signal column.
+	 * @param appendColumnNameInputSettingsModel
+	 *            The name of the column to append if the
+	 *            {@link #appendColumnNameInputSettingsModel} is set to append.
+	 */
+	protected SmoothingNodeModel(final Execution executor, final SettingsModelString filterTypeSelectionSettingsModel,
+			final SettingsModelString inputColSelectionSettingsModel,
+			final SettingsModelString appendReplaceChooserSettingsModel,
+			final SettingsModelString appendColumnNameInputSettingsModel) {
 		super(1, 1);
-		filterTypeSelectionSettingsModel = createFilterTypeSelectionSettingsModel();
-		inputColSelectionSettingsModel = createInputColSelectionSettingsModel();
-		appendReplaceChooserSettingsModel = createAppendReplaceChooserSettingsModel();
-		appendColumnNameInputSettingsModel = createAppendColumnNameInputSettingsModel();
-		executor = new AppendColumnExecutor(appendColumnNameInputSettingsModel);
-
-		appendReplaceChooserSettingsModel.addChangeListener(event -> {
-			if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeDialog.REPLACE_OPTION)) {
-				appendColumnNameInputSettingsModel.setEnabled(false);
-				executor = new AppendColumnExecutor(appendColumnNameInputSettingsModel);
-			} else {
-				appendColumnNameInputSettingsModel.setEnabled(true);
-				executor = new ReplaceColumnExecutor();
-			}
-		});
+		this.filterTypeSelectionSettingsModel = filterTypeSelectionSettingsModel;
+		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;
+		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
+		this.appendColumnNameInputSettingsModel = appendColumnNameInputSettingsModel;
+		this.executor = executor;
 	}
 
 	@Override
@@ -104,9 +132,10 @@ public class SmoothingNodeModel extends NodeModel {
 		filterTypeSelectionSettingsModel.validateSettings(settings);
 		inputColSelectionSettingsModel.validateSettings(settings);
 		appendReplaceChooserSettingsModel.validateSettings(settings);
-		/*if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeDialog.APPEND_OPTION)
-				&& (appendColumnNameInputSettingsModel.getStringValue()==null ||appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
-			throw new InvalidSettingsException("Please provide a name for the appended output column.");*/
+		if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
+				&& (appendColumnNameInputSettingsModel.getStringValue() == null
+						|| appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
+			throw new InvalidSettingsException("Please provide a name for the appended output column.");
 		appendColumnNameInputSettingsModel.validateSettings(settings);
 	}
 
@@ -144,21 +173,51 @@ public class SmoothingNodeModel extends NodeModel {
 			currentRow = nextRow;
 			nextRow = row;
 
-			if (previousRow == null || currentRow == null) {
-				continue;
+			DoubleCell resultCell = smooth(previousRow, currentRow, nextRow, inputColumnIndex);
+			if (resultCell != null) { // Always null on first iteration.
+				DataRow extendedRow = executor.createResultRow(currentRow, resultCell, inputColumnIndex);
+				outputContainer.addRowToTable(extendedRow);
 			}
-
-			double previousValue = ((DoubleCell) previousRow.getCell(inputColumnIndex)).getDoubleValue();
-			double nextValue = ((DoubleCell) nextRow.getCell(inputColumnIndex)).getDoubleValue();
-			double smoothedCurrentValue = (previousValue + nextValue) / 2.0;
-			DoubleCell resultCell = new DoubleCell(smoothedCurrentValue);
-
-			DataRow extendedRow = executor.createResultRow(row, resultCell, inputColumnIndex);
-			outputContainer.addRowToTable(extendedRow);
 		}
+
+		// Add the last row as is, since there is no next value anymore.
+		DataRow extendedRow = executor.createResultRow(nextRow,
+				new DoubleCell(((DoubleCell) nextRow.getCell(inputColumnIndex)).getDoubleValue()), inputColumnIndex);
+		outputContainer.addRowToTable(extendedRow);
 
 		outputContainer.close();
 		return new BufferedDataTable[] { outputContainer.getTable() };
+	}
+
+	/**
+	 * <p>
+	 * Smooths the current signal based on three consecutive values.
+	 * </p>
+	 * 
+	 * @param previousRow
+	 *            The {@link DataRow} containing the predecessor value.
+	 * @param currentRow
+	 *            The {@link DataRow} containing the current value (i.e. the
+	 *            value to recalculate).
+	 * @param nextRow
+	 *            The {@link DataRow} containing the successor value.
+	 * @param inputColumnIndex
+	 *            Index of the column containing the signal in the input table.
+	 * @return A new {@link DoubleCell} with the smoothed value.
+	 */
+	private DoubleCell smooth(final DataRow previousRow, final DataRow currentRow, final DataRow nextRow,
+			final int inputColumnIndex) {
+		if (currentRow == null) {
+			return null;
+
+		} else if (previousRow == null) {
+			return new DoubleCell(((DoubleCell) currentRow.getCell(inputColumnIndex)).getDoubleValue());
+		} else {
+			double previousValue = ((DoubleCell) previousRow.getCell(inputColumnIndex)).getDoubleValue();
+			double nextValue = ((DoubleCell) nextRow.getCell(inputColumnIndex)).getDoubleValue();
+			double smoothedCurrentValue = (previousValue + nextValue) / 2.0;
+			return new DoubleCell(smoothedCurrentValue);
+		}
 	}
 
 	@Override
@@ -173,8 +232,19 @@ public class SmoothingNodeModel extends NodeModel {
 			}
 		}
 
-		//return new DataTableSpec[] { executor.getOutputSpec(inSpecs[0]) };
-		return new DataTableSpec[] { inSpecs[0] };
+		return new DataTableSpec[] { executor.getOutputSpec(inSpecs[0]) };
+	}
+
+	/**
+	 * @param executor
+	 *            Changes the {@link Execution} used to either replace the input
+	 *            data or append results.
+	 */
+	public void setExecutor(final Execution executor) {
+		if (executor == null)
+			throw new IllegalArgumentException("Invalid argument for parameter executor: null");
+		this.executor = executor;
+
 	}
 
 }

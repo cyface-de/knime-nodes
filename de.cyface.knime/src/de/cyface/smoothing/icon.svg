@@ -17,8 +17,8 @@
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="icon.svg"
    inkscape:export-filename="/home/muthmann/Projekte/knime-dev/de.cyface/de.cyface.knime/src/de/cyface/smoothing/icon.png"
-   inkscape:export-xdpi="3.2595253"
-   inkscape:export-ydpi="3.2595253">
+   inkscape:export-xdpi="3.2578416"
+   inkscape:export-ydpi="3.2578416">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -63,7 +63,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csssc" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:10.06500161;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:10.065;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 14.836985,177.67853 c 0,0 12.754604,-20.82384 29.934264,-20.82384 17.17967,0 21.344438,21.08413 35.140238,21.08413 13.79579,0 18.999192,-21.60471 32.276953,-21.60472 13.01489,-1e-5 24.98859,21.08412 24.98859,21.08412"
        id="path10-3"
        inkscape:connector-curvature="0"

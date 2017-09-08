@@ -16,7 +16,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  * <code>NodeDialog</code> for the "EquidistanceTransfomer" Node. Takes a
  * function f(x) defined by two columns containing the values for x and for f(x)
  * and calculate a new function on x where f(x) are equdistant points which are
- * interpolated between original values of f(x) if f(x) is not equdistant
+ * interpolated between original values of f(x) if f(x) is not equidistant
  * itself. The columns containing x and f(x) need to be numeric and sorted by x.
  *
  * This node dialog derives from {@link DefaultNodeSettingsPane} which allows
