@@ -3,14 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: All nodes required to test Cyface calculations.
 Bundle-SymbolicName: de.cyface.knime;singleton:=true
 Bundle-Version: 1.2.0.qualifier
-Bundle-ClassPath: cyface-nodes.jar
+Bundle-ClassPath: lib/barefoot-0.1.1-jar-with-dependencies.jar
 Bundle-Activator: de.cyface.CyfaceNodePlugin
 Bundle-Vendor: Cyface
 Require-Bundle: org.eclipse.core.runtime,
  org.knime.workbench.core,
  org.knime.workbench.repository,
- org.knime.base,
- com.bmw-carit.barefoot;bundle-version="1.0.0"
+ org.knime.base
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cyface,
  de.cyface.distance,

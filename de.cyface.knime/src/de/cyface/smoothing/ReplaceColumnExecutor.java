@@ -5,6 +5,15 @@ import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 
+/**
+ * <p>
+ * An {@link Execution} replacing the input column with the result column.
+ * </p>
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class ReplaceColumnExecutor implements Execution {
 
 	@Override
