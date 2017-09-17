@@ -1,5 +1,6 @@
 package de.cyface.smoothing.dialog;
 
+import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataValue;
 import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
@@ -15,6 +16,36 @@ import org.knime.core.node.util.ColumnFilter;
  * @since 1.0.0
  */
 public class ColumnSelectionNodeOption extends StringSettingsModelOption {
+
+	/**
+	 * <p>
+	 * Creates a new completely initialized {@link ColumnSelectionNodeOption}.
+	 * </p>
+	 * 
+	 * @param configIdentifier
+	 *            The identifier used by KNIME to find the corresponding
+	 *            {@link SettingsModel}.
+	 * @param label
+	 *            The label appearing on the UI (usually to the left of the
+	 *            input field).
+	 * @param defaultValue
+	 *            The initial starting value.
+	 */
+	public ColumnSelectionNodeOption(final String configIdentifier, final String label, final String defaultValue) {
+		super(configIdentifier, defaultValue);
+		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, new ColumnFilter() {
+
+			@Override
+			public boolean includeColumn(DataColumnSpec colSpec) {
+				return true;
+			}
+
+			@Override
+			public String allFilteredMsg() {
+				return "All columns filtered from input. IF YOU READ THIS MESSAGE, SOMETHING IS WRONG WITH THE CODE OF THIS NODE.";
+			}
+		}));
+	}
 
 	/**
 	 * <p>
