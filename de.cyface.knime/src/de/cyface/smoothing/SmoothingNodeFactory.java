@@ -42,7 +42,7 @@ public class SmoothingNodeFactory extends NodeFactory<SmoothingNodeModel> {
 	 */
 	ColumnSelectionNodeOption inputColSelection = new ColumnSelectionNodeOption(
 			SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,
-			SmoothingNodeConstants.INPUT_COL_SELECTION_LABEL, "", DoubleValue.class);
+			SmoothingNodeConstants.INPUT_COL_SELECTION_LABEL, DoubleValue.class);
 	/**
 	 * <p>
 	 * A {@link NodeOption} for choosing to either append or replace the output

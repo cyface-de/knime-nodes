@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -117,16 +118,16 @@ public final class MapMatchingNodeModel extends NodeModel {
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
 
-		RoadMap map = Loader.roadmap("config/sachsen.properties", true);
-
-		Matcher matcher = new Matcher(map, new Dijkstra<Road, RoadPoint>(), new TimePriority(), new Geography());
-
-		List<MatcherSample> samples = readSamplesFromSQLite("/home/muthmann/Projekte/Cyface/Goldstandard/measures");
-		map.construct();
-
-		MatcherKState state = matcher.mmatch(samples, 1, 500);
-
-		System.out.println(state.size());
+//		RoadMap map = Loader.roadmap("config/sachsen.properties", true);
+//
+//		Matcher matcher = new Matcher(map, new Dijkstra<Road, RoadPoint>(), new TimePriority(), new Geography());
+//
+//		List<MatcherSample> samples = readSamplesFromSQLite("/home/muthmann/Projekte/Cyface/Goldstandard/measures");
+//		map.construct();
+//
+//		MatcherKState state = matcher.mmatch(samples, 1, 500);
+//
+//		System.out.println(state.size());
 
 		// System.out.println(state.toDebugJSON());
 		// for (MatcherCandidate cand : state.sequence()) {
@@ -191,6 +192,11 @@ public final class MapMatchingNodeModel extends NodeModel {
 		} catch (SQLException e) {
 			throw new IllegalArgumentException(e);
 		}
+	}
+	
+	@Override
+	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+		return new DataTableSpec[]{};
 	}
 
 }

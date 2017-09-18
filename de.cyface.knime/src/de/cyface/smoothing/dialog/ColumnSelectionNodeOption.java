@@ -28,11 +28,9 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	 * @param label
 	 *            The label appearing on the UI (usually to the left of the
 	 *            input field).
-	 * @param defaultValue
-	 *            The initial starting value.
 	 */
-	public ColumnSelectionNodeOption(final String configIdentifier, final String label, final String defaultValue) {
-		super(configIdentifier, defaultValue);
+	public ColumnSelectionNodeOption(final String configIdentifier, final String label) {
+		super(configIdentifier, "Select a column");
 		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, new ColumnFilter() {
 
 			@Override
@@ -58,15 +56,13 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	 * @param label
 	 *            The label appearing on the UI (usually to the left of the
 	 *            input field).
-	 * @param defaultValue
-	 *            The initial starting value.
 	 * @param columnFilter
 	 *            A column filter, filtering all columns not usable as input.
 	 *            Only columns passing the filter are available for selection.
 	 */
-	public ColumnSelectionNodeOption(final String configIdentifier, final String label, final String defaultValue,
+	public ColumnSelectionNodeOption(final String configIdentifier, final String label,
 			final ColumnFilter columnFilter) {
-		super(configIdentifier, defaultValue);
+		super(configIdentifier, "Select a column");
 		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, columnFilter));
 	}
 
@@ -81,15 +77,13 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	 * @param label
 	 *            The label appearing on the UI (usually to the left of the
 	 *            input field).
-	 * @param defaultValue
-	 *            The initial starting value.
 	 * @param acceptedClasses
 	 *            A list of possible input data values. Only columns with input
 	 *            values of one of the provided types are shown in the dialog.
 	 */
-	public ColumnSelectionNodeOption(final String configIdentifier, final String label, final String defaultValue,
+	public ColumnSelectionNodeOption(final String configIdentifier, final String label,
 			Class<? extends DataValue>... acceptedClasses) {
-		super(configIdentifier, defaultValue);
+		super(configIdentifier, "Select a column");
 		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, acceptedClasses));
 	}
 }

@@ -5,10 +5,15 @@ package de.cyface.smoothing;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.DataType;
 import org.knime.core.data.DoubleValue;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.node.BufferedDataContainer;
@@ -17,6 +22,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
@@ -34,6 +40,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  * @since 1.0.0
  */
 public class SmoothingNodeModel extends NodeModel {
+	private static final NodeLogger LOGGER = NodeLogger.getLogger(SmoothingNodeModel.class);
 
 	/**
 	 * <p>
@@ -99,7 +106,8 @@ public class SmoothingNodeModel extends NodeModel {
 			final SettingsModelString appendColumnNameInputSettingsModel) {
 		super(1, 1);
 		this.filterTypeSelectionSettingsModel = filterTypeSelectionSettingsModel;
-		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;
+		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
+																				// SettingsModelString(SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,"");//
 		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
 		this.appendColumnNameInputSettingsModel = appendColumnNameInputSettingsModel;
 		this.executor = executor;
@@ -132,11 +140,11 @@ public class SmoothingNodeModel extends NodeModel {
 		filterTypeSelectionSettingsModel.validateSettings(settings);
 		inputColSelectionSettingsModel.validateSettings(settings);
 		appendReplaceChooserSettingsModel.validateSettings(settings);
+		appendColumnNameInputSettingsModel.validateSettings(settings);
 		if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
 				&& (appendColumnNameInputSettingsModel.getStringValue() == null
 						|| appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
 			throw new InvalidSettingsException("Please provide a name for the appended output column.");
-		appendColumnNameInputSettingsModel.validateSettings(settings);
 	}
 
 	@Override
@@ -157,6 +165,7 @@ public class SmoothingNodeModel extends NodeModel {
 			throws Exception {
 		BufferedDataTable inputTable = inData[0];
 		String inputColumnName = inputColSelectionSettingsModel.getStringValue();
+		LOGGER.debug(String.format("Reading input from column %s.", inputColumnName));
 		DataTableSpec inputSpec = inputTable.getSpec();
 
 		DataTableSpec outputSpec = executor.getOutputSpec(inputSpec);
@@ -210,29 +219,61 @@ public class SmoothingNodeModel extends NodeModel {
 		if (currentRow == null) {
 			return null;
 
-		} else if (previousRow == null) {
-			return new DoubleCell(((DoubleCell) currentRow.getCell(inputColumnIndex)).getDoubleValue());
 		} else {
-			double previousValue = ((DoubleCell) previousRow.getCell(inputColumnIndex)).getDoubleValue();
-			double nextValue = ((DoubleCell) nextRow.getCell(inputColumnIndex)).getDoubleValue();
-			double smoothedCurrentValue = (previousValue + nextValue) / 2.0;
-			return new DoubleCell(smoothedCurrentValue);
+			DataCell currentCell = currentRow.getCell(inputColumnIndex);
+			DataCell nextCell = nextRow.getCell(inputColumnIndex);
+			if (!currentCell.getType().isCompatible(DoubleValue.class)
+					|| !nextCell.getType().isCompatible(DoubleValue.class)) {
+				throw new IllegalStateException(
+						String.format("Invalid cell type %s not compatible with DoubleCell.", currentCell.getType()));
+			}
+
+			if (previousRow == null) {
+				return new DoubleCell(((DoubleCell) currentCell).getDoubleValue());
+			} else {
+				DataCell previousCell = previousRow.getCell(inputColumnIndex);
+				if (!previousCell.getType().isCompatible(DoubleValue.class)) {
+					throw new IllegalStateException(String
+							.format("Invalid cell type %s not compatible with DoubleCell.", previousCell.getType()));
+				}
+				double previousValue = ((DoubleCell) previousCell).getDoubleValue();
+				double nextValue = ((DoubleCell) nextCell).getDoubleValue();
+				double smoothedCurrentValue = (previousValue + nextValue) / 2.0;
+				return new DoubleCell(smoothedCurrentValue);
+			}
 		}
 	}
 
 	@Override
 	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+		// TODO Testen was passiert wenn kein Double Input vorliegt.
 		if (!inSpecs[0].containsCompatibleType(DoubleValue.class))
 			throw new InvalidSettingsException(
 					"Smoothing node input contains no valid column, compatible to double values. Add a column with double values to the input, to use this node.");
-		for (DataColumnSpec columnSpec : inSpecs[0]) {
-			if (columnSpec.getType().isCompatible(DoubleValue.class)) {
-				inputColSelectionSettingsModel.setStringValue(columnSpec.getName());
-				break;
+		
+		if (!inSpecs[0].containsName(inputColSelectionSettingsModel.getStringValue())) {
+			for (DataColumnSpec columnSpec : inSpecs[0]) {
+				if (columnSpec.getType().isCompatible(DoubleValue.class)) {
+					inputColSelectionSettingsModel.setStringValue(columnSpec.getName());
+					break;
+				}
 			}
 		}
 
-		return new DataTableSpec[] { executor.getOutputSpec(inSpecs[0]) };
+		List<DataColumnSpec> outColumnSpecs = new ArrayList<>();
+
+		for (DataColumnSpec inColumnSpec : inSpecs[0]) {
+			outColumnSpecs.add(inColumnSpec);
+		}
+
+		if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)) {
+			String columnName = appendColumnNameInputSettingsModel.getStringValue();
+			outColumnSpecs.add(new DataColumnSpecCreator(columnName, DataType.getType(DoubleCell.class)).createSpec());
+		}
+
+		return new DataTableSpec[] {
+				new DataTableSpec(outColumnSpecs.toArray(new DataColumnSpec[outColumnSpecs.size()])) };
+		// return new DataTableSpec[]{};
 	}
 
 	/**
