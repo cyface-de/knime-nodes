@@ -10,6 +10,8 @@ node {
 	stage('Build') {
             // Since there is no parent POM we need to go to the subdirectory.
             dir('de.cyface.knime') {
+                // We need to create the Eclipse build directory, since it is referenced in build.properties. It will however stay empty if tycho is used during the following steps.
+                sh "mkdir bin"
 		// Requires the Pipeline Maven Plugin
 		withMaven(maven: 'M3') {
 			sh "mvn clean install"
