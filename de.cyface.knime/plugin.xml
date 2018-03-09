@@ -16,6 +16,7 @@
    <node category-path="/cyfaceNodes" factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory" id="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
    <node category-path="/cyfaceNodes" factory-class="de.cyface.smoothing.SmoothingNodeFactory" id="de.cyface.smoothing.SmoothingNodeFactory"/>
    <node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory" id="de.cyface.mapmatching.MapMatchingNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory" id="de.cyface.export.ExportNodeFactory"/>
 </extension>
    
 </plugin>

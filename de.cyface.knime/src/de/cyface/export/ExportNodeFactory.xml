@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./default.png" type="Sink" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Cyface Binary Format Exporter</name>
+    
+    <shortDescription>
+        Exports Cyface measurement data of geo locations, accelerations, rotations and directions into the cyface binary format.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>This node is capable of reading input data from 4 tables containing captured geo locations, accelerations, rotations and directions in the format produced by Cyface measurement devices. The input should contain timestamps as long milliseconds since 1.1.1970. The accuracy of geo locations is an integer value in centimeters. All other columns should be double precision floating point values.F</intro>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Geo Locations">Captured geo locations as a table containing information about the capture timestamp, latitude, longitude, speed and accuracy.</inPort>
+        <inPort index="0" name="Accelerations">Captured accelerations in 3 dimensions and a capturing timestamp.</inPort>
+        <inPort index="0" name="Rotations">Captured rotations in 3 dimensions and a capturing timestamp.</inPort>
+        <inPort index="0" name="Directions">Captured directions in 3 dimensions and a capturing timestamp.</inPort>
+    </ports>    
+</knimeNode>

@@ -5,13 +5,11 @@ import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
 /**
- * <p>
  * <code>NodeFactory</code> for the "EquidistanceTransfomer" Node. Takes a
  * function f(x) defined by two columns containing the values for x and for f(x)
  * and calculate a new function on x where f(x) are equdistant points which are
  * interpolated between original values of f(x) if f(x) is not equdistant
  * itself. The columns containing x and f(x) need to be numeric and sorted by x.
- * </p>
  *
  * @author Klemens Muthmann
  * @version 1.0.0

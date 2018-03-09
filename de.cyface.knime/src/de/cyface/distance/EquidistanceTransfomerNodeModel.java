@@ -128,40 +128,6 @@ public class EquidistanceTransfomerNodeModel extends NodeModel {
 			}
 		}
 
-		// DataRow prevRow = rowIter.next();
-		// double remainder = 0.0;
-		// long currentRowIndex = 0L;
-		// container.addRowToTable(new DefaultRow("Row_" + currentRowIndex++,
-		// new DoubleCell(get(prevRow, xColumnIndex)), new
-		// DoubleCell(get(prevRow, fxColumnIndex))));
-		// while (rowIter.hasNext()) {
-		// DataRow currentRow = rowIter.next();
-		// double prevX = get(prevRow, xColumnIndex);
-		// double prevFx = get(prevRow, fxColumnIndex);
-		// double currentX = get(currentRow, xColumnIndex);
-		// double currentFx = get(currentRow, fxColumnIndex);
-		// double samplesInInterval = (currentX - prevX + sampleRate *
-		// remainder) / sampleRate;
-		// for (int i = 1; i <= Math.floor(samplesInInterval); i++) {
-		// // interpolate
-		// double interpolatedX = prevX + i * (sampleRate - (sampleRate *
-		// remainder));
-		// double interpolatedValue = prevFx
-		// + (currentFx - prevFx) / (currentX - prevX) * i * (sampleRate -
-		// (sampleRate * remainder));
-		// container.addRowToTable(new DefaultRow("Row_" + currentRowIndex++,
-		// new DoubleCell(interpolatedX),
-		// new DoubleCell(interpolatedValue)));
-		//// remainder = 0.0;
-		// }
-		// remainder = samplesInInterval - Math.floor(samplesInInterval);
-		// prevRow = currentRow;
-		// }
-		// } finally {
-		// if(container!=null && container.isOpen()) {
-		// container.close();
-		// }
-		// }
 		return new BufferedDataTable[] { container.getTable() };
 	}
 
