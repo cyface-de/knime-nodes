@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.DataType;
 import org.knime.core.data.LongValue;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -39,12 +43,24 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
 	private final SettingsModelString firstTimestampColumnName = new SettingsModelString(CFGKEY_FIRST_TABLE_COLUMN_NAME,
 			"");
+	private final SettingsModelBoolean firstTimestampColumnRenameCheckbox = new SettingsModelBoolean(CFGKEY_RENAME_FIRST_TABLE_COLUMN_CHECKBOX,
+			false);
+	private final SettingsModelString firstTimestampColumnRenameName = new SettingsModelString(CFGKEY_RENAME_FIRST_TABLE_COLUMN_NAME,
+			"");
 	private final SettingsModelString secondTimestampColumnName = new SettingsModelString(
 			CFGKEY_SECOND_TABLE_COLUMN_NAME, "");
+	private final SettingsModelBoolean secondTimestampColumnRenameCheckbox = new SettingsModelBoolean(CFGKEY_RENAME_SECOND_TABLE_COLUMN_CHECKBOX,
+			false);
+	private final SettingsModelString secondTimestampColumnRenameName = new SettingsModelString(CFGKEY_RENAME_SECOND_TABLE_COLUMN_NAME,
+			"");
 	private final SettingsModelBoolean valueRangeAlignment = new SettingsModelBoolean(CFGKEY_VALUE_RANGE_ALIGNMENT_NAME,
 			false);
 	static final String CFGKEY_FIRST_TABLE_COLUMN_NAME = "de.cyface.knime.firsttablecolumnname";
+	static final String CFGKEY_RENAME_FIRST_TABLE_COLUMN_CHECKBOX = "de.cyface.knime.firsttablerenamecheckbox"; 
+	static final String CFGKEY_RENAME_FIRST_TABLE_COLUMN_NAME = "de.cyface.knime.firsttablerename";
 	static final String CFGKEY_SECOND_TABLE_COLUMN_NAME = "de.cyface.knime.secondtablecolumnname";
+	static final String CFGKEY_RENAME_SECOND_TABLE_COLUMN_CHECKBOX = "de.cyface.knime.secondtablerenamecheckbox";
+	static final String CFGKEY_RENAME_SECOND_TABLE_COLUMN_NAME = "de.cyface.knime.secondtablerename"; 
 	static final String CFGKEY_VALUE_RANGE_ALIGNMENT_NAME = "de.cyface.knime.valuerangealignment";
 	static final int FIRST_IN_PORT = 0;
 	static final int SECOND_IN_PORT = 1;
@@ -54,6 +70,21 @@ public class TimestampAlignerNodeModel extends NodeModel {
 	 */
 	protected TimestampAlignerNodeModel() {
 		super(2, 1);
+		firstTimestampColumnRenameCheckbox.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				firstTimestampColumnRenameName.setEnabled(firstTimestampColumnRenameCheckbox.getBooleanValue());
+			}
+		});
+		secondTimestampColumnRenameCheckbox.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				secondTimestampColumnRenameName.setEnabled(secondTimestampColumnRenameCheckbox.getBooleanValue());
+			}
+			
+		});
 	}
 
 	/**
@@ -113,6 +144,10 @@ public class TimestampAlignerNodeModel extends NodeModel {
 		firstTimestampColumnName.saveSettingsTo(settings);
 		secondTimestampColumnName.saveSettingsTo(settings);
 		valueRangeAlignment.saveSettingsTo(settings);
+		firstTimestampColumnRenameCheckbox.saveSettingsTo(settings);
+		firstTimestampColumnRenameName.saveSettingsTo(settings);
+		secondTimestampColumnRenameCheckbox.saveSettingsTo(settings);
+		secondTimestampColumnRenameName.saveSettingsTo(settings);
 	}
 
 	/**
@@ -123,6 +158,10 @@ public class TimestampAlignerNodeModel extends NodeModel {
 		firstTimestampColumnName.loadSettingsFrom(settings);
 		secondTimestampColumnName.loadSettingsFrom(settings);
 		valueRangeAlignment.loadSettingsFrom(settings);
+		firstTimestampColumnRenameCheckbox.loadSettingsFrom(settings);
+		firstTimestampColumnRenameName.loadSettingsFrom(settings);
+		secondTimestampColumnRenameCheckbox.loadSettingsFrom(settings);
+		secondTimestampColumnRenameName.loadSettingsFrom(settings);
 	}
 
 	@Override
@@ -130,6 +169,10 @@ public class TimestampAlignerNodeModel extends NodeModel {
 		firstTimestampColumnName.validateSettings(settings);
 		secondTimestampColumnName.validateSettings(settings);
 		valueRangeAlignment.validateSettings(settings);
+		firstTimestampColumnRenameCheckbox.validateSettings(settings);
+		firstTimestampColumnRenameName.validateSettings(settings);
+		secondTimestampColumnRenameCheckbox.validateSettings(settings);
+		secondTimestampColumnRenameName.validateSettings(settings);
 	}
 
 	/**
@@ -179,8 +222,27 @@ public class TimestampAlignerNodeModel extends NodeModel {
 			colSpecs[i] = getColumnSpec(secondTableSpec, i - firstTableSpec.getNumColumns(), names);
 			i++;
 		}
+		renameOutputColumnsIfNecessary(colSpecs, firstTableSpec, secondTableSpec);
+		
 
 		return new DataTableSpec(colSpecs);
+	}
+	
+	private void renameOutputColumnsIfNecessary(final DataColumnSpec[] colSpecs, final DataTableSpec firstTableSpec, final DataTableSpec secondTableSpec) {
+		int offset = 0;
+		if(firstTimestampColumnRenameCheckbox.getBooleanValue()) {
+			offset = renameColumn(firstTableSpec, firstTimestampColumnName.getStringValue(), firstTimestampColumnRenameName.getStringValue(), colSpecs, offset);
+		}
+		if(secondTimestampColumnRenameCheckbox.getBooleanValue()) {
+			offset = renameColumn(secondTableSpec,secondTimestampColumnName.getStringValue(), secondTimestampColumnRenameName.getStringValue(), colSpecs, offset );
+		}
+	}
+	
+	private int renameColumn(final DataTableSpec tableSpec, final String originalColumnName, final String renamedColumnName, final DataColumnSpec[] colSpecs, final int offset) {
+		int indexOfFirstTimestampColumnInFirstInputSpec = offset + tableSpec.findColumnIndex(originalColumnName);
+		DataType type = colSpecs[indexOfFirstTimestampColumnInFirstInputSpec].getType();
+		colSpecs[indexOfFirstTimestampColumnInFirstInputSpec] = new DataColumnSpecCreator(renamedColumnName,type).createSpec();
+		return tableSpec.getNumColumns();
 	}
 
 	private void checkForValidTimestampColumn(final DataTableSpec tableSpec, final String columnName)

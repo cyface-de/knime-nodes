@@ -12,6 +12,15 @@ import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 
+/**
+ * An executor that runs timestamp association without aligning the timestamp to
+ * zero. This means timestamp ranges captured in non overlapping time ranges
+ * will produce an empty table.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class ExecutionWithoutAlignment implements Execution {
 
 	public BufferedDataTable[] execute(final InputData input, final DataTableSpec outputTableSpec,
@@ -47,7 +56,8 @@ public class ExecutionWithoutAlignment implements Execution {
 				continue;
 			} else if (timestamp >= currentSecondTableTimestamp
 					&& (nextSecondTableRow == null || timestamp < nextSecondTableTimestamp)) {
-				DataRow combinedRow = concatenateRows(row, currentSecondTableRow,firstTableTimestampColumnIndex,secondTableTimestampColumnIndex,timestamp,currentSecondTableTimestamp);
+				DataRow combinedRow = concatenateRows(row, currentSecondTableRow, firstTableTimestampColumnIndex,
+						secondTableTimestampColumnIndex, timestamp, currentSecondTableTimestamp);
 				res.addRowToTable(combinedRow);
 			} else {
 				currentSecondTableRow = nextSecondTableRow;
@@ -59,7 +69,8 @@ public class ExecutionWithoutAlignment implements Execution {
 				} else {
 					nextSecondTableRow = null;
 				}
-				DataRow combinedRow = concatenateRows(row, currentSecondTableRow,firstTableTimestampColumnIndex,secondTableTimestampColumnIndex,timestamp,currentSecondTableTimestamp);
+				DataRow combinedRow = concatenateRows(row, currentSecondTableRow, firstTableTimestampColumnIndex,
+						secondTableTimestampColumnIndex, timestamp, currentSecondTableTimestamp);
 				res.addRowToTable(combinedRow);
 			}
 		}
@@ -96,7 +107,8 @@ public class ExecutionWithoutAlignment implements Execution {
 		int i = 0;
 		for (DataCell cell : firstRow) {
 			if (i == firstRowAlignmentCellIndex) {
-				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(firstRowAlignedValue) : new IntCell((int) firstRowAlignedValue);
+				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(firstRowAlignedValue)
+						: new IntCell((int) firstRowAlignedValue);
 			} else {
 				cells[i] = cell;
 			}
@@ -105,7 +117,8 @@ public class ExecutionWithoutAlignment implements Execution {
 		int j = 0;
 		for (DataCell cell : secondRow) {
 			if (j == secondRowAlignmentCellIndex) {
-				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(secondRowAlignedValue) : new IntCell((int) secondRowAlignedValue);
+				cells[i] = cell.getClass().equals(LongCell.class) ? new LongCell(secondRowAlignedValue)
+						: new IntCell((int) secondRowAlignedValue);
 			} else {
 				cells[i] = cell;
 			}

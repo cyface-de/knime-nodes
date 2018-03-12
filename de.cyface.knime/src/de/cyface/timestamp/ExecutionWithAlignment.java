@@ -6,6 +6,13 @@ import org.knime.core.data.DataTable;
 import org.knime.core.data.IntValue;
 import org.knime.core.data.LongValue;
 
+/**
+ * An executor that aligns the timestamp from both tables to zero prior to association.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public final class ExecutionWithAlignment extends ExecutionWithoutAlignment {
 	protected long calcTableAlignment(final DataTable table, final String columnName) {
 		long min = Long.MAX_VALUE;
