@@ -30,10 +30,8 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * <p>
  * A {@link NodeModel} for the smoothing node, which smoothes an input signal,
  * writing the result to an output signal.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -43,45 +41,33 @@ public class SmoothingNodeModel extends NodeModel {
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(SmoothingNodeModel.class);
 
 	/**
-	 * <p>
 	 * The executor used to either replace the input data or append results.
-	 * </p>
 	 */
 	private Execution executor;
 
 	/**
-	 * <p>
 	 * Settings model with the type of filter to use for smoothing.
-	 * </p>
 	 */
 	private final SettingsModelString filterTypeSelectionSettingsModel;
 	/**
-	 * <p>
 	 * {@link SettingsModel} containing the name of the input column containing
 	 * the input signal.
-	 * </p>
 	 */
 	private final SettingsModelString inputColSelectionSettingsModel;
 	/**
-	 * <p>
 	 * {@link SettingsModel} with the selection on whether to append the result
 	 * signal to the input table or replace the input signal column.
-	 * </p>
 	 */
 	private final SettingsModelString appendReplaceChooserSettingsModel;
 	/**
-	 * <p>
 	 * The name of the column to append if the
 	 * {@link #appendColumnNameInputSettingsModel} is set to append.
-	 * </p>
 	 */
 	private final SettingsModelString appendColumnNameInputSettingsModel;
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link SmoothingNodeModel}, ready to
 	 * be executed.
-	 * </p>
 	 * 
 	 * @param executor
 	 *            The executor used to either replace the input data or append
@@ -199,9 +185,7 @@ public class SmoothingNodeModel extends NodeModel {
 	}
 
 	/**
-	 * <p>
 	 * Smooths the current signal based on three consecutive values.
-	 * </p>
 	 * 
 	 * @param previousRow
 	 *            The {@link DataRow} containing the predecessor value.

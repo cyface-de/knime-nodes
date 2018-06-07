@@ -7,9 +7,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.util.ColumnFilter;
 
 /**
- * <p>
  * A {@link NodeOption} allowing to select a column from the input table.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -18,9 +16,7 @@ import org.knime.core.node.util.ColumnFilter;
 public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link ColumnSelectionNodeOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding
@@ -46,9 +42,7 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	}
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link ColumnSelectionNodeOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding
@@ -67,9 +61,7 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	}
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link ColumnSelectionNodeOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding

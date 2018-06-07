@@ -4,10 +4,8 @@ import org.knime.core.node.defaultnodesettings.DialogComponentStringSelection;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
 /**
- * <p>
  * A {@link NodeOption} for selecting a single {@link String} from a list of
  * {@link String}s. This is usually visalized as a drop down menu.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -16,9 +14,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 public final class StringSelectionNodeOption extends StringSettingsModelOption {
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link StringSelectionNodeOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding

@@ -4,10 +4,8 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * <p>
  * Abstract base class for all {@link NodeOption}s using a
  * {@link SettingsModelString} as the underlying model.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -16,17 +14,13 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 public abstract class StringSettingsModelOption extends NodeOption<SettingsModelString> {
 
 	/**
-	 * <p>
 	 * The {@link SettingsModelString} used by the {@link NodeOption} to store
 	 * the current value.
-	 * </p>
 	 */
 	private SettingsModelString settingsModel;
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link StringSettingsModelOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding

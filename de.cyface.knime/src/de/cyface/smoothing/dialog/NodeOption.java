@@ -6,12 +6,10 @@ import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
 /**
- * <p>
  * A {@link NodeOption} is something you can set via the {@link NodeDialog}. It
  * is usually represented by a Swing UI element and its current state is stored
  * as a {@link SettingsModel}. The {@link SettingsModel} is the connection
  * between the {@link NodeDialog} and the {@link NodeModel}.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -22,31 +20,23 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
  */
 public abstract class NodeOption<T extends SettingsModel> {
 	/**
-	 * <p>
 	 * The dialog component representing the {@link NodeOption} on the
 	 * {@link NodeDialog}.
-	 * </p>
 	 */
 	private DialogComponent component;
 	/**
-	 * <p>
 	 * The identifier used by KNIME to identifie the {@link SettingsModel}.
-	 * </p>
 	 */
 	private final String configIdentifier;
 	/**
-	 * <p>
 	 * An initial default value.
-	 * </p>
 	 */
 	private final String defaultValue;
 
 	/**
-	 * <p>
 	 * Creates a new {@link NodeOption} without a valid component. Before using
 	 * this object you need to call {@link #setComponent(DialogComponent)}. This
 	 * is usually done inside the constructor of this classes subclasses.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to identifie the

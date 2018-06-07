@@ -4,10 +4,8 @@ import org.knime.core.node.defaultnodesettings.DialogComponentString;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
 /**
- * <p>
  * {@link NodeOption} representing a single input text field for any
  * {@link String}.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0

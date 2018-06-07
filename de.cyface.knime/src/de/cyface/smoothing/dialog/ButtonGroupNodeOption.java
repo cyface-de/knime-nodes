@@ -4,9 +4,7 @@ import org.knime.core.node.defaultnodesettings.DialogComponentButtonGroup;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
 /**
- * <p>
  * A {@link NodeOption} with group of buttons to select one option from.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -15,9 +13,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 public final class ButtonGroupNodeOption extends StringSettingsModelOption {
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link ButtonGroupNodeOption}.
-	 * </p>
 	 * 
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to find the corresponding
