@@ -1,6 +1,8 @@
 Cyface KNIME Nodes
 ==================
 
+Status: [![Run Status](https://api.shippable.com/projects/5b22529108daf207007b4520/badge?branch=master)](https://app.shippable.com/github/cyface-de/knime-nodes) 
+
 These are the KNIME nodes developed and used by the Cyface GmbH. We do provide them without any warranty, but we are happy to share our experience ond get input from the community. If you got an improvement or found a bug please let us know.
 
 Some of the Nodes are work in progress and will not work directly. Please see the following list for a more detailed explanation about the KNIME nodes included.
