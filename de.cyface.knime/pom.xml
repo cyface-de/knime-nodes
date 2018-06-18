@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>de.cyface</groupId>
+		<artifactId>knime-parent</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.cyface</groupId>
 	<artifactId>de.cyface.knime</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
-
-	<properties>
-		<tycho-version>1.0.0</tycho-version>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>eclipse-mars</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/mars</url>
-		</repository>
-		<repository>
-			<id>knime-3.1</id>
-			<layout>p2</layout>
-			<url>http://www.knime.org/update/3.1</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>

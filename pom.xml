@@ -7,9 +7,64 @@
 	<version>1.2.0-SNAPSHOT</version>
 	<name>Cyface KNIME nodes parent project</name>
 
+	<properties>
+		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
+                <tycho-version>1.2.0</tycho-version>
+        </properties>
+
 	<modules>
 		<!--<module>com.bmw-carit.barefoot</module>-->
 		<module>de.cyface.knime</module>
 	</modules>
 
+	<repositories>
+                <repository>
+                        <id>eclipse-neon</id>
+                        <layout>p2</layout>
+                        <url>http://download.eclipse.org/releases/neon</url>
+                </repository>
+                <repository>
+                        <id>knime-3.5</id>
+                        <layout>p2</layout>
+                        <url>http://www.knime.org/update/3.5</url>
+                </repository>
+        </repositories>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+            			<plugin>
+                			<groupId>${tycho-groupid}</groupId>
+                			<artifactId>tycho-maven-plugin</artifactId>
+                			<version>${tycho-version}</version>
+                			<extensions>true</extensions>
+            			</plugin>
+            			<plugin>
+                			<groupId>${tycho-groupid}</groupId>
+                			<artifactId>target-platform-configuration</artifactId>
+                			<version>${tycho-version}</version>
+                			<configuration>
+                    				<resolver>p2</resolver>
+                    				<environments>
+                        				<environment>
+                            					<os>win32</os>
+                            					<ws>win32</ws>
+                            					<arch>x86</arch>
+                        				</environment>
+                        				<environment>
+                            					<os>macosx</os>
+                            					<ws>cocoa</ws>
+                            					<arch>x86_64</arch>
+                        				</environment>
+                        				<environment>
+                            					<os>linux</os>
+                            					<ws>gtk</ws>
+                            					<arch>x86_64</arch>
+                        				</environment>
+                    				</environments>
+                			</configuration>
+            			</plugin>
+        		</plugins>
+		</pluginManagement>
+	</build>
 </project>
