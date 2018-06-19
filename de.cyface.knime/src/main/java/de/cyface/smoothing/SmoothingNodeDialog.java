@@ -6,6 +6,7 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import de.cyface.smoothing.dialog.ButtonGroupNodeOption;
 import de.cyface.smoothing.dialog.ColumnSelectionNodeOption;
 import de.cyface.smoothing.dialog.NodeOption;
+import de.cyface.smoothing.dialog.NumberInputNodeOption;
 import de.cyface.smoothing.dialog.StringSelectionNodeOption;
 import de.cyface.smoothing.dialog.TextFieldNodeOption;
 
@@ -39,16 +40,18 @@ public class SmoothingNodeDialog extends DefaultNodeSettingsPane {
 	 *            A {@link NodeOption} allowing the user to set a name for the
 	 *            column containing the result if the append option has been
 	 *            choosen.
+	 *            @param windowSizeSelector A {@link NodeOption} use to select the size of the smoothing window.
 	 */
 	protected SmoothingNodeDialog(final StringSelectionNodeOption filterTypeSelection,
 			final ColumnSelectionNodeOption inputColSelection, final ButtonGroupNodeOption appendReplaceChooser,
-			final TextFieldNodeOption appendColumnNameInput) {
+			final TextFieldNodeOption appendColumnNameInput, final NumberInputNodeOption windowSizeSelector) {
 		super();
 
 		addDialogComponent(filterTypeSelection.getComponent());
 		addDialogComponent(inputColSelection.getComponent());
 		addDialogComponent(appendReplaceChooser.getComponent());
 		addDialogComponent(appendColumnNameInput.getComponent());
+		addDialogComponent(windowSizeSelector.getComponent());
 	}
 
 }

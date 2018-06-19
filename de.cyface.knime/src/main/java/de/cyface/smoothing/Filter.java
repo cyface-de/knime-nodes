@@ -17,7 +17,7 @@ public enum Filter {
 	 * value as the mean between the successor and the predecessor.
 	 * </p>
 	 */
-	RECTANGULAR("Rectangular");
+	RECTANGULAR("Rectangular"), TRIANGULAR("Triangular");
 
 	/**
 	 * <p>

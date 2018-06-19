@@ -27,6 +27,7 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
+import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
@@ -60,10 +61,14 @@ public class SmoothingNodeModel extends NodeModel {
 	 */
 	private final SettingsModelString appendReplaceChooserSettingsModel;
 	/**
-	 * The name of the column to append if the
+	 * The name of the column to append, if the
 	 * {@link #appendColumnNameInputSettingsModel} is set to append.
 	 */
 	private final SettingsModelString appendColumnNameInputSettingsModel;
+	/**
+	 * The window size specifying the number of data points to use for smoothing.
+	 */
+	private final SettingsModelInteger windowSizeSelectorSettingsModel;
 
 	/**
 	 * Creates a new completely initialized {@link SmoothingNodeModel}, ready to
@@ -85,17 +90,20 @@ public class SmoothingNodeModel extends NodeModel {
 	 * @param appendColumnNameInputSettingsModel
 	 *            The name of the column to append if the
 	 *            {@link #appendColumnNameInputSettingsModel} is set to append.
+	 *            @param windowSizeSelectorSettingsModel The {@link SettingsModel} containing the windows size to use for smoothing.
 	 */
 	protected SmoothingNodeModel(final Execution executor, final SettingsModelString filterTypeSelectionSettingsModel,
 			final SettingsModelString inputColSelectionSettingsModel,
 			final SettingsModelString appendReplaceChooserSettingsModel,
-			final SettingsModelString appendColumnNameInputSettingsModel) {
+			final SettingsModelString appendColumnNameInputSettingsModel,
+			final SettingsModelInteger windowSizeSelectorSettingsModel) {
 		super(1, 1);
 		this.filterTypeSelectionSettingsModel = filterTypeSelectionSettingsModel;
 		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
 																				// SettingsModelString(SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,"");//
 		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
 		this.appendColumnNameInputSettingsModel = appendColumnNameInputSettingsModel;
+		this.windowSizeSelectorSettingsModel = windowSizeSelectorSettingsModel;
 		this.executor = executor;
 	}
 
@@ -119,6 +127,7 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.saveSettingsTo(settings);
 		appendReplaceChooserSettingsModel.saveSettingsTo(settings);
 		appendColumnNameInputSettingsModel.saveSettingsTo(settings);
+		windowSizeSelectorSettingsModel.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -131,6 +140,7 @@ public class SmoothingNodeModel extends NodeModel {
 				&& (appendColumnNameInputSettingsModel.getStringValue() == null
 						|| appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
 			throw new InvalidSettingsException("Please provide a name for the appended output column.");
+		windowSizeSelectorSettingsModel.validateSettings(settings);
 	}
 
 	@Override
@@ -139,6 +149,7 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.loadSettingsFrom(settings);
 		appendReplaceChooserSettingsModel.loadSettingsFrom(settings);
 		appendColumnNameInputSettingsModel.loadSettingsFrom(settings);
+		windowSizeSelectorSettingsModel.loadSettingsFrom(settings);
 	}
 
 	@Override
