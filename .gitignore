@@ -1,1 +1,12 @@
-**/target
+# Java binaries
+bin/
+*.class
+*.jar
+
+# Eclipse project files
+.settings/
+.metadata/
+.project
+target
+.classpath
+
