@@ -1,10 +1,11 @@
 package de.cyface.smoothing;
 
-//TODO This should probably be a class for filters also encapsulating the algorithm.
+import de.cyface.smoothing.algorithm.Algorithm;
+import de.cyface.smoothing.algorithm.RectangularSmoothing;
+import de.cyface.smoothing.algorithm.TriangularSmoothing;
+
 /**
- * <p>
  * A listing of the available filters for smoothing.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -12,30 +13,27 @@ package de.cyface.smoothing;
  */
 public enum Filter {
 	/**
-	 * <p>
 	 * The Rectangular filter for smoothing a signal. It calculates the smoothed
 	 * value as the mean between the successor and the predecessor.
-	 * </p>
 	 */
-	RECTANGULAR("Rectangular"), TRIANGULAR("Triangular");
+	RECTANGULAR("Rectangular", new RectangularSmoothing()), TRIANGULAR("Triangular", new TriangularSmoothing());
 
 	/**
-	 * <p>
 	 * The algorithms name as it is going to appear on the UI.
-	 * </p>
 	 */
 	private final String name;
+	
+	private final Algorithm algorithm;
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link Filter}.
-	 * </p>
 	 * 
 	 * @param name
 	 *            The algorithms name as it is going to appear on the UI.
 	 */
-	private Filter(final String name) {
+	private Filter(final String name, final Algorithm algorithm) {
 		this.name = name;
+		this.algorithm = algorithm;
 	}
 
 	/**
@@ -43,6 +41,10 @@ public enum Filter {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	public Algorithm getAlgorithm() {
+		return algorithm;
 	}
 
 	@Override
