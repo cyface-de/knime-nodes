@@ -12,12 +12,12 @@
    </extension>
    
    <extension point="org.knime.workbench.repository.nodes">
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory" id="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory" id="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.smoothing.SmoothingNodeFactory" id="de.cyface.smoothing.SmoothingNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory" id="de.cyface.mapmatching.MapMatchingNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory" id="de.cyface.export.ExportNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.envelope.EnvelopeNodeFactory" id="de.cyface.envelope.EnvelopeNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.smoothing.SmoothingNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory"/>
+   <node category-path="/cyfaceNodes" factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
 </extension>
    
 </plugin>
