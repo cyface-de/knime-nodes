@@ -5,7 +5,7 @@
   <extension point="org.knime.workbench.repository.categories">
       <category
             description="Category contains all nodes required to test and evaluate the Cyface process."
-            icon="cyface logo C-pfeil.jpg"
+            icon="src/resources/cyface logo C-pfeil.jpg"
             level-id="cyfaceNodes"
             name="Cyface"
             path="/"/>
