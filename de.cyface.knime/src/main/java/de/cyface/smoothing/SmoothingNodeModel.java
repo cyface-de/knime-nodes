@@ -5,17 +5,14 @@ package de.cyface.smoothing;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
@@ -45,7 +42,7 @@ import de.cyface.smoothing.algorithm.Algorithm;
  * writing the result to an output signal.
  * 
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class SmoothingNodeModel extends NodeModel {
@@ -114,12 +111,12 @@ public class SmoothingNodeModel extends NodeModel {
 			final SettingsModelInteger windowSizeSelectorSettingsModel) {
 		super(1, 1);
 		this.filterTypeSelectionSettingsModel = filterTypeSelectionSettingsModel;
-		selectAlgorithm();
+		algorithm = selectAlgorithm();
 		filterTypeSelectionSettingsModel.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				selectAlgorithm();
+				algorithm = selectAlgorithm();
 			}
 		});
 		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
@@ -219,7 +216,7 @@ public class SmoothingNodeModel extends NodeModel {
 
 			double[] windowValues = new double[windowSize];
 			while (iter.hasNext()) {
-				DataRow currentRow = window.get((windowSize / 2) + 1);
+				DataRow currentRow = window.get(windowSize>1 ? (windowSize / 2) + 1 : 0);
 
 				for (int i = 0; i < windowSize; i++) {
 					windowValues[i] = ((DoubleCell) window.get(i).getCell(inputColumnIndex)).getDoubleValue();
