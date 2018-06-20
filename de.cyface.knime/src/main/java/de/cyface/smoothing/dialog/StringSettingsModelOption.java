@@ -17,7 +17,7 @@ public abstract class StringSettingsModelOption extends NodeOption<SettingsModel
 	 * The {@link SettingsModelString} used by the {@link NodeOption} to store
 	 * the current value.
 	 */
-	private final SettingsModelString settingsModel;
+	//private final SettingsModelString settingsModel;
 
 	/**
 	 * Creates a new completely initialized {@link StringSettingsModelOption}.
@@ -30,11 +30,10 @@ public abstract class StringSettingsModelOption extends NodeOption<SettingsModel
 	 */
 	public StringSettingsModelOption(final String configIdentifier, final String defaultValue) {
 		super(configIdentifier, defaultValue);
-		settingsModel = new SettingsModelString(getConfigIdentifier(), getDefaultValue());
 	}
 
 	@Override
 	public final SettingsModelString getSettingsModel() {
-		return settingsModel;
+		return new SettingsModelString(getConfigIdentifier(), getDefaultValue());
 	}
 }

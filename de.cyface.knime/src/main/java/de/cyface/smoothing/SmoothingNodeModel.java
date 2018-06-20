@@ -141,14 +141,14 @@ public class SmoothingNodeModel extends NodeModel {
 	@Override
 	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// No internal Data. Nothing to do here.
 
 	}
 
 	@Override
 	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// No internal Data. Nothing to do here.
 
 	}
 
@@ -167,9 +167,12 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.validateSettings(settings);
 		appendReplaceChooserSettingsModel.validateSettings(settings);
 		appendColumnNameInputSettingsModel.validateSettings(settings);
-		if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
-				&& (appendColumnNameInputSettingsModel.getStringValue() == null
-						|| appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
+		// This is necessary since the actual values are ususally not loaded at this stage.
+		SettingsModelString appendColumnNameInputSettingsModelClone = appendColumnNameInputSettingsModel.createCloneWithValidatedValue(settings);
+		SettingsModelString appendReplaceChooserSettingsModelClone = appendReplaceChooserSettingsModel.createCloneWithValidatedValue(settings);
+		if (appendReplaceChooserSettingsModelClone.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
+				&& (appendColumnNameInputSettingsModelClone.getStringValue() == null
+						|| appendColumnNameInputSettingsModelClone.getStringValue().isEmpty()))
 			throw new InvalidSettingsException("Please provide a name for the appended output column.");
 		windowSizeSelectorSettingsModel.validateSettings(settings);
 	}
@@ -208,14 +211,16 @@ public class SmoothingNodeModel extends NodeModel {
 
 		LinkedList<DataRow> window = new LinkedList<>();
 		CloseableRowIterator iter = inputTable.iterator();
-		// Ramp up
 		try {
-			for (int i = 0; i < windowSize; i++) {
+			// Ramp up
+			for (int i = 0; i < windowSize-1; i++) {
 				window.offer(iter.next());
 			}
 
+			// Execute
 			double[] windowValues = new double[windowSize];
 			while (iter.hasNext()) {
+				window.offer(iter.next());
 				DataRow currentRow = window.get(windowSize>1 ? (windowSize / 2) + 1 : 0);
 
 				for (int i = 0; i < windowSize; i++) {
@@ -228,7 +233,8 @@ public class SmoothingNodeModel extends NodeModel {
 				DataRow extendedRow = executor.createResultRow(currentRow, resultCell, inputColumnIndex);
 				outputContainer.addRowToTable(extendedRow);
 
-				window.offer(iter.next());
+				
+				window.poll();
 			}
 
 			outputContainer.close();

@@ -8,10 +8,10 @@ import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
+import de.cyface.smoothing.dialog.BoundedNumberInputNodeOption;
 import de.cyface.smoothing.dialog.ButtonGroupNodeOption;
 import de.cyface.smoothing.dialog.ColumnSelectionNodeOption;
 import de.cyface.smoothing.dialog.NodeOption;
-import de.cyface.smoothing.dialog.NumberInputNodeOption;
 import de.cyface.smoothing.dialog.StringSelectionNodeOption;
 import de.cyface.smoothing.dialog.TextFieldNodeOption;
 
@@ -56,9 +56,9 @@ public class SmoothingNodeFactory extends NodeFactory<SmoothingNodeModel> {
 			SmoothingNodeConstants.APPEND_COLUMN_NAME_INPUT_SETTINGS_MODEL_CONFIG_NAME,
 			SmoothingNodeConstants.APPEND_COLUMN_NAME_INPUT_LABEL, "");
 
-	NumberInputNodeOption windowSizeSelector = new NumberInputNodeOption(
+	BoundedNumberInputNodeOption windowSizeSelector = new BoundedNumberInputNodeOption(
 			SmoothingNodeConstants.WINDOW_SIZE_SELECTOR_SETTINGS_MODEL_CONFIG_NAME,
-			SmoothingNodeConstants.WINDOW_SIZE_SELECTOR_LABEL, 1, 2);
+			SmoothingNodeConstants.WINDOW_SIZE_SELECTOR_LABEL);
 
 	@Override
 	public SmoothingNodeModel createNodeModel() {
