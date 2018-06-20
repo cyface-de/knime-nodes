@@ -1,27 +1,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>de.cyface</groupId>
 	<artifactId>knime-parent</artifactId>
-	<packaging>pom</packaging>
 	<version>1.2.0-SNAPSHOT</version>
-	<name>Cyface KNIME nodes parent project</name>
+	<packaging>pom</packaging>
+	<name>Cyface KNIME Nodes parent project</name>
+	
+	<scm>
+		<url>https://github.com/cyface-de/knime-nodes</url>
+		<connection>scm:git:ssh://github.com/cyface-de/knime-nodes</connection>
+		<developerConnection>scm:git:ssh://github.com/cyface-de/knime-nodes</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	
+	<ciManagement>
+		<system>Shippable</system>
+		<url>https://app.shippable.com/github/cyface-de/knime-nodes/</url>
+	</ciManagement>
 
 	<properties>
+		<eclipserun.jvm.flags />
+		<gitflow-maven-plugin.version>1.5.0</gitflow-maven-plugin.version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
-                <tycho-version>1.2.0</tycho-version>
-        </properties>
+        <tycho-version>1.2.0</tycho-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
 	<modules>
 		<!--<module>com.bmw-carit.barefoot</module>-->
 		<module>de.cyface.knime</module>
+		<module>de.cyface.knime.feature</module>
+		<module>de.cyface.knime.p2</module>
 	</modules>
 
 	<repositories>
                 <repository>
-                        <id>eclipse-neon</id>
+                        <id>eclipse-oxygen</id>
                         <layout>p2</layout>
-                        <url>http://download.eclipse.org/releases/neon</url>
+                        <url>http://download.eclipse.org/releases/oxygen</url>
                 </repository>
                 <repository>
                         <id>knime-3.5</id>
@@ -31,7 +49,6 @@
         </repositories>
 
 	<build>
-		<pluginManagement>
 			<plugins>
             			<plugin>
                 			<groupId>${tycho-groupid}</groupId>
@@ -65,6 +82,20 @@
                 			</configuration>
             			</plugin>
         		</plugins>
-		</pluginManagement>
 	</build>
+	
+	<!-- on a Mac, JVM for Eclipse needs to be started with -XstartOnFirstThread -->
+	<profiles>
+		<profile>
+			<id>macosx-jvm-flags</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<eclipserun.jvm.flags>-XstartOnFirstThread</eclipserun.jvm.flags>
+			</properties>
+		</profile>
+	</profiles>
 </project>

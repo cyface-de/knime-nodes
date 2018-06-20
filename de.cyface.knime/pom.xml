@@ -8,17 +8,5 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>de.cyface.knime</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<extensions>true</extensions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
