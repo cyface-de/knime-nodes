@@ -1,14 +1,34 @@
+# Language setting
 language: java
 
+# Version number
 jdk:
-        - oraclejdk8
+  - oraclejdk8
 
+# Let Shippable inject the SSH key for nodepit.com
+#integrations:
+#  key:
+#    - integrationName: nodepit
+#      type: pemKey
+
+# What are we doing here?
 before_script:
-        - mkdir -p de.cyface.knime/bin
+  - mkdir -p de.cyface.knime/bin
 
 build:
-        ci:
-                - mkdir -p shippable/testresults
-                - mkdir -p shippable/codecoverage
+  cache: true
+  cache_dir_list:
+    - $HOME/.m2
+  ci:
+    # maven build
+    - mvn -V -B clean install
 
-                - shippable_retry mvn clean install
+    # only upload to nodepit.com when this is running on master branch
+    #- >
+    #  if [ "$BRANCH" == "master" ] && [ "$IS_PULL_REQUEST" == false ]; then
+    #    mkdir -p ~/.ssh &&
+    #    echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config &&
+    #    user_host=debian@nodepit.com &&
+    #    dest_directory=/home/debian/nodepit/download/files/cyface/3.5 &&
+    #    ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/. $user_host:$dest_directory";
+    #  fi;

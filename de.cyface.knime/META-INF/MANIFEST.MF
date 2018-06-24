@@ -4,9 +4,20 @@ Bundle-Name: All nodes required to test Cyface calculations.
 Bundle-SymbolicName: de.cyface.knime;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-ClassPath: .,
-  lib/barefoot-0.1.1-jar-with-dependencies.jar
+ lib/barefoot.jar,
+ lib/esri-geometry-api.jar,
+ lib/GeographicLib-Java.jar,
+ lib/hamcrest-core.jar,
+ lib/jackson-core-asl.jar,
+ lib/jeromq.jar,
+ lib/json.jar,
+ lib/junit.jar,
+ lib/logback-classic.jar,
+ lib/logback-core.jar,
+ lib/postgresql.jar,
+ lib/slf4j-api.jar
 Bundle-Activator: de.cyface.CyfaceNodePlugin
-Bundle-Vendor: Cyface
+Bundle-Vendor: Cyface GmbH
 Require-Bundle: org.eclipse.core.runtime,
  org.knime.workbench.core,
  org.knime.workbench.repository,

@@ -1,70 +1,95 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.cyface</groupId>
 	<artifactId>knime-parent</artifactId>
-	<packaging>pom</packaging>
 	<version>1.2.0-SNAPSHOT</version>
-	<name>Cyface KNIME nodes parent project</name>
+	<packaging>pom</packaging>
+	<name>Cyface KNIME Nodes parent project</name>
+
+	<scm>
+		<url>https://github.com/cyface-de/knime-nodes</url>
+		<connection>scm:git:ssh://github.com/cyface-de/knime-nodes</connection>
+		<developerConnection>scm:git:ssh://github.com/cyface-de/knime-nodes</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<ciManagement>
+		<system>Shippable</system>
+		<url>https://app.shippable.com/github/cyface-de/knime-nodes/</url>
+	</ciManagement>
 
 	<properties>
-		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
-                <tycho-version>1.2.0</tycho-version>
-        </properties>
+		<eclipserun.jvm.flags />
+        <tycho-version>1.2.0</tycho-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
 	<modules>
 		<!--<module>com.bmw-carit.barefoot</module>-->
 		<module>de.cyface.knime</module>
+		<module>de.cyface.knime.feature</module>
+		<module>de.cyface.knime.p2</module>
+		<module>de.cyface.knime.targetplatform</module>
 	</modules>
 
-	<repositories>
-                <repository>
-                        <id>eclipse-neon</id>
-                        <layout>p2</layout>
-                        <url>http://download.eclipse.org/releases/neon</url>
-                </repository>
-                <repository>
-                        <id>knime-3.5</id>
-                        <layout>p2</layout>
-                        <url>http://www.knime.org/update/3.5</url>
-                </repository>
-        </repositories>
-
 	<build>
-		<pluginManagement>
-			<plugins>
-            			<plugin>
-                			<groupId>${tycho-groupid}</groupId>
-                			<artifactId>tycho-maven-plugin</artifactId>
-                			<version>${tycho-version}</version>
-                			<extensions>true</extensions>
-            			</plugin>
-            			<plugin>
-                			<groupId>${tycho-groupid}</groupId>
-                			<artifactId>target-platform-configuration</artifactId>
-                			<version>${tycho-version}</version>
-                			<configuration>
-                    				<resolver>p2</resolver>
-                    				<environments>
-                        				<environment>
-                            					<os>win32</os>
-                            					<ws>win32</ws>
-                            					<arch>x86</arch>
-                        				</environment>
-                        				<environment>
-                            					<os>macosx</os>
-                            					<ws>cocoa</ws>
-                            					<arch>x86_64</arch>
-                        				</environment>
-                        				<environment>
-                            					<os>linux</os>
-                            					<ws>gtk</ws>
-                            					<arch>x86_64</arch>
-                        				</environment>
-                    				</environments>
-                			</configuration>
-            			</plugin>
-        		</plugins>
-		</pluginManagement>
+		<plugins>
+			<plugin>
+    			<groupId>org.eclipse.tycho</groupId>
+    			<artifactId>tycho-maven-plugin</artifactId>
+    			<version>${tycho-version}</version>
+    			<extensions>true</extensions>
+			</plugin>
+			<plugin>
+    			<groupId>org.eclipse.tycho</groupId>
+    			<artifactId>target-platform-configuration</artifactId>
+    			<version>${tycho-version}</version>
+    			<configuration>
+					<target>
+						<artifact>
+							<groupId>de.cyface</groupId>
+							<artifactId>de.cyface.knime.targetplatform</artifactId>
+							<version>1.2.0-SNAPSHOT</version>
+						</artifact>
+					</target>
+    				<resolver>p2</resolver>
+    				<environments>
+        				<environment>
+        					<os>win32</os>
+        					<ws>win32</ws>
+        					<arch>x86</arch>
+        				</environment>
+        				<environment>
+        					<os>macosx</os>
+        					<ws>cocoa</ws>
+        					<arch>x86_64</arch>
+        				</environment>
+        				<environment>
+        					<os>linux</os>
+        					<ws>gtk</ws>
+        					<arch>x86_64</arch>
+        				</environment>
+    				</environments>
+    			</configuration>
+			</plugin>
+		</plugins>
 	</build>
+
+	<!-- on a Mac, JVM for Eclipse needs to be started with -XstartOnFirstThread -->
+	<profiles>
+		<profile>
+			<id>macosx-jvm-flags</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<eclipserun.jvm.flags>-XstartOnFirstThread</eclipserun.jvm.flags>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

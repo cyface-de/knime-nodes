@@ -6,15 +6,20 @@ package de.cyface.smoothing;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import org.knime.core.data.DataCell;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.DataType;
 import org.knime.core.data.DoubleValue;
+import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
@@ -27,14 +32,17 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
+import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+
+import de.cyface.smoothing.algorithm.Algorithm;
 
 /**
  * A {@link NodeModel} for the smoothing node, which smoothes an input signal,
  * writing the result to an output signal.
  * 
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class SmoothingNodeModel extends NodeModel {
@@ -60,10 +68,17 @@ public class SmoothingNodeModel extends NodeModel {
 	 */
 	private final SettingsModelString appendReplaceChooserSettingsModel;
 	/**
-	 * The name of the column to append if the
+	 * The name of the column to append, if the
 	 * {@link #appendColumnNameInputSettingsModel} is set to append.
 	 */
 	private final SettingsModelString appendColumnNameInputSettingsModel;
+	/**
+	 * The window size specifying the number of data points to use for
+	 * smoothing.
+	 */
+	private final SettingsModelInteger windowSizeSelectorSettingsModel;
+
+	private Algorithm algorithm;
 
 	/**
 	 * Creates a new completely initialized {@link SmoothingNodeModel}, ready to
@@ -85,31 +100,55 @@ public class SmoothingNodeModel extends NodeModel {
 	 * @param appendColumnNameInputSettingsModel
 	 *            The name of the column to append if the
 	 *            {@link #appendColumnNameInputSettingsModel} is set to append.
+	 * @param windowSizeSelectorSettingsModel
+	 *            The {@link SettingsModel} containing the windows size to use
+	 *            for smoothing.
 	 */
 	protected SmoothingNodeModel(final Execution executor, final SettingsModelString filterTypeSelectionSettingsModel,
 			final SettingsModelString inputColSelectionSettingsModel,
 			final SettingsModelString appendReplaceChooserSettingsModel,
-			final SettingsModelString appendColumnNameInputSettingsModel) {
+			final SettingsModelString appendColumnNameInputSettingsModel,
+			final SettingsModelInteger windowSizeSelectorSettingsModel) {
 		super(1, 1);
 		this.filterTypeSelectionSettingsModel = filterTypeSelectionSettingsModel;
+		algorithm = selectAlgorithm();
+		filterTypeSelectionSettingsModel.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				algorithm = selectAlgorithm();
+			}
+		});
 		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
 																				// SettingsModelString(SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,"");//
 		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
 		this.appendColumnNameInputSettingsModel = appendColumnNameInputSettingsModel;
+		this.windowSizeSelectorSettingsModel = windowSizeSelectorSettingsModel;
 		this.executor = executor;
+	}
+
+	private Algorithm selectAlgorithm() {
+		String value = filterTypeSelectionSettingsModel.getStringValue();
+		if (Filter.RECTANGULAR.getName().equals(value)) {
+			return Filter.RECTANGULAR.getAlgorithm();
+		} else if (Filter.TRIANGULAR.getName().equals(value)) {
+			return Filter.TRIANGULAR.getAlgorithm();
+		} else {
+			throw new IllegalStateException("Unsupported algorithm " + value + " selected!");
+		}
 	}
 
 	@Override
 	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// No internal Data. Nothing to do here.
 
 	}
 
 	@Override
 	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// No internal Data. Nothing to do here.
 
 	}
 
@@ -119,6 +158,7 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.saveSettingsTo(settings);
 		appendReplaceChooserSettingsModel.saveSettingsTo(settings);
 		appendColumnNameInputSettingsModel.saveSettingsTo(settings);
+		windowSizeSelectorSettingsModel.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -127,10 +167,14 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.validateSettings(settings);
 		appendReplaceChooserSettingsModel.validateSettings(settings);
 		appendColumnNameInputSettingsModel.validateSettings(settings);
-		if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
-				&& (appendColumnNameInputSettingsModel.getStringValue() == null
-						|| appendColumnNameInputSettingsModel.getStringValue().isEmpty()))
+		// This is necessary since the actual values are ususally not loaded at this stage.
+		SettingsModelString appendColumnNameInputSettingsModelClone = appendColumnNameInputSettingsModel.createCloneWithValidatedValue(settings);
+		SettingsModelString appendReplaceChooserSettingsModelClone = appendReplaceChooserSettingsModel.createCloneWithValidatedValue(settings);
+		if (appendReplaceChooserSettingsModelClone.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
+				&& (appendColumnNameInputSettingsModelClone.getStringValue() == null
+						|| appendColumnNameInputSettingsModelClone.getStringValue().isEmpty()))
 			throw new InvalidSettingsException("Please provide a name for the appended output column.");
+		windowSizeSelectorSettingsModel.validateSettings(settings);
 	}
 
 	@Override
@@ -139,6 +183,7 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.loadSettingsFrom(settings);
 		appendReplaceChooserSettingsModel.loadSettingsFrom(settings);
 		appendColumnNameInputSettingsModel.loadSettingsFrom(settings);
+		windowSizeSelectorSettingsModel.loadSettingsFrom(settings);
 	}
 
 	@Override
@@ -158,74 +203,45 @@ public class SmoothingNodeModel extends NodeModel {
 		BufferedDataContainer outputContainer = exec.createDataContainer(outputSpec);
 
 		int inputColumnIndex = inputSpec.findColumnIndex(inputColumnName);
-		//
-		DataRow previousRow = null;
-		DataRow currentRow = null;
-		DataRow nextRow = null;
+		if (!inputSpec.getColumnSpec(inputColumnIndex).getType().isCompatible(DoubleValue.class)) {
+			LOGGER.warn("Invalid data type in input column. " + inputColumnName);
+			return new BufferedDataTable[] { outputContainer.getTable() };
+		}
+		int windowSize = windowSizeSelectorSettingsModel.getIntValue();
 
-		for (DataRow row : inputTable) {
-			previousRow = currentRow;
-			currentRow = nextRow;
-			nextRow = row;
+		LinkedList<DataRow> window = new LinkedList<>();
+		CloseableRowIterator iter = inputTable.iterator();
+		try {
+			// Ramp up
+			for (int i = 0; i < windowSize-1; i++) {
+				window.offer(iter.next());
+			}
 
-			DoubleCell resultCell = smooth(previousRow, currentRow, nextRow, inputColumnIndex);
-			if (resultCell != null) { // Always null on first iteration.
+			// Execute
+			double[] windowValues = new double[windowSize];
+			while (iter.hasNext()) {
+				window.offer(iter.next());
+				DataRow currentRow = window.get(windowSize>1 ? (windowSize / 2) + 1 : 0);
+
+				for (int i = 0; i < windowSize; i++) {
+					windowValues[i] = ((DoubleCell) window.get(i).getCell(inputColumnIndex)).getDoubleValue();
+				}
+				LOGGER.info("Calculating smoothing with window "+windowValues);
+				double smoothedValue = algorithm.smooth(windowValues);
+				LOGGER.info("Result: "+smoothedValue);
+				DoubleCell resultCell = new DoubleCell(smoothedValue);
 				DataRow extendedRow = executor.createResultRow(currentRow, resultCell, inputColumnIndex);
 				outputContainer.addRowToTable(extendedRow);
+
+				
+				window.poll();
 			}
+
+			outputContainer.close();
+		} catch (NoSuchElementException e) {
+			LOGGER.warn("Window Size was larger than table. No smoothing possible!");
 		}
-
-		// Add the last row as is, since there is no next value anymore.
-		DataRow extendedRow = executor.createResultRow(nextRow,
-				new DoubleCell(((DoubleCell) nextRow.getCell(inputColumnIndex)).getDoubleValue()), inputColumnIndex);
-		outputContainer.addRowToTable(extendedRow);
-
-		outputContainer.close();
 		return new BufferedDataTable[] { outputContainer.getTable() };
-	}
-
-	/**
-	 * Smooths the current signal based on three consecutive values.
-	 * 
-	 * @param previousRow
-	 *            The {@link DataRow} containing the predecessor value.
-	 * @param currentRow
-	 *            The {@link DataRow} containing the current value (i.e. the
-	 *            value to recalculate).
-	 * @param nextRow
-	 *            The {@link DataRow} containing the successor value.
-	 * @param inputColumnIndex
-	 *            Index of the column containing the signal in the input table.
-	 * @return A new {@link DoubleCell} with the smoothed value.
-	 */
-	private DoubleCell smooth(final DataRow previousRow, final DataRow currentRow, final DataRow nextRow,
-			final int inputColumnIndex) {
-		if (currentRow == null) {
-			return null;
-
-		} else {
-			DataCell currentCell = currentRow.getCell(inputColumnIndex);
-			DataCell nextCell = nextRow.getCell(inputColumnIndex);
-			if (!currentCell.getType().isCompatible(DoubleValue.class)
-					|| !nextCell.getType().isCompatible(DoubleValue.class)) {
-				throw new IllegalStateException(
-						String.format("Invalid cell type %s not compatible with DoubleCell.", currentCell.getType()));
-			}
-
-			if (previousRow == null) {
-				return new DoubleCell(((DoubleCell) currentCell).getDoubleValue());
-			} else {
-				DataCell previousCell = previousRow.getCell(inputColumnIndex);
-				if (!previousCell.getType().isCompatible(DoubleValue.class)) {
-					throw new IllegalStateException(String
-							.format("Invalid cell type %s not compatible with DoubleCell.", previousCell.getType()));
-				}
-				double previousValue = ((DoubleCell) previousCell).getDoubleValue();
-				double nextValue = ((DoubleCell) nextCell).getDoubleValue();
-				double smoothedCurrentValue = (previousValue + nextValue) / 2.0;
-				return new DoubleCell(smoothedCurrentValue);
-			}
-		}
 	}
 
 	@Override
@@ -234,7 +250,7 @@ public class SmoothingNodeModel extends NodeModel {
 		if (!inSpecs[0].containsCompatibleType(DoubleValue.class))
 			throw new InvalidSettingsException(
 					"Smoothing node input contains no valid column, compatible to double values. Add a column with double values to the input, to use this node.");
-		
+
 		if (!inSpecs[0].containsName(inputColSelectionSettingsModel.getStringValue())) {
 			for (DataColumnSpec columnSpec : inSpecs[0]) {
 				if (columnSpec.getType().isCompatible(DoubleValue.class)) {

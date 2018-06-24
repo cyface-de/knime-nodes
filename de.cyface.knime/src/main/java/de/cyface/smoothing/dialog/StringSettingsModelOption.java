@@ -11,13 +11,13 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  * @version 1.0.0
  * @since 1.0.0
  */
-public abstract class StringSettingsModelOption extends NodeOption<SettingsModelString> {
+public abstract class StringSettingsModelOption extends NodeOption<SettingsModelString, String> {
 
 	/**
 	 * The {@link SettingsModelString} used by the {@link NodeOption} to store
 	 * the current value.
 	 */
-	private SettingsModelString settingsModel;
+	//private final SettingsModelString settingsModel;
 
 	/**
 	 * Creates a new completely initialized {@link StringSettingsModelOption}.
@@ -28,13 +28,12 @@ public abstract class StringSettingsModelOption extends NodeOption<SettingsModel
 	 * @param defaultValue
 	 *            The initial starting value.
 	 */
-	public StringSettingsModelOption(String configIdentifier, String defaultValue) {
+	public StringSettingsModelOption(final String configIdentifier, final String defaultValue) {
 		super(configIdentifier, defaultValue);
-		settingsModel = new SettingsModelString(getConfigIdentifier(), getDefaultValue());
 	}
 
 	@Override
 	public final SettingsModelString getSettingsModel() {
-		return settingsModel;
+		return new SettingsModelString(getConfigIdentifier(), getDefaultValue());
 	}
 }

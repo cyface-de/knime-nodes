@@ -17,21 +17,22 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
  *
  * @param <T>
  *            The type of {@link SettingsModel} used by the {@link NodeOption}.
+ *            @param <D> The type of value wrapped  by the <code>SettingsModel</code>.
  */
-public abstract class NodeOption<T extends SettingsModel> {
+public abstract class NodeOption<T extends SettingsModel, D> {
 	/**
 	 * The dialog component representing the {@link NodeOption} on the
 	 * {@link NodeDialog}.
 	 */
 	private DialogComponent component;
 	/**
-	 * The identifier used by KNIME to identifie the {@link SettingsModel}.
+	 * The identifier used by KNIME to identifier the {@link SettingsModel}.
 	 */
 	private final String configIdentifier;
 	/**
 	 * An initial default value.
 	 */
-	private final String defaultValue;
+	private final D defaultValue;
 
 	/**
 	 * Creates a new {@link NodeOption} without a valid component. Before using
@@ -44,7 +45,7 @@ public abstract class NodeOption<T extends SettingsModel> {
 	 * @param defaultValue
 	 *            An initial default value.
 	 */
-	public NodeOption(final String configIdentifier, final String defaultValue) {
+	public NodeOption(final String configIdentifier, final D defaultValue) {
 		this.configIdentifier = configIdentifier;
 		this.defaultValue = defaultValue;
 	}
@@ -79,7 +80,7 @@ public abstract class NodeOption<T extends SettingsModel> {
 	/**
 	 * @return An initial default value.
 	 */
-	final String getDefaultValue() {
+	final D getDefaultValue() {
 		return defaultValue;
 	}
 
