@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="UTf-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<parent>
 		<groupId>de.cyface</groupId>
 		<artifactId>knime-parent</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
 	</parent>
+	
 	<modelVersion>4.0.0</modelVersion>
-
 	<artifactId>de.cyface.knime</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<dependency>
+		    <groupId>com.github.bmwcarit</groupId>
+		    <artifactId>barefoot</artifactId>
+		    <version>0.1.1</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<!-- https://stackoverflow.com/a/34510972 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>copy-libraries</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>lib</outputDirectory>
+							<stripVersion>true</stripVersion>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
