@@ -13,3 +13,14 @@ Some of the Nodes are work in progress and will not work directly. Please see th
 - **Export:** A node to export data to the Cyface binary format.
 - **Map Matching (WIP):** A node to map match a table of coordinates. This is still work in progress and does not work yet.
 - **Smooting:** A node for smoothing a data signal.
+
+Releasing a new version
+-----------------------
+
+To release a new version of the Cyface KNIME nodes you should use the Tycho versions plugin. Just call:
+
+    mvn tycho-versions:set-version -DnewVersion=X.X.X-XXX
+
+and substitute X.X.X-XXX with your new version. The project is versioned using semantic versioning. A samll fix on version 1.0.0 thus should result in a new version 1.0.1. Extensions to the current API should result in 1.1.0 and breaking changes to the existing API should result in a new version 2.0.0. Snapshot versions on the dev branch can have the SNAPSHOT keyword attached, like for example 1.0.0-SNAPSHOT while true releases are qualifier free like 1.0.0.
+
+**ATTENTION**: Do not use the maven release plugin. This will not work, since there are some Eclipse configuration files, where you need to change the version as well. You may of course do that by hand, but that is tedious and error prone.
