@@ -122,6 +122,15 @@ public class SmoothingNodeModel extends NodeModel {
 		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
 																				// SettingsModelString(SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,"");//
 		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
+		this.appendReplaceChooserSettingsModel.addChangeListener(event -> {
+			if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.REPLACE_OPTION)) {
+				appendColumnNameInputSettingsModel.setEnabled(false);
+				setExecutor(new ReplaceColumnExecutor());
+			} else {
+				appendColumnNameInputSettingsModel.setEnabled(true);
+				setExecutor(new AppendColumnExecutor(appendColumnNameInputSettingsModel));
+			}
+		});
 		this.appendColumnNameInputSettingsModel = appendColumnNameInputSettingsModel;
 		this.windowSizeSelectorSettingsModel = windowSizeSelectorSettingsModel;
 		this.executor = executor;
