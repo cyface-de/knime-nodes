@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature 
-	id="de.cyface.knime.feature"
-	label="Cyface Nodes"
-	version="1.2.0.qualifier"
-	provider-name="Cyface GmbH">
+<feature
+      id="de.cyface.knime.feature"
+      label="Cyface Nodes"
+      version="1.2.1"
+      provider-name="Cyface GmbH">
 
-	<description>
-	The Cyface KNIME Nodes add functionality with a focus on time series 
-	analysis and geo information processing.
-	
-	These nodes are supported by NodePit (https://nodepit.com). 
-	Do you have feedback, questions, comments or want to support 
-	KNIME node development at Cyface? Then send us an email to 
-	mail@cyface.de!
-	</description>
-	
-	<copyright>
-	The Cyface KNIME Nodes are nodes developed and maintained 
-	by the Cyface GmbH. https://cyface.de 
-	</copyright>
-	
-	<license url="http://www.gnu.org/licenses/gpl.html">
-	The Cyface KNIME Nodes are availabel under the GNU General Public License Version 3.
-	</license>
-	
-	<plugin
-		id="de.cyface.knime"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false"/>
-	
+   <description>
+      The Cyface KNIME Nodes add functionality with a focus on time series 
+ analysis and geo information processing.
+ 
+ These nodes are supported by NodePit (https://nodepit.com). 
+ Do you have feedback, questions, comments or want to support 
+ KNIME node development at Cyface? Then send us an email to 
+ mail@cyface.de!
+   </description>
+
+   <copyright>
+      The Cyface KNIME Nodes are nodes developed and maintained 
+ by the Cyface GmbH. https://cyface.de
+   </copyright>
+
+   <license url="http://www.gnu.org/licenses/gpl.html">
+      The Cyface KNIME Nodes are availabel under the GNU General Public License Version 3.
+   </license>
+
+   <plugin
+         id="de.cyface.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

@@ -69,16 +69,6 @@ public class SmoothingNodeFactory extends NodeFactory<SmoothingNodeModel> {
 				inputColSelection.getSettingsModel(), appendReplaceChooser.getSettingsModel(),
 				appendColumnNameInputSettingsModel, windowSizeSelector.getSettingsModel());
 
-		appendReplaceChooserModel.addChangeListener(event -> {
-			if (appendReplaceChooserModel.getStringValue().equals(SmoothingNodeConstants.REPLACE_OPTION)) {
-				appendColumnNameInputSettingsModel.setEnabled(false);
-				ret.setExecutor(new ReplaceColumnExecutor());
-			} else {
-				appendColumnNameInputSettingsModel.setEnabled(true);
-				ret.setExecutor(new AppendColumnExecutor(appendColumnNameInputSettingsModel));
-			}
-		});
-
 		return ret;
 	}
 
