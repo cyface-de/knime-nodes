@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description name="Cyface GmbH KNIME Nodes Update Site">
-		Cyface GmbH KNIME Nodes Update Site
-	</description>
-	<feature id="de.cyface.knime.feature">
-		<category name="Cyface"/>
-	</feature>
-	<category-def name="Cyface" label="Cyface KNIME Nodes">
-		<description>
-			This category contains the Cyface KNIME Nodes.
-		</description>
-	</category-def>
+   <description name="Cyface GmbH KNIME Nodes Update Site">
+      Cyface GmbH KNIME Nodes Update Site
+   </description>
+   <feature id="de.cyface.knime.feature">
+      <category name="Cyface"/>
+   </feature>
+   <category-def name="Cyface" label="Cyface KNIME Nodes">
+      <description>
+         This category contains the Cyface KNIME Nodes.
+      </description>
+   </category-def>
 </site>
