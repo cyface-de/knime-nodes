@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: All nodes required to test Cyface calculations.
+Bundle-Name: Cyface Nodes
 Bundle-SymbolicName: de.cyface.knime;singleton:=true
 Bundle-Version: 1.3.0
 Bundle-ClassPath: .,

@@ -2,6 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+  <!-- Never change the id or this will not work on NodePit anymore -->
   <extension point="org.knime.workbench.repository.categories">
       <category
             description="Category contains all nodes required to test and evaluate the Cyface process."
