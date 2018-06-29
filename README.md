@@ -14,6 +14,54 @@ Some of the Nodes are work in progress and will not work directly. Please see th
 - **Map Matching (WIP):** A node to map match a table of coordinates. This is still work in progress and does not work yet.
 - **Smooting:** A node for smoothing a data signal.
 
+Installation 
+------------
+
+Requirements:
+ 
+* KNIME, https://www.knime.org 
+
+Steps to get Cyface KNIME Nodes inside KNIME: 
+
+1. Goto Help > Install new software ... menu 
+2. Press add button 
+3. Fill text fields with `http://download.nodepit.com/cyface/3.5` 
+4. Select --all sites-- in work with pulldown 
+5. Select Cyface KNIME Nodes 
+6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this) 
+
+Development 
+-----------
+
+Development requirements:
+ 
+* Eclipse, https://eclipse.org 
+* Maven, https://maven.apache.org 
+
+Steps to get development environment setup: 
+
+1. Download, install and run [Eclipse Oxygen](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/oxygenr) 
+2. Clone this Git repository 
+3. Import contents into Eclipse using `File → Import... → Maven → Existing Maven Projects` 
+4. Open `targetplatform/de.cyface.knime.targetplatform.target` in Eclipse and select `Set as Target Platform` 
+
+During import the Tycho Eclipse providers have to be be installed. If this is not done automatically by Eclipse, perform the following steps: 
+
+1. Goto Eclipse Preferences and browse to `Maven → Discovery → Open Catalog` 
+2. Install Tycho Integrations 
+
+### Build 
+
+The following command builds the entire project: 
+
+``` mvn clean package ``` 
+
+### Test 
+
+The following command builds the entire project, creates an update site, runs unit tests and test workflows: 
+
+``` mvn clean verify ```
+
 Releasing a new version
 -----------------------
 
