@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <knimeNode icon="./icon.png" type="Manipulator" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-    <name>EquidistanceTransfomer</name>
+    <name>Equidistance Transfomer</name>
     
     <shortDescription>
         Takes a function f(x) defined by two columns containing the values for x and for f(x) and calculate a new function on x where f(x) are equdistant points which are interpolated between original values of f(x) if f(x) is not equdistant itself. The columns containing x and f(x) need to be numeric and sorted by x.
