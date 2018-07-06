@@ -4,18 +4,18 @@
     <name>Envelope Function</name>
     
     <shortDescription>
-        Calculates the envelope function for another function.
+        Calculates the upper envelope function for another function.
     </shortDescription>
     
     <fullDescription>
         <intro>
-            <p>This node takes an input table with a numeric input column. It calculates the envelope curve for that input column and returns a new table containing one column with the envelope curve.</p>
+            <p>This node takes an input table with a numeric input column. It calculates the upper envelope curve for that input column and returns a new table containing only the rows forming the envelope curve.</p>
         </intro>
         <option name="Input Column">Choose the input column containing the input function.</option>
     </fullDescription>
     
     <ports>
         <inPort index="0" name="Input Signal Table">A table with at least one double compatible column serving as the input signal.</inPort>
-        <outPort index="0" name="Envelope Result Table">The output table containing the smoothed signal either by replacing the input column or appended as a new column.</outPort>
+        <outPort index="0" name="Envelope Result Table">A table with all rows that are not part of the envelope function filtered out.</outPort>
     </ports>    
 </knimeNode>

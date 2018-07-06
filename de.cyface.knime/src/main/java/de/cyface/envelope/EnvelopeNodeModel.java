@@ -3,7 +3,7 @@ package de.cyface.envelope;
 import java.io.File;
 import java.io.IOException;
 
-import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.def.DefaultRow;
@@ -71,7 +71,8 @@ public class EnvelopeNodeModel extends NodeModel {
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
 		BufferedDataTable inputTable = inData[0];
 		BufferedDataContainer outputContainer = exec.createDataContainer(createOutputSpec(inputTable.getDataTableSpec()));
-		int inputColumnIndex = inputTable.getSpec().findColumnIndex(inputColumnSelectionModel.getStringValue());
+		DataTableSpec inputSpecification = inputTable.getSpec();
+		int inputColumnIndex = inputSpecification.findColumnIndex(inputColumnSelectionModel.getStringValue());
 		
 		DataRow previousRow = null;
 		DataRow currentRow = null;
@@ -82,7 +83,6 @@ public class EnvelopeNodeModel extends NodeModel {
 			currentRow = nextRow;
 			nextRow = row;
 
-			//DoubleCell resultCell = smooth(previousRow, currentRow, nextRow, inputColumnIndex);
 			if (previousRow != null && currentRow != null) { // Always null on first iteration.
 				// TODO create for long and int tables.
 				double previousValue = ((DoubleCell)previousRow.getCell(inputColumnIndex)).getDoubleValue();
@@ -90,7 +90,11 @@ public class EnvelopeNodeModel extends NodeModel {
 				double nextValue = ((DoubleCell)nextRow.getCell(inputColumnIndex)).getDoubleValue();
 				
 				if(previousValue<=currentValue && nextValue<=currentValue) {
-					DataRow resultRow = new DefaultRow(currentRow.getKey(), currentValue);
+					DataCell[] cells = new DataCell[inputSpecification.getNumColumns()];
+					for(int i=0;i<inputSpecification.getNumColumns();i++) {
+						cells[i] = currentRow.getCell(i);
+					}
+					DataRow resultRow = new DefaultRow(currentRow.getKey(), cells);
 					outputContainer.addRowToTable(resultRow);
 				}
 			}
@@ -106,10 +110,7 @@ public class EnvelopeNodeModel extends NodeModel {
 	}
 	
 	private DataTableSpec createOutputSpec(final DataTableSpec inSpec) {
-		String inputDataColumnName = inputColumnSelectionModel.getStringValue();
-		DataColumnSpec inputColumnSpec = inSpec.getColumnSpec(inputDataColumnName);
-		DataTableSpec outputTableSpec = new DataTableSpec(inputColumnSpec);
-		return outputTableSpec;
+		return inSpec;
 	}
 
 }
