@@ -20,8 +20,18 @@ build:
   cache_dir_list:
     - $HOME/.m2
   ci:
+    # create display for workflow tests
+    - apt-get update
+    - apt-get install xvfb -y
+    - Xvfb :12345 & export DISPLAY=:12345
+
     # maven build
     - mvn -V -B clean install
+
+     # copy test and coverage results where shippable expects them
+    - cp -r de.cyface.knime.tests/target/surefire-reports/. shippable/testresults/
+    - cp -r de.cyface.knime.tests/target/site/jacoco/. shippable/codecoverage/
+    - cp -r de.cyface.knime.tests/target/testflow-reports/. shippable/testresults/
 
     # only upload to nodepit.com when this is running on master branch
     - >
@@ -32,3 +42,6 @@ build:
         dest_directory=/home/debian/nodepit/download/files/cyface/3.5 &&
         ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/. $user_host:$dest_directory";
       fi;
+  post_ci:
+    # delete display
+    - pkill -f "Xvfb :12345"
