@@ -30,10 +30,10 @@
 	</properties>
 
 	<modules>
-		<!--<module>com.bmw-carit.barefoot</module> -->
 		<module>de.cyface.knime</module>
 		<module>de.cyface.knime.feature</module>
 		<module>de.cyface.knime.p2</module>
+		<module>de.cyface.knime.tests</module>
 		<module>de.cyface.knime.targetplatform</module>
 	</modules>
 

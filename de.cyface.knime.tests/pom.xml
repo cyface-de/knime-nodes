@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>de.cyface.knime.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<parent>
+		<groupId>de.cyface</groupId>
+		<artifactId>knime-parent</artifactId>
+		<version>1.4.0</version>
+	</parent>
+
+	<properties>
+		<surefire.timeout>60</surefire.timeout>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- Jacoco Tycho Integration: https://intellectualcramps.wordpress.com/2012/03/22/jacoco-tycho-and-coverage-reports/ -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<include>de.cyface.*</include>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.jacoco</groupId>
+						<artifactId>org.jacoco.ant</artifactId>
+						<version>0.8.0</version>
+					</dependency>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>20020829</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<property name="source-location" location="../" />
+								<taskdef name="jacoco-report" classname="org.jacoco.ant.ReportTask"
+									classpathref="maven.plugin.classpath" />
+								<taskdef classpathref="maven.runtime.classpath"
+									resource="net/sf/antcontrib/antcontrib.properties" />
+								<available file="${project.basedir}/target/jacoco.exec"
+									property="jacoco.exec.file.exists" />
+								<echo message="${project.basedir}/target/jacoco.exec" />
+								<if>
+									<equals arg1="${jacoco.exec.file.exists}" arg2="true" />
+									<then>
+										<echo message="Executing jacoco report" />
+										<echo message="${source-location}" />
+										<trycatch>
+											<try>
+												<jacoco-report>
+													<executiondata>
+														<file file="${project.basedir}/target/jacoco.exec" />
+													</executiondata>
+													<structure name="plugin">
+														<classfiles>
+															<fileset dir="${source-location}/de.cyface.knime/target/classes" />
+														</classfiles>
+														<sourcefiles encoding="UTF-8">
+															<fileset dir="${source-location}/de.cyface.knime/src/main/java" />
+														</sourcefiles>
+													</structure>
+													<html destdir="${project.basedir}/target/site/jacoco" />
+													<xml destfile="${project.basedir}/target/site/jacoco/jacoco.xml" />
+												</jacoco-report>
+											</try>
+											<catch>
+												<echo>skipping</echo>
+											</catch>
+										</trycatch>
+									</then>
+									<else>
+										<echo message="No jacoco.exec file found." />
+									</else>
+								</if>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-eclipserun-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<argLine>-ea -Dlog4j.configuration=log4j.xml ${eclipserun.jvm.flags}</argLine>
+					<appArgLine>-noSplash -consoleLog -application org.knime.testing.NGTestflowRunner -root ./src/main/knime -xmlResultDir ${project.build.directory}/testflow-reports -views -logMessages -loadSaveLoad -data ${project.build.directory}/workspace</appArgLine>
+					<repositories>
+						<repository>
+							<url>http://update.knime.org/analytics-platform/3.5/</url>
+							<layout>p2</layout>
+						</repository>
+						<repository>
+							<url>${project.baseUri}/../de.cyface.knime.p2/target/repository</url>
+							<layout>p2</layout>
+						</repository>
+					</repositories>
+					<dependencies>
+						<dependency>
+							<artifactId>org.knime.features.base</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+						<dependency>
+							<artifactId>org.knime.features.testingapplication</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+						<dependency>
+							<artifactId>de.cyface.knime.feature</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+					</dependencies>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>eclipse-run</goal>
+						</goals>
+						<phase>integration-test</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>de.philippkatz.maven.plugins</groupId>
+				<artifactId>test-parser-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<resultsDirectory>${project.build.directory}/testflow-reports</resultsDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>testparser</goal>
+						</goals>
+						<phase>integration-test</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

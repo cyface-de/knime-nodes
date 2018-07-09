@@ -17,6 +17,9 @@ import org.osgi.framework.BundleContext;
  * @author Cyface
  */
 public class CyfaceNodePlugin extends Plugin {
+
+    public static final String PLUGIN_ID = "de.cyface.knime";
+
     // The shared instance.
     private static CyfaceNodePlugin plugin;
 
