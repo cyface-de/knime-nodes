@@ -2,7 +2,7 @@
 <feature
       id="de.cyface.knime.feature"
       label="Cyface Nodes"
-      version="1.4.0"
+      version="1.4.1"
       provider-name="Cyface GmbH">
 
    <description>
