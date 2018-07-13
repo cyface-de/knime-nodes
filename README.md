@@ -26,7 +26,7 @@ Steps to get Cyface KNIME Nodes inside KNIME:
 
 1. Goto Help > Install new software ... menu 
 2. Press add button 
-3. Fill text fields with `http://download.nodepit.com/cyface/3.5` 
+3. Fill text fields with `http://download.nodepit.com/cyface/3.6` 
 4. Select --all sites-- in work with pulldown 
 5. Select Cyface KNIME Nodes 
 6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this) 

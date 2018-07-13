@@ -34,6 +34,7 @@ build:
     - cp -r de.cyface.knime.tests/target/testflow-reports/. shippable/testresults/
 
     # only upload to nodepit.com when this is running on master branch
+    # no need to change folder 3.5/ for now as 3.6/ is symlinked to 3.5/ on our server
     - >
       if [ "$BRANCH" == "master" ] && [ "$IS_PULL_REQUEST" == false ]; then
         mkdir -p ~/.ssh &&
