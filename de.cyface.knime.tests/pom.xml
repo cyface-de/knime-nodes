@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>de.cyface</groupId>
 		<artifactId>knime-parent</artifactId>
-		<version>1.4.1</version>
+		<version>2.0.0</version>
 	</parent>
 
 	<properties>
@@ -113,7 +113,7 @@
 					<appArgLine>-noSplash -consoleLog -application org.knime.testing.NGTestflowRunner -root ./src/main/knime -xmlResultDir ${project.build.directory}/testflow-reports -views -logMessages -loadSaveLoad -data ${project.build.directory}/workspace</appArgLine>
 					<repositories>
 						<repository>
-							<url>http://update.knime.org/analytics-platform/3.5/</url>
+							<url>http://update.knime.org/analytics-platform/3.6/</url>
 							<layout>p2</layout>
 						</repository>
 						<repository>
