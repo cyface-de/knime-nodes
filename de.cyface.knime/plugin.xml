@@ -20,5 +20,15 @@
    <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory"/>
    <node category-path="/cyfaceNodes" factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
 </extension>
+   <extension
+         point="org.knime.product.splashExtension">
+      <splashExtension
+            icon="logo/logo24.png"
+            icon24="logo/logo24.png"
+            icon32="logo/logo32.png"
+            id="de.cyface.knime.splashExtension1"
+            tooltip="Cyface">
+      </splashExtension>
+   </extension>
    
 </plugin>
