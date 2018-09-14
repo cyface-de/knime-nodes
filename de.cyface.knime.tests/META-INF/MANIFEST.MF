@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cyface Nodes Testing
 Bundle-SymbolicName: de.cyface.knime.tests;singleton:=true
-Bundle-Version: 2.1.0
+Bundle-Version: 2.1.1
 Bundle-Vendor: Cyface GmbH
 Fragment-Host: de.cyface.knime;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
