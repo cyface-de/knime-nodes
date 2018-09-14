@@ -23,7 +23,7 @@
    <extension
          point="org.knime.product.splashExtension">
       <splashExtension
-            icon="src/main/resources/logo/logo24.png"
+            icon="src/main/resources/logo/logo48.png"
             icon24="src/main/resources/logo/logo24.png"
             icon32="src/main/resources/logo/logo32.png"
             id="de.cyface.knime.splash"
