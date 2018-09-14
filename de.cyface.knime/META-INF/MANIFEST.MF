@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cyface Nodes
 Bundle-SymbolicName: de.cyface.knime;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.1.0
 Bundle-ClassPath: .,
  lib/barefoot.jar,
  lib/esri-geometry-api.jar,
@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.knime.workbench.core,
  org.knime.workbench.repository,
  org.knime.base,
- org.knime.core.util
+ org.knime.core.util,
+ org.knime.product
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cyface,
  de.cyface.distance,
