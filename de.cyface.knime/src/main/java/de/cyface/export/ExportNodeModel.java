@@ -1,3 +1,21 @@
+/*
+ * Copyright 2018 Cyface GmbH
+ * 
+ * This file is part of the Cyface KNIME Nodes.
+ *
+ * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.cyface.export;
 
 import java.io.File;
@@ -21,55 +39,188 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
+/**
+ * The <code>NodeModel</code> of the Cyface binary format exporter. This class handles validation of the input and writes the validated data to a file in Cyface binary format.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.1
+ * @since 1.0.0
+ */
 public class ExportNodeModel extends NodeModel {
 
+    /**
+     * The Cyface binary format version, currently handled by this node.
+     */
 	private final static short DATA_FORMAT_VERSION = 1;
+	/**
+	 * The index of the input port reading geo locations.
+	 */
 	public final static int GEO_TABLE_INDEX = 0;
+	/**
+	 * The index of the input port reading accelerations.
+	 */
 	public final static int ACCELERATION_TABLE_INDEX = 1;
+	/**
+	 * The index of the input port reading rotations.
+	 */
 	public final static int ROTATION_TABLE_INDEX = 2;
+	/**
+	 * The index of the input port reading directions.
+	 */
 	public final static int DIRECTION_TABLE_INDEX = 3;
 	
+	/**
+	 * The setting key for the name of the output file.
+	 */
 	public final static String OUTPUT_FILE_NAME_SETTING = "de.cyface.cfgkey.output";
+	/**
+	 * The setting storing the path to the output file.
+	 */
 	private final SettingsModelString outputFileNameSetting = new SettingsModelString(OUTPUT_FILE_NAME_SETTING, "");
 	
+	/**
+	 * The setting key for the column containing acceleration timestamps.
+	 */
 	public final static String ACC_TIME_COL_SETTING = "de.cyface.cfgkey.acc_time_col";
+	/**
+	 * The setting storing the column containing the acceleration timestamps.
+	 */
 	private final SettingsModelString accTimeColSetting = new SettingsModelString(ACC_TIME_COL_SETTING,"");
+	/**
+     * The setting key for the column containing acceleration values in x direction.
+     */
 	public final static String ACC_X_COL_SETTING = "de.cyface.cfgkey.acc_x_col";
+	/**
+	 * The setting storing the column containing the acceleration values in x direction.
+	 */
 	private final SettingsModelString accXColSetting = new SettingsModelString(ACC_X_COL_SETTING,"");
+	/**
+     * The setting key for the column containing acceleration values in y direction.
+     */
 	public final static String ACC_Y_COL_SETTING = "de.cyface.cfgkey.acc_y_col";
+	/**
+	 * The setting storing the column containing the acceleration values in y direction.
+	 */
 	private final SettingsModelString accYColSetting = new SettingsModelString(ACC_Y_COL_SETTING,"");
+	/**
+     * The setting key for the column containing acceleration values in z direction.
+     */
 	public final static String ACC_Z_COL_SETTING = "de.cyface.cfgkey.acc_z_col";
+	/**
+	 * The setting storing the column containing the acceleration values in z direction.
+	 */
 	private final SettingsModelString accZColSetting = new SettingsModelString(ACC_Z_COL_SETTING,"");
 	
+	/**
+     * The setting key for the column containing rotation timestamps.
+     */
 	public final static String ROT_TIME_COL_SETTING = "de.cyface.cfgkey.rot_time_col";
+	/**
+	 * The setting storing the column containing the rotations timestamps.
+	 */
 	private final SettingsModelString rotTimeColSetting = new SettingsModelString(ROT_TIME_COL_SETTING,"");
+	/**
+     * The setting key for the column containing rotation values in x direction.
+     */
 	public final static String ROT_X_COL_SETTING = "de.cyface.cfgkey.rot_x_col";
+	/**
+	 * The setting storing the column containing the rotations values in x direction.
+	 */
 	private final SettingsModelString rotXColSetting = new SettingsModelString(ROT_X_COL_SETTING,"");
+	/**
+     * The setting key for the column containing rotation values in y direction.
+     */
 	public final static String ROT_Y_COL_SETTING = "de.cyface.cfgkey.rot_y_col";
+	/**
+	 * The setting storing the column containing the rotations values in y direction.
+	 */
 	private final SettingsModelString rotYColSetting = new SettingsModelString(ROT_Y_COL_SETTING,"");
+	/**
+     * The setting key for the column containing rotation values in z direction.
+     */
 	public final static String ROT_Z_COL_SETTING = "de.cyface.cfgkey.rot_z_col";
+	/**
+	 * The setting storing the column containing the rotations values in z direction.
+	 */
 	private final SettingsModelString rotZColSetting = new SettingsModelString(ROT_Z_COL_SETTING,"");
 	
+	/**
+     * The setting key for the column containing direction timestamps.
+     */
 	public final static String DIR_TIME_COL_SETTING = "de.cyface.cfgkey.dir_time_col";
+	/**
+	 * The setting storing the column containing the directions timestamps.
+	 */
 	private final SettingsModelString dirTimeColSetting = new SettingsModelString(DIR_TIME_COL_SETTING,"");
+	/**
+     * The setting key for the column containing direction values in x direction.
+     */
 	public final static String DIR_X_COL_SETTING = "de.cyface.cfgkey.dir_x_col";
+	/**
+	 * The setting storing the column containing the directions value in x direction.
+	 */
 	private final SettingsModelString dirXColSetting = new SettingsModelString(DIR_X_COL_SETTING,"");
+	/**
+     * The setting key for the column containing direction values in y direction.
+     */
 	public final static String DIR_Y_COL_SETTING = "de.cyface.cfgkey.dir_y_col";
+	/**
+	 * The setting storing the column containing the directions value in y direction.
+	 */
 	private final SettingsModelString dirYColSetting = new SettingsModelString(DIR_Y_COL_SETTING,"");
+	/**
+     * The setting key for the column containing direction values in z direction.
+     */
 	public final static String DIR_Z_COL_SETTING = "de.cyface.cfgkey.dir_z_col";
+	/**
+	 * The setting storing the column containing the directions value in z direction.
+	 */
 	private final SettingsModelString dirZColSetting = new SettingsModelString(DIR_Z_COL_SETTING,"");
 	
+	/**
+     * The setting key for the column containing geo location timestamps.
+     */
 	public final static String GEO_TIME_COL_SETTING = "de.cyface.cfgkey.geo_time_col";
+	/**
+	 * The setting storing the column containing the geo locations timestamps.
+	 */
 	private final SettingsModelString geoTimeColSetting = new SettingsModelString(GEO_TIME_COL_SETTING,"");
+	/**
+     * The setting key for the column containing geo location latitude values.
+     */
 	public final static String GEO_LAT_COL_SETTING = "de.cyface.cfgkey.geo_lat_col";
+	/**
+	 * The setting storing the column containing the geo locations latitude values.
+	 */
 	private final SettingsModelString geoLatColSetting = new SettingsModelString(GEO_LAT_COL_SETTING,"");
+	/**
+     * The setting key for the column containing geo location longitude values.
+     */
 	public final static String GEO_LON_COL_SETTING = "de.cyface.cfgkey.geo_lon_col";
+	/**
+	 * The setting storing the column containing the geo locations longitude values.
+	 */
 	private final SettingsModelString geoLonColSetting = new SettingsModelString(GEO_LON_COL_SETTING,"");
+	/**
+     * The setting key for the column containing geo location speed values.
+     */
 	public final static String GEO_SPEED_COL_SETTING = "de.cyface.cfgkey.geo_speed_col";
+	/**
+	 * The setting storing the column containing the geo locations speed values.
+	 */
 	private final SettingsModelString geoSpeedColSetting = new SettingsModelString(GEO_SPEED_COL_SETTING,"");
+	/**
+     * The setting key for the column containing geo location accuracy values.
+     */
 	public final static String GEO_ACCURACY_COL_SETTING = "de.cyface.cfgkey.geo_accuracy_col";
+	/**
+	 * The setting storing the column containing the geo locations accuracy values.
+	 */
 	private final SettingsModelString geoAccuracyColSetting = new SettingsModelString(GEO_ACCURACY_COL_SETTING,"");
 
+	/**
+	 * Creates a new completely initialized model for an Cyface binary format exporter.
+	 */
 	public ExportNodeModel() {
 		super(4, 0);
 	}
@@ -77,14 +228,14 @@ public class ExportNodeModel extends NodeModel {
 	@Override
 	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// Node has no views and thus no internal data.
 
 	}
 
 	@Override
 	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		// Node has no views and thus no internal data.
 
 	}
 
@@ -170,7 +321,7 @@ public class ExportNodeModel extends NodeModel {
 
 	@Override
 	protected void reset() {
-		// TODO Auto-generated method stub
+		// Nothing to do here.
 
 	}
 
@@ -186,7 +337,8 @@ public class ExportNodeModel extends NodeModel {
 
 		byte[] header = createHeader((int) geoLocationsTable.size(), (int) accelerationsTable.size(),
 				(int) rotationsTable.size(), (int) directionsTable.size());
-		byte[] geoLocations = serializeGeoLocations(geoLocationsTable);
+		long itemsToProcess = geoLocationsTable.size() + accelerationsTable.size() + rotationsTable.size() + directionsTable.size();
+		byte[] geoLocations = serializeGeoLocations(geoLocationsTable, exec, itemsToProcess);
 		byte[] accelerations = new Point3DSerializer() {
 
 			@Override
@@ -208,7 +360,7 @@ public class ExportNodeModel extends NodeModel {
 			protected int getTimestampColumnIndex() {
 				return accelerationsTableSpec.findColumnIndex(accTimeColSetting.getStringValue());
 			}
-		}.serialize(accelerationsTable);
+		}.serialize(accelerationsTable, exec, itemsToProcess);
 		byte[] rotations = new Point3DSerializer() {
 
 			@Override
@@ -231,7 +383,7 @@ public class ExportNodeModel extends NodeModel {
 				return rotationsTableSpec.findColumnIndex(rotTimeColSetting.getStringValue());
 			}
 
-		}.serialize(rotationsTable);
+		}.serialize(rotationsTable, exec, itemsToProcess);
 		byte[] directions = new Point3DSerializer() {
 
 			@Override
@@ -253,7 +405,7 @@ public class ExportNodeModel extends NodeModel {
 			protected int getTimestampColumnIndex() {
 				return directionsTableSpec.findColumnIndex(dirTimeColSetting.getStringValue());
 			}
-		}.serialize(directionsTable);
+		}.serialize(directionsTable, exec, itemsToProcess);
 
 		ByteBuffer buffer = ByteBuffer.allocate(
 				header.length + geoLocations.length + accelerations.length + rotations.length + directions.length);
@@ -311,23 +463,31 @@ public class ExportNodeModel extends NodeModel {
 	/**
 	 * Serializes all the geo locations from the provided table.
 	 *
-	 * @param geoLocationsTable
+	 * @param geoLocationsTable The table containing the geo locations to process
+	 * @param context The <code>ExecutionContext</code> used to report progress and support cancellation.
+	 * @param itemsToProcess The number of items to process in total by the node (geo locations + 3D data points).
 	 * @return A <code>byte</code> array containing all the data.
+	 * @throws CanceledExecutionException If execution was canceled during geo location serialization.
 	 */
-	private byte[] serializeGeoLocations(final BufferedDataTable geoLocationsTable) {
+	private byte[] serializeGeoLocations(final BufferedDataTable geoLocationsTable, final ExecutionContext context, final long itemsToProcess) throws CanceledExecutionException {
 		// Allocate enough space for all geo locations
-		ByteBuffer buffer = ByteBuffer
+		final ByteBuffer buffer = ByteBuffer
 				.allocate((int) geoLocationsTable.size() * (Long.BYTES + 3 * Double.BYTES + Integer.BYTES));
-		DataTableSpec geoLocationsSpec = geoLocationsTable.getDataTableSpec();
+		final DataTableSpec geoLocationsSpec = geoLocationsTable.getDataTableSpec();
+		ExecutionMonitor monitor = context.createSubProgress(((double)geoLocationsTable.size())/itemsToProcess);
+		double processedItems = 0.0;
 
-		for (DataRow row : geoLocationsTable) {
+		for (final DataRow row : geoLocationsTable) {
+		    context.checkCanceled();
+		    monitor.setProgress(processedItems/itemsToProcess);
+		    
 			buffer.putLong(((LongCell) row.getCell(geoLocationsSpec.findColumnIndex(geoTimeColSetting.getStringValue()))).getLongValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLatColSetting.getStringValue()))).getDoubleValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLonColSetting.getStringValue()))).getDoubleValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoSpeedColSetting.getStringValue()))).getDoubleValue());
 			buffer.putInt(((IntCell) row.getCell(geoLocationsSpec.findColumnIndex(geoAccuracyColSetting.getStringValue()))).getIntValue());
 		}
-		byte[] payload = new byte[buffer.capacity()];
+		final byte[] payload = new byte[buffer.capacity()];
 		((ByteBuffer) buffer.duplicate().clear()).get(payload);
 		// if we want to switch from write to read mode on the byte buffer we
 		// need to .flip() !!
@@ -335,7 +495,7 @@ public class ExportNodeModel extends NodeModel {
 	}
 	
 	@Override
-	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 		return new DataTableSpec[0];
 	}
 

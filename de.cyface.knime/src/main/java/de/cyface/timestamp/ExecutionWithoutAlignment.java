@@ -1,3 +1,21 @@
+/*
+ * Copyright 2018 Cyface GmbH
+ * 
+ * This file is part of the Cyface KNIME Nodes.
+ *
+ * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.cyface.timestamp;
 
 import org.knime.core.data.DataCell;
@@ -10,7 +28,9 @@ import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.LongCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
+import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.NodeLogger;
 
 /**
@@ -19,7 +39,7 @@ import org.knime.core.node.NodeLogger;
  * will produce an empty table.
  * 
  * @author Klemens Muthmann
- * @version 1.0.1
+ * @version 1.0.2
  * @since 1.0.0
  */
 public class ExecutionWithoutAlignment implements Execution {
@@ -29,22 +49,23 @@ public class ExecutionWithoutAlignment implements Execution {
 	 */
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(ExecutionWithoutAlignment.class);
 
+	@Override
 	public BufferedDataTable[] execute(final InputData input, final DataTableSpec outputTableSpec,
-			final ExecutionContext context) {
-		DataTable firstTable = input.getFirstTable();
-		DataTable secondTable = input.getSecondTable();
-		String firstTimestampColumnName = input.getFirstTimestampColumnName();
-		String secondTimestampColumnName = input.getSecondTimestampColumnName();
-		DataTableSpec secondTableSpec = secondTable.getDataTableSpec();
-		DataTableSpec firstTableSpec = firstTable.getDataTableSpec();
-		BufferedDataContainer res = context.createDataContainer(outputTableSpec);
+			final ExecutionContext context) throws CanceledExecutionException {
+		final DataTable firstTable = input.getFirstTable();
+		final DataTable secondTable = input.getSecondTable();
+		final String firstTimestampColumnName = input.getFirstTimestampColumnName();
+		final String secondTimestampColumnName = input.getSecondTimestampColumnName();
+		final DataTableSpec secondTableSpec = secondTable.getDataTableSpec();
+		final DataTableSpec firstTableSpec = firstTable.getDataTableSpec();
+		final BufferedDataContainer res = context.createDataContainer(outputTableSpec);
 
-		RowIterator secondTableIter = secondTable.iterator();
-		int secondTableTimestampColumnIndex = secondTableSpec.findColumnIndex(secondTimestampColumnName);
-		int firstTableTimestampColumnIndex = firstTableSpec.findColumnIndex(firstTimestampColumnName);
+		final RowIterator secondTableIter = secondTable.iterator();
+		final int secondTableTimestampColumnIndex = secondTableSpec.findColumnIndex(secondTimestampColumnName);
+		final int firstTableTimestampColumnIndex = firstTableSpec.findColumnIndex(firstTimestampColumnName);
 
-		long firstTableAlignment = calcTableAlignment(firstTable, firstTimestampColumnName);
-		long secondTableAlignment = calcTableAlignment(secondTable, secondTimestampColumnName);
+		final long firstTableAlignment = calcTableAlignment(firstTable, firstTimestampColumnName);
+		final long secondTableAlignment = calcTableAlignment(secondTable, secondTimestampColumnName);
 
 		DataRow currentSecondTableRow = getNextValidRow(secondTableTimestampColumnIndex, secondTableIter);
 		DataRow nextSecondTableRow = getNextValidRow(secondTableTimestampColumnIndex, secondTableIter);
@@ -59,7 +80,13 @@ public class ExecutionWithoutAlignment implements Execution {
 						: align(getTimestamp(secondTimestampColumnName, nextSecondTableRow,
 								secondTableTimestampColumnIndex), secondTableAlignment);
 
+				// Handle progress
+				final ExecutionMonitor monitor = context.createSubProgress(1.0);
+				int i = 0;
+				
 				for (DataRow row : firstTable) {
+				    context.checkCanceled();
+				    
 					try {
 						long timestamp = align(
 								getTimestamp(firstTimestampColumnName, row, firstTableTimestampColumnIndex),
@@ -80,6 +107,9 @@ public class ExecutionWithoutAlignment implements Execution {
 						res.addRowToTable(combinedRow);
 					} catch (MissingCellException e) {
 						LOGGER.warn("Skipping missing cell in row " + row.getKey());
+					} finally {
+						monitor.setProgress(((double)i)/((BufferedDataTable)firstTable).size());
+						i++;
 					}
 				}
 			} catch (MissingCellException e) {
@@ -92,10 +122,24 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	}
 
+	/**
+	 * For this implementation the {@link Execution} always zero.
+	 * 
+	 * @param table The table to align.
+     * @param columnName The name of the column to align
+     * @return The alignment to apply to the column to align it.
+	 */
 	protected long calcTableAlignment(final DataTable firstTable, final String columnName) {
 		return 0;
 	}
 
+	/**
+	 * Aligns a timestamp using the provided alignment.
+	 * 
+	 * @param timestamp The timestamp to align.
+	 * @param alignment The alignment to use.
+	 * @return The aligned timestamp.
+	 */
 	static long align(final long timestamp, final long alignment) {
 		return timestamp - alignment;
 	}
@@ -157,6 +201,17 @@ public class ExecutionWithoutAlignment implements Execution {
 		}
 	}
 
+	/**
+	 * Appends one data row to the second, aligning values in both.
+	 * 
+	 * @param firstRow The first row, which is the one to keep.
+	 * @param secondRow The second row, which is the one to concatenate.
+	 * @param firstRowAlignmentCellIndex The column number of the cell in the first row to align.
+	 * @param secondRowAlignmentCellIndex The column number of the cell in the second row to align.
+	 * @param firstRowAlignedValue The alignment value for the first row.
+	 * @param secondRowAlignedValue The alignment value for the second row.
+	 * @return The concatenated data rows as a new row.
+	 */
 	private DataRow concatenateRows(final DataRow firstRow, final DataRow secondRow,
 			final int firstRowAlignmentCellIndex, final int secondRowAlignmentCellIndex,
 			final long firstRowAlignedValue, final long secondRowAlignedValue) {

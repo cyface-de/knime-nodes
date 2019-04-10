@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 Cyface GmbH -->
+<!--   -->
+<!-- This file is part of the Cyface KNIME Nodes. -->
+<!--  -->
+<!-- The Cyface KNIME Nodes is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!--  -->
+<!-- The Cyface KNIME Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>. -->
 <!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
 <knimeNode icon="./icon.png" type="Manipulator">
     <name>Signal Smoothing</name>
@@ -11,13 +27,11 @@
         <intro>
             <p>Takes a one dimensional input signal in the form of measurement values in a table column, applies a smoothing algorithm and returns the smoothed signal. The node expects the input table to have at least one input column compatible with double values and will either replace that column with the smoothed signal or place it in a new appended column. Currently supported smoothing algorithms are:</p>
             <ul>
-                <li>Rectangular Smoothing: Replaces each value by the mean of its predecessor and successor. Keeps the first and the last value.</li>
+                <li>Rectangular Smoothing: Replaces each value by the mean of its predecessors and successors. Keeps the first and the last value.</li>
+                <li>Triangular Smoothing: Similar to the rectangular smoothing but applies weights. The weights get lower the farther away the value used for smoothing are.</li>
             </ul>
         </intro>
   		<option name="Filter Type">Choose the type of filter (smoothing algorithm) to use.</option>
-        <option name="Input Column">Choose the input column containing the input signal.</option>
-        <option name="Append new column or replace input column">Choose whether you want to replace the input column with the smoothed signal or append it in a new column.</option>
-        <option name="Appended column name">If you are appending the smoothed signal in a new column in the output table, choose a name for that column.</option>
     </fullDescription>
     
     <ports>

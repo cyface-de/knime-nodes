@@ -1,3 +1,21 @@
+/*
+ * Copyright 2018 Cyface GmbH
+ * 
+ * This file is part of the Cyface KNIME Nodes.
+ *
+ * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.cyface.smoothing.dialog;
 
 import org.knime.core.data.DataColumnSpec;
@@ -73,7 +91,7 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	 *            A list of possible input data values. Only columns with input
 	 *            values of one of the provided types are shown in the dialog.
 	 */
-	public ColumnSelectionNodeOption(final String configIdentifier, final String label,
+    public ColumnSelectionNodeOption(final String configIdentifier, final String label,
 			Class<? extends DataValue>... acceptedClasses) {
 		super(configIdentifier, "Select a column");
 		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, acceptedClasses));
