@@ -93,6 +93,9 @@ public class SmoothingNodeModel extends NodeModel {
 	 */
 	private final SettingsModelInteger windowSizeSelectorSettingsModel;
 
+	/**
+	 * The smoothing algorithm to use for the current execution.
+	 */
 	private Algorithm algorithm;
 
 	/**

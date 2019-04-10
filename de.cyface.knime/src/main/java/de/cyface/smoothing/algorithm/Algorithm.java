@@ -18,6 +18,19 @@
  */
 package de.cyface.smoothing.algorithm;
 
+/**
+ * Base interface for all smoothing algorithms supported by the Cyface smoothing node.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public interface Algorithm {
+    /**
+     * Smoothes the provided window of data values according to this smoothing algorithm.
+     * 
+     * @param window The window of values to smooth
+     * @return The smoothed value.
+     */
 	double smooth(double[] window);
 }

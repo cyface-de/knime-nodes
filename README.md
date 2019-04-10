@@ -55,13 +55,17 @@ During import the Tycho Eclipse providers have to be be installed. If this is no
 
 The following command builds the entire project: 
 
-``` mvn clean package ``` 
+``` 
+mvn clean package 
+```
 
 ### Test 
 
 The following command builds the entire project, creates an update site, runs unit tests and test workflows: 
 
-``` mvn clean verify ```
+``` 
+mvn clean verify 
+```
 
 Releasing a new version
 -----------------------

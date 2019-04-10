@@ -29,9 +29,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * <p>
  * An {@link Execution} for this node appending the results in a new column.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -40,16 +38,12 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 public class AppendColumnExecutor implements Execution {
 
 	/**
-	 * <p>
 	 * The {@link SettingsModel} containing the name of the column to append.
-	 * </p>
 	 */
 	private final SettingsModelString appendColumnNameInputSettingsModel;
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link AppendColumnExecutor}.
-	 * </p>
 	 * 
 	 * @param appendColumnNameInputSettingsModel
 	 *            The {@link SettingsModel} containing the name of the column to

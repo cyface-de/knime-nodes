@@ -16,4 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * This package contains all classes required for a KNIME node that exports Cyface binary data from four KNIME tables
+ * containing geo locations, accelerations, rotations and directions.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 package de.cyface.export;

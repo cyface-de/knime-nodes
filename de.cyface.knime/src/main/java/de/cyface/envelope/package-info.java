@@ -17,6 +17,13 @@
  * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
+ * Contains all classes required for a node calculating the envelope function for a numeric input column.
+ * The envelope function is either an upper envelope function or a lower envelope function.
+ * An upper envelope function is a function between the local maxima of a function, while a lower envelope function is
+ * the function connecting the minima.
+ * 
+ * The node provides the envelope function as a filter on all the rows of the input, providing only the ones constituting the envelope function.
+ * 
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0

@@ -57,8 +57,6 @@ import com.bmwcarit.barefoot.spatial.Geography;
 import com.bmwcarit.barefoot.topology.Dijkstra;
 import com.esri.core.geometry.Point;
 
-import de.cyface.smoothing.dialog.TextFieldNodeOption;
-
 public final class MapMatchingNodeModel extends NodeModel {
 
 	private final SettingsModelString mapMatchingFrameworkModel;

@@ -1,4 +1,3 @@
-package de.cyface.distance;
 /*
  * Copyright 2018 Cyface GmbH
  * 
@@ -50,13 +49,11 @@ import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * <p>
- * This is the model implementation of EquidistanceTransfomer. Takes a function
+ * This is the model implementation of EquidistanceTransfomer. It takes a function
  * f(x) defined by two columns containing the values for x and for f(x) and
- * calculate a new function on x where f(x) are equdistant points which are
+ * calculates a new function on x where f(x) are equdistant points which are
  * interpolated between original values of f(x) if f(x) is not equidistant
  * itself. The columns containing x and f(x) need to be numeric and sorted by x.
- * </p>
  *
  * @author Klemens Muthmann
  * @version 1.0.1
@@ -64,48 +61,71 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  */
 public class EquidistanceTransfomerNodeModel extends NodeModel {
 
-	// the logger instance
-	private static final NodeLogger logger = NodeLogger.getLogger(EquidistanceTransfomerNodeModel.class);
+    /**
+     * The logger used for objects of this class.
+     */
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(EquidistanceTransfomerNodeModel.class);
 
-	// /** the settings key which is used to retrieve and
-	// store the settings (from the dialog or from a settings file)
-	// (package visibility to be usable from the dialog). */
-	// static final String CFGKEY_COUNT = "Count";
-	static final String CFGKEY_DISTANCE = "de.cyface.cfgkey.distance";
-	static final String CFGKEY_X_COLUMN = "de.cyface.cfgkey.xcolumn";
-	static final String CFGKEY_FX_COLUMN = "de.cyface.cfgkey.fxcolumn";
-	static final String CFGKEY_NEW_X_COLUMN = "de.cyface.cfgkey.newxcolumn";
-	static final String CFGKEY_NEW_FX_COLUMN = "de.cyface.cfgkey.newfxcolumn";
+    /**
+     * The key identifying the setting used to set the distance to use for equidistance calculation.
+     */
+    static final String CFGKEY_DISTANCE = "de.cyface.cfgkey.distance";
+    /**
+     * The key identifying the setting used to select the X input column.
+     */
+    static final String CFGKEY_X_COLUMN = "de.cyface.cfgkey.xcolumn";
+    /**
+     * The key identifying the setting used to select the f(x) input column.
+     */
+    static final String CFGKEY_FX_COLUMN = "de.cyface.cfgkey.fxcolumn";
+    /**
+     * The key identifying the setting used to set the new name for the output X values column.
+     */
+    static final String CFGKEY_NEW_X_COLUMN = "de.cyface.cfgkey.newxcolumn";
+    /**
+     * The key identifying the setting used to set the new name for the output f(x) values column.
+     */
+    static final String CFGKEY_NEW_FX_COLUMN = "de.cyface.cfgkey.newfxcolumn";
 
-	/** initial default count value. */
-	static final int DEFAULT_COUNT = 100;
+    /** initial default count value. */
+    static final int DEFAULT_COUNT = 100;
 
-	static final int IN_PORT = 0;
+    /**
+     * The index of the input port to read the data from.
+     */
+    static final int IN_PORT = 0;
 
-	// // example value: the models count variable filled from the dialog
-	// // and used in the models execution method. The default components of the
-	// // dialog work with "SettingsModels".
-	// private final SettingsModelIntegerBounded m_count =
-	// new
-	// SettingsModelIntegerBounded(EquidistanceTransfomerNodeModel.CFGKEY_COUNT,
-	// EquidistanceTransfomerNodeModel.DEFAULT_COUNT,
-	// Integer.MIN_VALUE, Integer.MAX_VALUE);
-	private final SettingsModelDouble distanceSettings = new SettingsModelDouble(CFGKEY_DISTANCE, 1.0);
-	private final SettingsModelString xColumnSettings = new SettingsModelString(CFGKEY_X_COLUMN, "");
-	private final SettingsModelString fxColumnSettings = new SettingsModelString(CFGKEY_FX_COLUMN, "");
-	private final SettingsModelString newColumnXSettings = new SettingsModelString(CFGKEY_NEW_X_COLUMN, "");
-	private final SettingsModelString newColumFxSettings = new SettingsModelString(CFGKEY_NEW_FX_COLUMN, "");
+    /**
+     * <code>SettingsModel</code> used to store the distance to use between points.
+     */
+    private final SettingsModelDouble distanceSettings = new SettingsModelDouble(CFGKEY_DISTANCE, 1.0);
+    /**
+     * <code>SettingsModel</code> used to store the column to read input x values from.
+     */
+    private final SettingsModelString xColumnSettings = new SettingsModelString(CFGKEY_X_COLUMN, "");
+    /**
+     * <code>SettingsModel</code> used to store the column to read input f(x) values from.
+     */
+    private final SettingsModelString fxColumnSettings = new SettingsModelString(CFGKEY_FX_COLUMN, "");
+    /**
+     * <code>SettingsModel</code> used to store the column to write output x values to.
+     */
+    private final SettingsModelString newColumnXSettings = new SettingsModelString(CFGKEY_NEW_X_COLUMN, "");
+    /**
+     * <code>SettingsModel</code> used to store the column to write output f(x) values to.
+     */
+    private final SettingsModelString newColumFxSettings = new SettingsModelString(CFGKEY_NEW_FX_COLUMN, "");
 
-	/**
-	 * Constructor for the node model.
-	 */
-	protected EquidistanceTransfomerNodeModel() {
-		super(1, 1);
-	}
+    /**
+     * Constructor for the node model.
+     */
+    protected EquidistanceTransfomerNodeModel() {
+        super(1, 1);
+    }
 
-	@Override
-	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec)
-			throws Exception {
+    @Override
+    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec)
+            throws Exception {
 
         DataTableSpec inputTableSpecification = inData[IN_PORT].getDataTableSpec();
         int xColumnIndex = inputTableSpecification.findColumnIndex(xColumnSettings.getStringValue());

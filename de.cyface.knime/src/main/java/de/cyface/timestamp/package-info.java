@@ -16,4 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * This package contains all classes required for the Cyface timestamp aligner node.
+ * This node takes two input tables with time series from the same timeframe but different sources and joins them by
+ * aligning the one with the higher frequency to the one with lower.
+ * Values from the lower frequency one are duplicated.
+ *
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 2.2.0
+ */
 package de.cyface.timestamp;

@@ -24,11 +24,9 @@ import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.NodeModel;
 
 /**
- * <p>
  * An {@link Execution} is a strategy providing detailed functionality for the
  * {@link NodeModel}s execute method. Usually it depends on the selected
  * options, which {@link Execution} is used.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.0.0
@@ -36,10 +34,8 @@ import org.knime.core.node.NodeModel;
  */
 public interface Execution {
 	/**
-	 * <p>
 	 * Converts the specification from the input table to an output
 	 * specification.
-	 * </p>
 	 * 
 	 * @param inputSpec
 	 *            The specification from the input table.
@@ -48,11 +44,9 @@ public interface Execution {
 	DataTableSpec getOutputSpec(DataTableSpec inputSpec);
 
 	/**
-	 * <p>
 	 * Creates a new result row from a base row from the input table a
 	 * {@link DataCell} containing the calculated smoothed signal and an index
 	 * denoting the input table column with the input data.
-	 * </p>
 	 * 
 	 * @param baseRow
 	 *            The input table base row containing the input values.

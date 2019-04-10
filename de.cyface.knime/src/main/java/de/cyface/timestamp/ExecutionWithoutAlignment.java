@@ -122,10 +122,24 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	}
 
+	/**
+	 * For this implementation the {@link Execution} always zero.
+	 * 
+	 * @param table The table to align.
+     * @param columnName The name of the column to align
+     * @return The alignment to apply to the column to align it.
+	 */
 	protected long calcTableAlignment(final DataTable firstTable, final String columnName) {
 		return 0;
 	}
 
+	/**
+	 * Aligns a timestamp using the provided alignment.
+	 * 
+	 * @param timestamp The timestamp to align.
+	 * @param alignment The alignment to use.
+	 * @return The aligned timestamp.
+	 */
 	static long align(final long timestamp, final long alignment) {
 		return timestamp - alignment;
 	}
@@ -187,6 +201,17 @@ public class ExecutionWithoutAlignment implements Execution {
 		}
 	}
 
+	/**
+	 * Appends one data row to the second, aligning values in both.
+	 * 
+	 * @param firstRow The first row, which is the one to keep.
+	 * @param secondRow The second row, which is the one to concatenate.
+	 * @param firstRowAlignmentCellIndex The column number of the cell in the first row to align.
+	 * @param secondRowAlignmentCellIndex The column number of the cell in the second row to align.
+	 * @param firstRowAlignedValue The alignment value for the first row.
+	 * @param secondRowAlignedValue The alignment value for the second row.
+	 * @return The concatenated data rows as a new row.
+	 */
 	private DataRow concatenateRows(final DataRow firstRow, final DataRow secondRow,
 			final int firstRowAlignmentCellIndex, final int secondRowAlignmentCellIndex,
 			final long firstRowAlignedValue, final long secondRowAlignedValue) {

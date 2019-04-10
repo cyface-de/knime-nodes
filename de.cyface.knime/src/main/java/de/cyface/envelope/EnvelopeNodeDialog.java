@@ -22,8 +22,23 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 
 import de.cyface.smoothing.dialog.ColumnSelectionNodeOption;
 
-public class EnvelopeNodeDialog extends DefaultNodeSettingsPane {
+/**
+ * Responsible for displaying the configuration dialog shown for example when
+ * clicking configure in the nodes context menu.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+public final class EnvelopeNodeDialog extends DefaultNodeSettingsPane {
 
+	/**
+	 * Creates the dialog displayed when configuring an envelope function node.
+	 * 
+	 * @param inputColumnSelection An option to select the input column from all
+	 *                             available and compatible columns from the input
+	 *                             table.
+	 */
 	public EnvelopeNodeDialog(final ColumnSelectionNodeOption inputColumnSelection) {
 		addDialogComponent(inputColumnSelection.getComponent());
 	}

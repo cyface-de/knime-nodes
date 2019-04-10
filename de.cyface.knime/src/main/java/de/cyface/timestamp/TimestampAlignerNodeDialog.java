@@ -31,12 +31,10 @@ import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * <p>
  * Provides the dialog for selecting the two columns to align to each other. It
  * provides two drop down menus for selecting appropriate columns from the first
  * and the second table. Appropriate columns contain either integer or long
  * values.
- * </p>
  * 
  * @author Klemens Muthmann
  * @version 1.1.0
@@ -44,19 +42,38 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  */
 public final class TimestampAlignerNodeDialog extends DefaultNodeSettingsPane {
 
+	/**
+	 * The label explaining the function of the first column selection to the user.
+	 */
 	private final static String FIRST_TABLE_LABEL = "Select the column to align.";
+	/**
+	 * The label allowing the user to rename the first timestamp column.
+	 */
 	private final static String RENAME_FIRST_TABLE_COLUMN_CHECKBOX_LABEL = "Check to rename first column";
+	/**
+	 * The new name of the first table column if the checkbox to rename was checked.
+	 */
 	private final static String RENAME_FIRST_TABLE_COLUMN_NAME_LABEL = "New name for first column";
+	/**
+	 * The label explaining the function of the second column selection to the user.
+	 */
 	private final static String SECOND_TABLE_LABEL = "Select the column to align to.";
+	/**
+	 * The label allowing the user to rename the second timestamp column.
+	 */
 	private final static String RENAME_SECOND_TABLE_COLUMN_CHECKBOX_LABEL = "Check to rename second column";
+	/**
+	 * The new name of the first table column if the checkbox to rename was checked.
+	 */
 	private final static String RENAME_SECOND_TABLE_COLUMN_NAME_LABEL = "New name for second column";
+	/**
+	 * The label of the option to allow the user to align value ranges.
+	 */
 	private final static String VALUE_RANGE_ALIGNMENT_LABEL = "Align value ranges";
 
 	/**
-	 * <p>
 	 * Creates a new completely initialized {@link TimestampAlignerNodeDialog}
 	 * as required to be returned by {@link TimestampAlignerNodeFactory}.
-	 * </p>
 	 */
 	@SuppressWarnings("unchecked")
 	public TimestampAlignerNodeDialog() {

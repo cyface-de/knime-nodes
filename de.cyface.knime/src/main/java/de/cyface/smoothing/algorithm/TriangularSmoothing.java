@@ -18,6 +18,14 @@
  */
 package de.cyface.smoothing.algorithm;
 
+/**
+ * A smoothing algorithm that smoothes a value using the weighted mean of the predecessors and successors.
+ * The used weights decrease with distance from the smoothed value.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public final class TriangularSmoothing implements Algorithm {
 
 	@Override

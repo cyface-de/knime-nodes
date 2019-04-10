@@ -18,13 +18,30 @@
  */
 package de.cyface.timestamp;
 
-import org.knime.core.data.DataTable;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataTable;
+import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
+/**
+ * An interface describing the different ways to run timestamp alignment.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public interface Execution {
 
-	BufferedDataTable[] execute(InputData input, DataTableSpec outputTableSpec, ExecutionContext context);
+    /**
+     * Executs the <code>Execution</code> according to its implementation.
+     * 
+     * @param input The input data to process.
+     * @param outputTableSpec A table specification describing the output table.
+     * @param context The KNIME <code>ExecutionContext</code>.
+     * @return The result table with aligned timestamps.
+     * @throws CanceledExecutionException If execution was canceled by the user.
+     */
+    BufferedDataTable[] execute(InputData input, DataTableSpec outputTableSpec, ExecutionContext context)
+            throws CanceledExecutionException;
 
 }

@@ -29,12 +29,27 @@
    </extension>
    
    <extension point="org.knime.workbench.repository.nodes">
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.smoothing.SmoothingNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.smoothing.SmoothingNodeFactory"/>
    <!--<node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory"/>
-   <node category-path="/cyfaceNodes" factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.export.ExportNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
    <node
          category-path="/cyfaceNodes"
          deprecated="false"

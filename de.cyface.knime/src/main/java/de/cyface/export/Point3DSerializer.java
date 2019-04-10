@@ -64,7 +64,10 @@ abstract class Point3DSerializer {
      * <code>measurementIdentifier</code>.
      *
      * @param measurementIdentifier The device wide unqiue identifier of the measurement to serialize.
+     * @param context The KNIME <code>ExecutionContext</code> used to handle cancellation and report progress.
+     * @param itemsToProcess The total amount of items to process (geo locations and 3D points).
      * @return A <code>byte</code> array containing all the data.
+     * @throws CanceledExecutionException Called if execution is cancelled during processing of these 3D points.
      */
     byte[] serialize(final BufferedDataTable pointTAble, final ExecutionContext context, final long itemsToProcess)
             throws CanceledExecutionException {

@@ -18,13 +18,29 @@
  */
 package de.cyface.envelope;
 
-public class EnvelopeNodeConstants {
+/**
+ * Constants used by the envelope node to identify settings and text that is displayed to the user.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+public final class EnvelopeNodeConstants {
 	
+    /**
+     * The identifier of the input column to the values of the hull curve.
+     */
 	static final String INPUT_COLUMN_SELECTION_IDENTIFIER = "de.cyface.envelope.input";
+	/**
+	 * The label for the setting, where the user selects the input column to calculate the hull curve over.
+	 */
 	static final String INPUT_COLUMN_SELECTION_LABEL = "Select Input";
 
+	/**
+	 * Private constructor for utility class. This prevents erroneous instantiation of this class.
+	 */
 	private EnvelopeNodeConstants() {
-		// TODO Auto-generated constructor stub
+		// Private constructor to avoid instantiation of this class.
 	}
 
 }

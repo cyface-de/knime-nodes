@@ -26,38 +26,54 @@ import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
 import de.cyface.smoothing.dialog.ColumnSelectionNodeOption;
+import de.cyface.smoothing.dialog.NodeOption;
 
-public class EnvelopeNodeFactory extends NodeFactory<EnvelopeNodeModel> {
-	
-	private final ColumnSelectionNodeOption inputColumnSelection;
+/**
+ * Factory class for the <code>EnvelopeNodeModel</code> and the <code>EnvelopeNodeDialog</code>.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+public final class EnvelopeNodeFactory extends NodeFactory<EnvelopeNodeModel> {
 
-	public EnvelopeNodeFactory() {
-		this.inputColumnSelection = new ColumnSelectionNodeOption(EnvelopeNodeConstants.INPUT_COLUMN_SELECTION_IDENTIFIER, EnvelopeNodeConstants.INPUT_COLUMN_SELECTION_LABEL, DoubleValue.class, IntValue.class, LongValue.class);
-	}
+    /**
+     * A {@link NodeOption} for the selection of input columns.
+     */
+    private final ColumnSelectionNodeOption inputColumnSelection;
 
-	@Override
-	public EnvelopeNodeModel createNodeModel() {
-		return new EnvelopeNodeModel(inputColumnSelection);
-	}
+    /**
+     * Creates a new completely initialized <code>EnvelopeNodeFactory</code> instance.
+     */
+    public EnvelopeNodeFactory() {
+        this.inputColumnSelection = new ColumnSelectionNodeOption(
+                EnvelopeNodeConstants.INPUT_COLUMN_SELECTION_IDENTIFIER,
+                EnvelopeNodeConstants.INPUT_COLUMN_SELECTION_LABEL, DoubleValue.class, IntValue.class, LongValue.class);
+    }
 
-	@Override
-	protected int getNrNodeViews() {
-		return 0;
-	}
+    @Override
+    public EnvelopeNodeModel createNodeModel() {
+        return new EnvelopeNodeModel(inputColumnSelection);
+    }
 
-	@Override
-	public NodeView<EnvelopeNodeModel> createNodeView(int viewIndex, EnvelopeNodeModel nodeModel) {
-		return null;
-	}
+    @Override
+    protected int getNrNodeViews() {
+        return 0;
+    }
 
-	@Override
-	protected boolean hasDialog() {
-		return true;
-	}
+    @Override
+    public NodeView<EnvelopeNodeModel> createNodeView(int viewIndex, EnvelopeNodeModel nodeModel) {
+        return null;
+    }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return new EnvelopeNodeDialog(inputColumnSelection);
-	}
+    @Override
+    protected boolean hasDialog() {
+        return true;
+    }
+
+    @Override
+    protected NodeDialogPane createNodeDialogPane() {
+        return new EnvelopeNodeDialog(inputColumnSelection);
+    }
 
 }

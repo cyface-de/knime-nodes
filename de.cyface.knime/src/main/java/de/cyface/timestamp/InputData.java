@@ -20,41 +20,72 @@ package de.cyface.timestamp;
 
 import org.knime.core.data.DataTable;
 
+/**
+ * A value object wrapping everything required as input for one execution of this node.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public final class InputData {
-	
-	private final DataTable firstTable;
-	private final DataTable secondTable;
-	private final String firstTimestampColumnName;
-	private final String secondTimestampColumnName;
-	
+    /**
+     * The first table to align.
+     */
+    private final DataTable firstTable;
+    /**
+     * The second table to align.
+     */
+    private final DataTable secondTable;
+    /**
+     * The name of the column to align from the first table.
+     */
+    private final String firstTimestampColumnName;
+    /**
+     * The name of the column to align from the second table.
+     */
+    private final String secondTimestampColumnName;
 
-	public InputData(final DataTable firstTable, final DataTable secondTable, final String firstTimestampColumnName, final String secondTimestampColumnName) {
-		this.firstTable = firstTable;
-		this.secondTable = secondTable;
-		this.firstTimestampColumnName = firstTimestampColumnName;
-		this.secondTimestampColumnName = secondTimestampColumnName;
-	}
+    /**
+     * Creates a new completely initialized object of this class.
+     * 
+     * @param firstTable The first table to align.
+     * @param secondTable The second table to align.
+     * @param firstTimestampColumnName The name of the column to align from the first table.
+     * @param secondTimestampColumnName The name of the column to align from the second table.
+     */
+    public InputData(final DataTable firstTable, final DataTable secondTable, final String firstTimestampColumnName,
+            final String secondTimestampColumnName) {
+        this.firstTable = firstTable;
+        this.secondTable = secondTable;
+        this.firstTimestampColumnName = firstTimestampColumnName;
+        this.secondTimestampColumnName = secondTimestampColumnName;
+    }
 
+    /**
+     * @return The first table to align.
+     */
+    public DataTable getFirstTable() {
+        return firstTable;
+    }
 
-	public DataTable getFirstTable() {
-		return firstTable;
-	}
+    /**
+     * @return The second table to align.
+     */
+    public DataTable getSecondTable() {
+        return secondTable;
+    }
 
+    /**
+     * @return The name of the column to align from the first table.
+     */
+    public String getFirstTimestampColumnName() {
+        return firstTimestampColumnName;
+    }
 
-	public DataTable getSecondTable() {
-		return secondTable;
-	}
-
-
-	public String getFirstTimestampColumnName() {
-		return firstTimestampColumnName;
-	}
-
-
-	public String getSecondTimestampColumnName() {
-		return secondTimestampColumnName;
-	}
-	
-	
-
+    /**
+     * @return The name of the column to align from the second table.
+     */
+    public String getSecondTimestampColumnName() {
+        return secondTimestampColumnName;
+    }
 }

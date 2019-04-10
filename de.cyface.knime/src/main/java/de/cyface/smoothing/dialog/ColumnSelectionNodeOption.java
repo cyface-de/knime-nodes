@@ -91,7 +91,7 @@ public class ColumnSelectionNodeOption extends StringSettingsModelOption {
 	 *            A list of possible input data values. Only columns with input
 	 *            values of one of the provided types are shown in the dialog.
 	 */
-	public ColumnSelectionNodeOption(final String configIdentifier, final String label,
+    public ColumnSelectionNodeOption(final String configIdentifier, final String label,
 			Class<? extends DataValue>... acceptedClasses) {
 		super(configIdentifier, "Select a column");
 		setComponent(new DialogComponentColumnNameSelection(getSettingsModel(), label, 0, acceptedClasses));

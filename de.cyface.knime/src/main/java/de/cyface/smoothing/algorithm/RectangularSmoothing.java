@@ -21,6 +21,13 @@ package de.cyface.smoothing.algorithm;
 import java.util.Arrays;
 import java.util.OptionalDouble;
 
+/**
+ * A smoothing algorithm, that substitutes the current value by the arithmetic mean of its predecessors and successors.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class RectangularSmoothing implements Algorithm {
 
 	@Override

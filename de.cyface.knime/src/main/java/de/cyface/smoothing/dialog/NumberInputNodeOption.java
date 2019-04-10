@@ -21,18 +21,33 @@ package de.cyface.smoothing.dialog;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 
+/**
+ * Node option taking a number as input.
+ * 
+ * @author Klemens Muthmann
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class NumberInputNodeOption extends NodeOption<SettingsModelInteger, Integer> {
-	
-	//private final SettingsModelInteger settingsModel;
-	
-	public NumberInputNodeOption(final String configIdentifier, final String label, final int defaultValue, final int stepSize) {
-		super(configIdentifier, defaultValue);
-		setComponent(new DialogComponentNumber(getSettingsModel(), label, stepSize));
-	}
 
-	@Override
-	public SettingsModelInteger getSettingsModel() {
-		return new SettingsModelInteger(getConfigIdentifier(), getDefaultValue());
-	}
+    /**
+     * Creates a new completely initialized instance of this class.
+     * 
+     * @param configIdentifier The KNIME configuration identifier used to access the settings model.
+     * @param label The label to explain to purpose of this option to the user.
+     * @param defaultValue The default value to initialize this option with.
+     * @param stepSize The amount each click on the up or down buttons to increase or decrease changes the value of this
+     *            option.
+     */
+    public NumberInputNodeOption(final String configIdentifier, final String label, final int defaultValue,
+            final int stepSize) {
+        super(configIdentifier, defaultValue);
+        setComponent(new DialogComponentNumber(getSettingsModel(), label, stepSize));
+    }
+
+    @Override
+    public SettingsModelInteger getSettingsModel() {
+        return new SettingsModelInteger(getConfigIdentifier(), getDefaultValue());
+    }
 
 }
