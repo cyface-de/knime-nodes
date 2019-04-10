@@ -57,7 +57,7 @@ import de.cyface.smoothing.algorithm.Algorithm;
  * writing the result to an output signal.
  * 
  * @author Klemens Muthmann
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class SmoothingNodeModel extends NodeModel {
@@ -238,12 +238,20 @@ public class SmoothingNodeModel extends NodeModel {
 		try {
 			// Ramp up
 			for (int i = 0; i < windowSize-1; i++) {
+			    exec.checkCanceled();
+			    
 				window.offer(iter.next());
 			}
 
 			// Execute
+			double itemsProcessed = .0;
+			
 			double[] windowValues = new double[windowSize];
 			while (iter.hasNext()) {
+			    exec.checkCanceled();
+			    exec.setProgress(((double)itemsProcessed)/inputTable.size());
+			    itemsProcessed += 1.0;
+			    
 				window.offer(iter.next());
 				DataRow currentRow = window.get(windowSize>1 ? (windowSize / 2) + 1 : 0);
 

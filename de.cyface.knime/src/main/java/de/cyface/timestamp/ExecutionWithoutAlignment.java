@@ -28,7 +28,9 @@ import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.LongCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
+import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.NodeLogger;
 
 /**
@@ -37,7 +39,7 @@ import org.knime.core.node.NodeLogger;
  * will produce an empty table.
  * 
  * @author Klemens Muthmann
- * @version 1.0.1
+ * @version 1.0.2
  * @since 1.0.0
  */
 public class ExecutionWithoutAlignment implements Execution {
@@ -47,22 +49,23 @@ public class ExecutionWithoutAlignment implements Execution {
 	 */
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(ExecutionWithoutAlignment.class);
 
+	@Override
 	public BufferedDataTable[] execute(final InputData input, final DataTableSpec outputTableSpec,
-			final ExecutionContext context) {
-		DataTable firstTable = input.getFirstTable();
-		DataTable secondTable = input.getSecondTable();
-		String firstTimestampColumnName = input.getFirstTimestampColumnName();
-		String secondTimestampColumnName = input.getSecondTimestampColumnName();
-		DataTableSpec secondTableSpec = secondTable.getDataTableSpec();
-		DataTableSpec firstTableSpec = firstTable.getDataTableSpec();
-		BufferedDataContainer res = context.createDataContainer(outputTableSpec);
+			final ExecutionContext context) throws CanceledExecutionException {
+		final DataTable firstTable = input.getFirstTable();
+		final DataTable secondTable = input.getSecondTable();
+		final String firstTimestampColumnName = input.getFirstTimestampColumnName();
+		final String secondTimestampColumnName = input.getSecondTimestampColumnName();
+		final DataTableSpec secondTableSpec = secondTable.getDataTableSpec();
+		final DataTableSpec firstTableSpec = firstTable.getDataTableSpec();
+		final BufferedDataContainer res = context.createDataContainer(outputTableSpec);
 
-		RowIterator secondTableIter = secondTable.iterator();
-		int secondTableTimestampColumnIndex = secondTableSpec.findColumnIndex(secondTimestampColumnName);
-		int firstTableTimestampColumnIndex = firstTableSpec.findColumnIndex(firstTimestampColumnName);
+		final RowIterator secondTableIter = secondTable.iterator();
+		final int secondTableTimestampColumnIndex = secondTableSpec.findColumnIndex(secondTimestampColumnName);
+		final int firstTableTimestampColumnIndex = firstTableSpec.findColumnIndex(firstTimestampColumnName);
 
-		long firstTableAlignment = calcTableAlignment(firstTable, firstTimestampColumnName);
-		long secondTableAlignment = calcTableAlignment(secondTable, secondTimestampColumnName);
+		final long firstTableAlignment = calcTableAlignment(firstTable, firstTimestampColumnName);
+		final long secondTableAlignment = calcTableAlignment(secondTable, secondTimestampColumnName);
 
 		DataRow currentSecondTableRow = getNextValidRow(secondTableTimestampColumnIndex, secondTableIter);
 		DataRow nextSecondTableRow = getNextValidRow(secondTableTimestampColumnIndex, secondTableIter);
@@ -77,7 +80,13 @@ public class ExecutionWithoutAlignment implements Execution {
 						: align(getTimestamp(secondTimestampColumnName, nextSecondTableRow,
 								secondTableTimestampColumnIndex), secondTableAlignment);
 
+				// Handle progress
+				final ExecutionMonitor monitor = context.createSubProgress(1.0);
+				int i = 0;
+				
 				for (DataRow row : firstTable) {
+				    context.checkCanceled();
+				    
 					try {
 						long timestamp = align(
 								getTimestamp(firstTimestampColumnName, row, firstTableTimestampColumnIndex),
@@ -98,6 +107,9 @@ public class ExecutionWithoutAlignment implements Execution {
 						res.addRowToTable(combinedRow);
 					} catch (MissingCellException e) {
 						LOGGER.warn("Skipping missing cell in row " + row.getKey());
+					} finally {
+						monitor.setProgress(((double)i)/((BufferedDataTable)firstTable).size());
+						i++;
 					}
 				}
 			} catch (MissingCellException e) {

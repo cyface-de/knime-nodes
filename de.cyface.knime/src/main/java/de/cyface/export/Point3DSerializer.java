@@ -24,6 +24,9 @@ import org.knime.core.data.DataRow;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.LongCell;
 import org.knime.core.node.BufferedDataTable;
+import org.knime.core.node.CanceledExecutionException;
+import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.ExecutionMonitor;
 
 /**
  * Serializes a point with 3 coordinates (i.e. acceleration, rotation, direction) into the Cyface binary format. An
@@ -31,7 +34,7 @@ import org.knime.core.node.BufferedDataTable;
  * serialization.
  *
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  */
 abstract class Point3DSerializer {
@@ -63,16 +66,24 @@ abstract class Point3DSerializer {
      * @param measurementIdentifier The device wide unqiue identifier of the measurement to serialize.
      * @return A <code>byte</code> array containing all the data.
      */
-    byte[] serialize(final BufferedDataTable pointCursor) {
-        ByteBuffer buffer = ByteBuffer
-                .allocate((int)pointCursor.size() * (Long.BYTES + 3 * Double.BYTES));
-        for(DataRow row:pointCursor) {
+    byte[] serialize(final BufferedDataTable pointTAble, final ExecutionContext context, final long itemsToProcess)
+            throws CanceledExecutionException {
+        final ByteBuffer buffer = ByteBuffer
+                .allocate((int)pointTAble.size() * (Long.BYTES + 3 * Double.BYTES));
+        double processedItems = .0;
+        final ExecutionMonitor monitor = context.createSubProgress(((double)pointTAble.size())/itemsToProcess);
+        
+        for (final DataRow row : pointTAble) {
+            context.checkCanceled();
+            monitor.setProgress(processedItems/pointTAble.size());
+            processedItems += 1.0;
+
             buffer.putLong(((LongCell)row.getCell(getTimestampColumnIndex())).getLongValue());
             buffer.putDouble(((DoubleCell)row.getCell(getXColumnIndex())).getDoubleValue());
             buffer.putDouble(((DoubleCell)row.getCell(getYColumnIndex())).getDoubleValue());
             buffer.putDouble(((DoubleCell)row.getCell(getZColumnIndex())).getDoubleValue());
         }
-        byte[] payload = new byte[buffer.capacity()];
+        final byte[] payload = new byte[buffer.capacity()];
         ((ByteBuffer)buffer.duplicate().clear()).get(payload);
         // if we want to switch from write to read mode on the byte buffer we need to .flip() !!
         return payload;

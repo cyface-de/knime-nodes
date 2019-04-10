@@ -204,7 +204,8 @@ public class ExportNodeModel extends NodeModel {
 
 		byte[] header = createHeader((int) geoLocationsTable.size(), (int) accelerationsTable.size(),
 				(int) rotationsTable.size(), (int) directionsTable.size());
-		byte[] geoLocations = serializeGeoLocations(geoLocationsTable);
+		long itemsToProcess = geoLocationsTable.size() + accelerationsTable.size() + rotationsTable.size() + directionsTable.size();
+		byte[] geoLocations = serializeGeoLocations(geoLocationsTable, exec, itemsToProcess);
 		byte[] accelerations = new Point3DSerializer() {
 
 			@Override
@@ -226,7 +227,7 @@ public class ExportNodeModel extends NodeModel {
 			protected int getTimestampColumnIndex() {
 				return accelerationsTableSpec.findColumnIndex(accTimeColSetting.getStringValue());
 			}
-		}.serialize(accelerationsTable);
+		}.serialize(accelerationsTable, exec, itemsToProcess);
 		byte[] rotations = new Point3DSerializer() {
 
 			@Override
@@ -249,7 +250,7 @@ public class ExportNodeModel extends NodeModel {
 				return rotationsTableSpec.findColumnIndex(rotTimeColSetting.getStringValue());
 			}
 
-		}.serialize(rotationsTable);
+		}.serialize(rotationsTable, exec, itemsToProcess);
 		byte[] directions = new Point3DSerializer() {
 
 			@Override
@@ -271,7 +272,7 @@ public class ExportNodeModel extends NodeModel {
 			protected int getTimestampColumnIndex() {
 				return directionsTableSpec.findColumnIndex(dirTimeColSetting.getStringValue());
 			}
-		}.serialize(directionsTable);
+		}.serialize(directionsTable, exec, itemsToProcess);
 
 		ByteBuffer buffer = ByteBuffer.allocate(
 				header.length + geoLocations.length + accelerations.length + rotations.length + directions.length);
@@ -332,20 +333,25 @@ public class ExportNodeModel extends NodeModel {
 	 * @param geoLocationsTable
 	 * @return A <code>byte</code> array containing all the data.
 	 */
-	private byte[] serializeGeoLocations(final BufferedDataTable geoLocationsTable) {
+	private byte[] serializeGeoLocations(final BufferedDataTable geoLocationsTable, final ExecutionContext context, final long itemsToProcess) throws CanceledExecutionException {
 		// Allocate enough space for all geo locations
-		ByteBuffer buffer = ByteBuffer
+		final ByteBuffer buffer = ByteBuffer
 				.allocate((int) geoLocationsTable.size() * (Long.BYTES + 3 * Double.BYTES + Integer.BYTES));
-		DataTableSpec geoLocationsSpec = geoLocationsTable.getDataTableSpec();
+		final DataTableSpec geoLocationsSpec = geoLocationsTable.getDataTableSpec();
+		ExecutionMonitor monitor = context.createSubProgress(((double)geoLocationsTable.size())/itemsToProcess);
+		double processedItems = 0.0;
 
-		for (DataRow row : geoLocationsTable) {
+		for (final DataRow row : geoLocationsTable) {
+		    context.checkCanceled();
+		    monitor.setProgress(processedItems/itemsToProcess);
+		    
 			buffer.putLong(((LongCell) row.getCell(geoLocationsSpec.findColumnIndex(geoTimeColSetting.getStringValue()))).getLongValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLatColSetting.getStringValue()))).getDoubleValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLonColSetting.getStringValue()))).getDoubleValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoSpeedColSetting.getStringValue()))).getDoubleValue());
 			buffer.putInt(((IntCell) row.getCell(geoLocationsSpec.findColumnIndex(geoAccuracyColSetting.getStringValue()))).getIntValue());
 		}
-		byte[] payload = new byte[buffer.capacity()];
+		final byte[] payload = new byte[buffer.capacity()];
 		((ByteBuffer) buffer.duplicate().clear()).get(payload);
 		// if we want to switch from write to read mode on the byte buffer we
 		// need to .flip() !!
@@ -353,7 +359,7 @@ public class ExportNodeModel extends NodeModel {
 	}
 	
 	@Override
-	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 		return new DataTableSpec[0];
 	}
 
