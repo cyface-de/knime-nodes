@@ -19,6 +19,11 @@
    <!--<node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
    <node category-path="/cyfaceNodes" factory-class="de.cyface.export.ExportNodeFactory"/>
    <node category-path="/cyfaceNodes" factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
+   <node
+         category-path="/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.reader.BinaryFormatReaderNodeFactory">
+   </node>
 </extension>
    <extension
          point="org.knime.product.splashExtension">
