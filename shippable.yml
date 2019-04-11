@@ -58,7 +58,7 @@ build:
         echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config &&
         user_host=debian@nodepit.com &&
         dest_directory=/home/debian/nodepit/download/files/cyface/3.5 &&
-        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/. $user_host:$dest_directory";
+        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/* $user_host:$dest_directory";
       fi;
   post_ci:
     # delete display
