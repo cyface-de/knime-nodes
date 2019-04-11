@@ -24,23 +24,30 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
+import de.cyface.knime.dialog.FileSelectionNodeOption;
+import de.cyface.knime.dialog.StringSelectionNodeOption;
+
 /**
  * Configures the dialog shown to the user, when configuring the node.
  * This dialog is for example reached by selecting configure from the nodes context menu.
  * The user may configure the location of the input file from the dialog.
  * 
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 2.0.0
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeDialog extends DefaultNodeSettingsPane {
-	/**
-	 * Creates a new completely initialized configuration dialog object.
-	 */
-	public BinaryFormatReaderNodeDialog() {
-		final SettingsModelString stringModel = new SettingsModelString("inputfile", "");
-		final DialogComponentFileChooser fileChooserDialogComponent = new DialogComponentFileChooser(stringModel,
-				"de.cyface.knime.reader.inputfile", JFileChooser.OPEN_DIALOG, false);
-		addDialogComponent(fileChooserDialogComponent);
-	}
+    /**
+     * Creates a new completely initialized configuration dialog object.
+     * 
+     * @param inputFileSelectionOption The file selection dialog to select the input file with.
+     * @param fileTypeSelectionNodeOption The node option to select the type of the file to read from. This might by a
+     *            complete file or only a sensor data file.
+     */
+    public BinaryFormatReaderNodeDialog(final FileSelectionNodeOption inputFileSelectionOption,
+            final StringSelectionNodeOption fileTypeSelectionNodeOption) {
+
+        addDialogComponent(inputFileSelectionOption.getComponent());
+        addDialogComponent(fileTypeSelectionNodeOption.getComponent());
+    }
 }

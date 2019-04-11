@@ -20,7 +20,6 @@ package de.cyface.knime.nodes.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -31,6 +30,7 @@ import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
+import org.knime.core.data.container.DataContainer;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.LongCell;
@@ -45,13 +45,16 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
+import de.cyface.knime.dialog.FileSelectionNodeOption;
+import de.cyface.knime.dialog.StringSelectionNodeOption;
+
 /**
  * The <code>NodeModel</code> for the Cyface binary reader node. This class
  * represents the heart of the node. It provides capabilities to validate input
  * data and contains the algorithm producing the output.
  * 
  * @author Klemens Muthmann
- * @version 1.0.0
+ * @version 2.0.0
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeModel extends NodeModel {
@@ -60,30 +63,49 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * Provides access to the configuration option for the location of the input
      * file.
      */
-    private final SettingsModelString inputFileSettings = new SettingsModelString("inputfile", "");
+    private final SettingsModelString inputFileSettings;
+    /**
+     * The settings model storing the information about which type of file to read.
+     */
+    private final SettingsModelString inputTypeSettings;
 
     /**
      * Creates a new completely initialized instance of this class, providing a node
      * with no input and four output ports.
+     * 
+     * @param inputFileSelectionOption
+     * @param stringSelectionOption
      */
-    protected BinaryFormatReaderNodeModel() {
+    protected BinaryFormatReaderNodeModel(final FileSelectionNodeOption inputFileSelectionOption,
+            final StringSelectionNodeOption stringSelectionOption) {
         super(0, 4);
+        this.inputFileSettings = inputFileSelectionOption.getSettingsModel();
+        this.inputTypeSettings = stringSelectionOption.getSettingsModel();
     }
 
     @Override
     protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
         final String inputFilePath = inputFileSettings.getStringValue();
 
-        if (!(new File(inputFilePath).exists())) {
+        File inputFile = new File(inputFilePath);
+        if (!(inputFile.exists())) {
             throw new InvalidSettingsException("Input file to read Cyface binary data from, does not exist!");
         }
-        try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
-            if (readShort(inputFileStream) != (short)1) {
-                throw new InvalidSettingsException(
-                        "Either the input file was no file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+        final String inputType = inputTypeSettings.getStringValue();
+        if (inputType.contentEquals("Measurement")) {
+            try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
+                if (readShort(inputFileStream) != (short)1) {
+                    throw new InvalidSettingsException(
+                            "Either the input file was no file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+                }
+            } catch (final IOException e) {
+                throw new InvalidSettingsException(e);
             }
-        } catch (final IOException e) {
-            throw new InvalidSettingsException(e);
+        } else {
+            if ((inputFile.length() % 32) != 0) {
+                throw new InvalidSettingsException(
+                        "The input file seems to be no valid 3D point data file (i.e. accelerations, rotations or directions). If you selected a measurement file please select Measurement as file type. Otherwise check that your file is actually valid.");
+            }
         }
 
         return new DataTableSpec[] {getGeoLocationsTableSpec(), getPoint3DTableSpec(), getPoint3DTableSpec(),
@@ -94,38 +116,61 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec)
             throws Exception {
         final String inputFilePath = inputFileSettings.getStringValue();
+        final File inputFile = new File(inputFilePath);
 
-        try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
+        try (final InputStream inputFileStream = new FileInputStream(inputFile)) {
             inputFileStream.skip(2); // Read over the file format version
 
-            final int geoLocationsCount = readInt(inputFileStream);
-            final int accelerationsCount = readInt(inputFileStream);
-            final int rotationsCount = readInt(inputFileStream);
-            final int directionsCount = readInt(inputFileStream);
+            final String inputType = inputTypeSettings.getStringValue();
+            final int geoLocationsCount = inputType == "Measurement" ? readInt(inputFileStream) : 0;
+            final int accelerationsCount = inputType == "Measurement" ? readInt(inputFileStream)
+                    : inputType == "Accelerations" ? (int)inputFile.length() / 32 : 0;
+            final int rotationsCount = inputType == "Measurement" ? readInt(inputFileStream)
+                    : inputType == "Rotations" ? (int)inputFile.length() / 32 : 0;
+            final int directionsCount = inputType == "Measurement" ? readInt(inputFileStream)
+                    : inputType == "Directions" ? (int)inputFile.length() / 32 : 0;
             exec.checkCanceled();
             final int processingSteps = geoLocationsCount + accelerationsCount + rotationsCount + directionsCount;
 
             final ExecutionMonitor geoLocationsProgressMonitor = exec
                     .createSubProgress((double)geoLocationsCount / processingSteps);
-            final BufferedDataTable geoLocationsTable = readGeoLocationsTable(inputFileStream, geoLocationsCount, exec,
-                    geoLocationsProgressMonitor, processingSteps);
+            final BufferedDataTable geoLocationsTable = inputType == "Measurement"
+                    ? readGeoLocationsTable(inputFileStream, geoLocationsCount, exec,
+                            geoLocationsProgressMonitor, processingSteps)
+                    : createEmptyTable(getGeoLocationsTableSpec(), exec);
+
             exec.checkCanceled();
             final ExecutionMonitor accelerationsProgressMonitor = exec
                     .createSubProgress((double)accelerationsCount / processingSteps);
-            final BufferedDataTable accelerationsTable = readPoint3DTable(inputFileStream, accelerationsCount, exec,
-                    accelerationsProgressMonitor, processingSteps);
+            final BufferedDataTable accelerationsTable = inputType == "Measurement" || inputType == "Accelerations"
+                    ? readPoint3DTable(inputFileStream, accelerationsCount, exec,
+                            accelerationsProgressMonitor, processingSteps)
+                    : createEmptyTable(getPoint3DTableSpec(), exec);
+
             exec.checkCanceled();
             final ExecutionMonitor rotationsProgressMonitor = exec
                     .createSubProgress((double)rotationsCount / processingSteps);
-            final BufferedDataTable rotationsTable = readPoint3DTable(inputFileStream, rotationsCount, exec,
-                    rotationsProgressMonitor, processingSteps);
+            final BufferedDataTable rotationsTable = inputType == "Measurement" || inputType == "Rotations"
+                    ? readPoint3DTable(inputFileStream, rotationsCount, exec,
+                            rotationsProgressMonitor, processingSteps)
+                    : createEmptyTable(getPoint3DTableSpec(), exec);
+
             exec.checkCanceled();
             final ExecutionMonitor directionsProgressMonitor = exec
                     .createSubProgress((double)directionsCount / processingSteps);
-            final BufferedDataTable directionsTable = readPoint3DTable(inputFileStream, directionsCount, exec,
-                    directionsProgressMonitor, processingSteps);
+            final BufferedDataTable directionsTable = inputType == "Measurement" || inputType == "Directions"
+                    ? readPoint3DTable(inputFileStream, directionsCount, exec,
+                            directionsProgressMonitor, processingSteps)
+                    : createEmptyTable(getPoint3DTableSpec(), exec);
+
             return new BufferedDataTable[] {geoLocationsTable, accelerationsTable, rotationsTable, directionsTable};
         }
+    }
+
+    private BufferedDataTable createEmptyTable(final DataTableSpec spec, final ExecutionContext context) {
+        final BufferedDataContainer container = context.createDataContainer(spec);
+        container.close();
+        return container.getTable();
     }
 
     /**
@@ -297,7 +342,8 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     }
 
     /**
-     * @return The KNIME table specification for each of the 3D point tables (i.e. accelerations, rotations, directions).
+     * @return The KNIME table specification for each of the 3D point tables (i.e. accelerations, rotations,
+     *         directions).
      */
     private DataTableSpec getPoint3DTableSpec() {
         final DataColumnSpec timestampColumnSpec = new DataColumnSpecCreator("Timestamp", LongCell.TYPE).createSpec();
