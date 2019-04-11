@@ -18,22 +18,40 @@
  */
 package de.cyface.knime.nodes.reader;
 
+import javax.swing.JFileChooser;
+
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
+import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
+
+import de.cyface.knime.dialog.FileSelectionNodeOption;
+import de.cyface.knime.dialog.StringSelectionNodeOption;
+import de.cyface.knime.dialog.FileSelectionNodeOption.DialogType;
+import de.cyface.knime.dialog.FileSelectionNodeOption.SelectionType;
 
 /**
  * The factory for the Cyface binary format reader node. Creates the node's model and dialog.
  * 
- * @author muthmann
- * @version 1.0.0
+ * @author Klemens Muthmann
+ * @version 1.0.1
  * @since 2.2.0
  */
 public class BinaryFormatReaderNodeFactory extends NodeFactory<BinaryFormatReaderNodeModel> {
+    
+    /**
+     * The option where the user selects an input file to read data from.
+     */
+    private final FileSelectionNodeOption inputFileSelectionOption = new FileSelectionNodeOption("inputfile", "de.cyface.knime.reader.inputfile", DialogType.OPEN_DIALOG, SelectionType.FILES);
+    /**
+     * The option where the user selects the type of the input file to read from.
+     */
+    private final StringSelectionNodeOption fileTypeSelectionOption = new StringSelectionNodeOption("file-type", "Please select the type of the file you want to read!", 0, "Measurement", "Accelerations", "Rotations", "Directions");
 
 	@Override
 	public BinaryFormatReaderNodeModel createNodeModel() {
-		return new BinaryFormatReaderNodeModel();
+		return new BinaryFormatReaderNodeModel(inputFileSelectionOption, fileTypeSelectionOption);
 	}
 
 	@Override
@@ -53,7 +71,7 @@ public class BinaryFormatReaderNodeFactory extends NodeFactory<BinaryFormatReade
 
 	@Override
 	protected NodeDialogPane createNodeDialogPane() {
-		return new BinaryFormatReaderNodeDialog();
+		return new BinaryFormatReaderNodeDialog(inputFileSelectionOption, fileTypeSelectionOption);
 	}
 
 }
