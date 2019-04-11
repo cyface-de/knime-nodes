@@ -32,28 +32,28 @@
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.timestamp.TimestampAlignerNodeFactory"/>
+         factory-class="de.cyface.knime.nodes.timestamp.TimestampAlignerNodeFactory"/>
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.distance.EquidistanceTransfomerNodeFactory"/>
+         factory-class="de.cyface.knime.nodes.distance.EquidistanceTransfomerNodeFactory"/>
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.smoothing.SmoothingNodeFactory"/>
+         factory-class="de.cyface.knime.nodes.smoothing.SmoothingNodeFactory"/>
    <!--<node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.export.ExportNodeFactory"/>
+         factory-class="de.cyface.knime.nodes.export.ExportNodeFactory"/>
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.envelope.EnvelopeNodeFactory"/>
+         factory-class="de.cyface.knime.nodes.envelope.EnvelopeNodeFactory"/>
    <node
          category-path="/cyfaceNodes"
          deprecated="false"
-         factory-class="de.cyface.reader.BinaryFormatReaderNodeFactory">
+         factory-class="de.cyface.knime.nodes.reader.BinaryFormatReaderNodeFactory">
    </node>
 </extension>
    <extension
