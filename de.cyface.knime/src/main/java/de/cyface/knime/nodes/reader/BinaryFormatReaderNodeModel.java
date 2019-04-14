@@ -92,7 +92,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             throw new InvalidSettingsException("Input file to read Cyface binary data from, does not exist!");
         }
         final String inputType = inputTypeSettings.getStringValue();
-        if (inputType.contentEquals("Measurement")) {
+        if (inputType.equals("Measurement")) {
             try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
                 if (readShort(inputFileStream) != (short)1) {
                     throw new InvalidSettingsException(
@@ -119,22 +119,24 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         final File inputFile = new File(inputFilePath);
 
         try (final InputStream inputFileStream = new FileInputStream(inputFile)) {
-            inputFileStream.skip(2); // Read over the file format version
-
             final String inputType = inputTypeSettings.getStringValue();
-            final int geoLocationsCount = inputType == "Measurement" ? readInt(inputFileStream) : 0;
-            final int accelerationsCount = inputType == "Measurement" ? readInt(inputFileStream)
-                    : inputType == "Accelerations" ? (int)inputFile.length() / 32 : 0;
-            final int rotationsCount = inputType == "Measurement" ? readInt(inputFileStream)
-                    : inputType == "Rotations" ? (int)inputFile.length() / 32 : 0;
-            final int directionsCount = inputType == "Measurement" ? readInt(inputFileStream)
-                    : inputType == "Directions" ? (int)inputFile.length() / 32 : 0;
+            if(inputType.equals("Measurement")) {
+                inputFileStream.skip(2); // Read over the file format version
+            }
+
+            final int geoLocationsCount = inputType.equals("Measurement") ? readInt(inputFileStream) : 0;
+            final int accelerationsCount = inputType.equals("Measurement") ? readInt(inputFileStream)
+                    : inputType.equals("Accelerations") ? (int)inputFile.length() / 32 : 0;
+            final int rotationsCount = inputType.equals("Measurement") ? readInt(inputFileStream)
+                    : inputType.equals("Rotations") ? (int)inputFile.length() / 32 : 0;
+            final int directionsCount = inputType.equals("Measurement") ? readInt(inputFileStream)
+                    : inputType.equals("Directions") ? (int)inputFile.length() / 32 : 0;
             exec.checkCanceled();
             final int processingSteps = geoLocationsCount + accelerationsCount + rotationsCount + directionsCount;
 
             final ExecutionMonitor geoLocationsProgressMonitor = exec
                     .createSubProgress((double)geoLocationsCount / processingSteps);
-            final BufferedDataTable geoLocationsTable = inputType == "Measurement"
+            final BufferedDataTable geoLocationsTable = inputType.equals("Measurement")
                     ? readGeoLocationsTable(inputFileStream, geoLocationsCount, exec,
                             geoLocationsProgressMonitor, processingSteps)
                     : createEmptyTable(getGeoLocationsTableSpec(), exec);
@@ -142,7 +144,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             exec.checkCanceled();
             final ExecutionMonitor accelerationsProgressMonitor = exec
                     .createSubProgress((double)accelerationsCount / processingSteps);
-            final BufferedDataTable accelerationsTable = inputType == "Measurement" || inputType == "Accelerations"
+            final BufferedDataTable accelerationsTable = inputType.equals("Measurement") || inputType.equals("Accelerations")
                     ? readPoint3DTable(inputFileStream, accelerationsCount, exec,
                             accelerationsProgressMonitor, processingSteps)
                     : createEmptyTable(getPoint3DTableSpec(), exec);
@@ -150,7 +152,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             exec.checkCanceled();
             final ExecutionMonitor rotationsProgressMonitor = exec
                     .createSubProgress((double)rotationsCount / processingSteps);
-            final BufferedDataTable rotationsTable = inputType == "Measurement" || inputType == "Rotations"
+            final BufferedDataTable rotationsTable = inputType.equals("Measurement") || inputType.equals("Rotations")
                     ? readPoint3DTable(inputFileStream, rotationsCount, exec,
                             rotationsProgressMonitor, processingSteps)
                     : createEmptyTable(getPoint3DTableSpec(), exec);
@@ -158,7 +160,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             exec.checkCanceled();
             final ExecutionMonitor directionsProgressMonitor = exec
                     .createSubProgress((double)directionsCount / processingSteps);
-            final BufferedDataTable directionsTable = inputType == "Measurement" || inputType == "Directions"
+            final BufferedDataTable directionsTable = inputType.equals("Measurement") || inputType.equals("Directions")
                     ? readPoint3DTable(inputFileStream, directionsCount, exec,
                             directionsProgressMonitor, processingSteps)
                     : createEmptyTable(getPoint3DTableSpec(), exec);
@@ -371,17 +373,20 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     @Override
     protected void saveSettingsTo(final NodeSettingsWO settings) {
         inputFileSettings.saveSettingsTo(settings);
+        inputTypeSettings.saveSettingsTo(settings);
     }
 
     @Override
     protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
         inputFileSettings.validateSettings(settings);
+        inputTypeSettings.validateSettings(settings);
 
     }
 
     @Override
     protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
         inputFileSettings.loadSettingsFrom(settings);
+        inputTypeSettings.loadSettingsFrom(settings);
     }
 
     @Override
