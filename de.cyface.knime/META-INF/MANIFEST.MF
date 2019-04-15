@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cyface Nodes
 Bundle-SymbolicName: de.cyface.knime;singleton:=true
-Bundle-Version: 2.2.0
+Bundle-Version: 2.3.0
 Bundle-ClassPath: .,
  lib/barefoot.jar,
  lib/esri-geometry-api.jar,
@@ -26,10 +26,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.knime.product
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cyface,
- de.cyface.distance,
- de.cyface.envelope,
- de.cyface.mapmatching,
- de.cyface.smoothing,
- de.cyface.timestamp
+ de.cyface.knime.nodes.distance,
+ de.cyface.knime.nodes.envelope,
+ de.cyface.knime.nodes.mapmatching,
+ de.cyface.knime.nodes.smoothing,
+ de.cyface.knime.nodes.timestamp
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 
