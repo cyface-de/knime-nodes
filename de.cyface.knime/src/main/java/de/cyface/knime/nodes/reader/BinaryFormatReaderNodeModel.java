@@ -353,7 +353,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         final DataColumnSpec latitudeColumnSpec = new DataColumnSpecCreator("Latitude", DoubleCell.TYPE).createSpec();
         final DataColumnSpec longitudeColumnSpec = new DataColumnSpecCreator("Longitude", DoubleCell.TYPE).createSpec();
         final DataColumnSpec speedColumnSpec = new DataColumnSpecCreator("Speed", DoubleCell.TYPE).createSpec();
-        final DataColumnSpec accuracyColumnSpec = new DataColumnSpecCreator("Accuracy", DoubleCell.TYPE).createSpec();
+        final DataColumnSpec accuracyColumnSpec = new DataColumnSpecCreator("Accuracy", IntCell.TYPE).createSpec();
         final DataTableSpec spec = new DataTableSpec(timestampColumnSpec, latitudeColumnSpec, longitudeColumnSpec,
                 speedColumnSpec, accuracyColumnSpec);
         return spec;
