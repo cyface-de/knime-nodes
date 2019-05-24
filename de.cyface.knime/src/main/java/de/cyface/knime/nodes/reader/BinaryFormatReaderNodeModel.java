@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StreamCorruptedException;
 import java.nio.ByteBuffer;
 
 import org.knime.core.data.DataCell;
@@ -30,9 +31,9 @@ import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
-import org.knime.core.data.container.DataContainer;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.DoubleCell;
+import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.LongCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
@@ -87,7 +88,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
         final String inputFilePath = inputFileSettings.getStringValue();
 
-        File inputFile = new File(inputFilePath);
+        final File inputFile = new File(inputFilePath);
         if (!(inputFile.exists())) {
             throw new InvalidSettingsException("Input file to read Cyface binary data from, does not exist!");
         }
@@ -120,7 +121,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
 
         try (final InputStream inputFileStream = new FileInputStream(inputFile)) {
             final String inputType = inputTypeSettings.getStringValue();
-            if(inputType.equals("Measurement")) {
+            if (inputType.equals("Measurement")) {
                 inputFileStream.skip(2); // Read over the file format version
             }
 
@@ -144,10 +145,11 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             exec.checkCanceled();
             final ExecutionMonitor accelerationsProgressMonitor = exec
                     .createSubProgress((double)accelerationsCount / processingSteps);
-            final BufferedDataTable accelerationsTable = inputType.equals("Measurement") || inputType.equals("Accelerations")
-                    ? readPoint3DTable(inputFileStream, accelerationsCount, exec,
-                            accelerationsProgressMonitor, processingSteps)
-                    : createEmptyTable(getPoint3DTableSpec(), exec);
+            final BufferedDataTable accelerationsTable = inputType.equals("Measurement")
+                    || inputType.equals("Accelerations")
+                            ? readPoint3DTable(inputFileStream, accelerationsCount, exec,
+                                    accelerationsProgressMonitor, processingSteps)
+                            : createEmptyTable(getPoint3DTableSpec(), exec);
 
             exec.checkCanceled();
             final ExecutionMonitor rotationsProgressMonitor = exec
@@ -169,6 +171,13 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         }
     }
 
+    /**
+     * Creates a new empty data table for the provided <code>DataTableSpec</code>.
+     * 
+     * @param spec The specification for which to create an empty data table.
+     * @param context The KNIME <code>ExecutionContext</code> within the current execution.
+     * @return An empty <code>BufferedDataTable</code> for the provided <code>DataTableSpec</code>.
+     */
     private BufferedDataTable createEmptyTable(final DataTableSpec spec, final ExecutionContext context) {
         final BufferedDataContainer container = context.createDataContainer(spec);
         container.close();
@@ -185,11 +194,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * @throws IOException If reading the stream fails
      */
     private short readShort(final InputStream input) throws IOException {
-        final byte[] inputBuffer = new byte[2];
-        input.read(inputBuffer, 0, 2);
-
-        final ByteBuffer buffer = ByteBuffer.wrap(inputBuffer);
-        return buffer.getShort();
+        return read(input, Short.BYTES).getShort();
     }
 
     /**
@@ -202,11 +207,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * @throws IOException If reading the stream fails
      */
     private int readInt(final InputStream input) throws IOException {
-        final byte[] inputBuffer = new byte[4];
-        input.read(inputBuffer, 0, 4);
-
-        final ByteBuffer buffer = ByteBuffer.wrap(inputBuffer);
-        return buffer.getInt();
+        return read(input, Integer.BYTES).getInt();
     }
 
     /**
@@ -219,11 +220,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * @throws IOException If reading the stream fails
      */
     private long readLong(final InputStream input) throws IOException {
-        final byte[] inputBuffer = new byte[8];
-        input.read(inputBuffer, 0, 8);
-
-        final ByteBuffer buffer = ByteBuffer.wrap(inputBuffer);
-        return buffer.getLong();
+        return read(input, Long.BYTES).getLong();
     }
 
     /**
@@ -237,11 +234,30 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * @throws IOException If reading the stream fails
      */
     private double readDouble(final InputStream input) throws IOException {
-        final byte[] inputBuffer = new byte[8];
-        input.read(inputBuffer, 0, 8);
+        return read(input, Double.BYTES).getDouble();
+    }
 
-        final ByteBuffer buffer = ByteBuffer.wrap(inputBuffer);
-        return buffer.getDouble();
+    /**
+     * Read a certain amount of bytes from the input stream and return them in form of a <code>ByteBuffer</code>.
+     * 
+     * @param input An open <code>InputStream</code> capable of providing at least <code>bytes</code> bytes of data.
+     * @param bytes The number of bytes to read.
+     * @return A <code>ByteBuffer</code> containing the read bytes
+     * @throws IOException If reading was not successful.
+     * @throws StreamCorruptedException If end of stream was reached during this read operation.
+     */
+    private ByteBuffer read(final InputStream input, int bytes) throws IOException {
+        final ByteBuffer buffer = ByteBuffer.allocate(bytes);
+        for (int i = 0; i < bytes; i++) {
+            int readByteAsInt = input.read();
+            if (readByteAsInt == -1) {
+                throw new StreamCorruptedException("Unexpected end of stream reached!");
+            }
+            byte readByte = (byte)readByteAsInt;
+            buffer.put(readByte);
+        }
+        buffer.position(0);
+        return buffer;
     }
 
     /**
@@ -272,13 +288,13 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             final double latitude = readDouble(input);
             final double longitude = readDouble(input);
             final double speed = readDouble(input);
-            final double accuracy = readDouble(input);
+            final int accuracy = readInt(input);
 
             final DataCell timestampCell = new LongCell(timestamp);
             final DataCell latitudeCell = new DoubleCell(latitude);
             final DataCell longitudeCell = new DoubleCell(longitude);
             final DataCell speedCell = new DoubleCell(speed);
-            final DataCell accuracyCell = new DoubleCell(accuracy);
+            final DataCell accuracyCell = new IntCell(accuracy);
             final DataRow row = new DefaultRow(new RowKey(String.valueOf(i)), timestampCell, latitudeCell,
                     longitudeCell, speedCell, accuracyCell);
             geoLocationsContainer.addRowToTable(row);
@@ -337,7 +353,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         final DataColumnSpec latitudeColumnSpec = new DataColumnSpecCreator("Latitude", DoubleCell.TYPE).createSpec();
         final DataColumnSpec longitudeColumnSpec = new DataColumnSpecCreator("Longitude", DoubleCell.TYPE).createSpec();
         final DataColumnSpec speedColumnSpec = new DataColumnSpecCreator("Speed", DoubleCell.TYPE).createSpec();
-        final DataColumnSpec accuracyColumnSpec = new DataColumnSpecCreator("Accuracy", DoubleCell.TYPE).createSpec();
+        final DataColumnSpec accuracyColumnSpec = new DataColumnSpecCreator("Accuracy", IntCell.TYPE).createSpec();
         final DataTableSpec spec = new DataTableSpec(timestampColumnSpec, latitudeColumnSpec, longitudeColumnSpec,
                 speedColumnSpec, accuracyColumnSpec);
         return spec;
