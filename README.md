@@ -81,7 +81,7 @@ and substitute X.X.X-XXX with your new version. The project is versioned using s
 Licensing
 ---------
 
-Copyright 2018 Cyface GmbH
+Copyright 2018, 2019 Cyface GmbH
  
 This file is part of the Cyface KNIME Nodes.
 
