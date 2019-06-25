@@ -66,6 +66,7 @@ The following command builds the entire project, creates an update site, runs un
 ``` 
 mvn clean verify 
 ```
+**ATTENTION**: Make sure to use Java 8. Building this does not yet work with higher versions yet.
 
 Releasing a new version
 -----------------------
