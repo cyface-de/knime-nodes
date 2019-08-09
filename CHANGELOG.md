@@ -26,6 +26,7 @@ The source code is available on [Github](https://github.com/cyface-de/knime-node
 ## [2.2.0] - 2019-04-10
 ### Changed
 * All nodes are cancelable now and report progress correctly
+
 ### Added
 * Reader node for the Cyface binary format
 
@@ -89,6 +90,7 @@ The source code is available on [Github](https://github.com/cyface-de/knime-node
 ## [1.2.1] - 2018-06-27
 ### Fixed
 * Changing the selection of append and replace in the smoothing node does work now
+
 ### Added
 * Explanations on how to release new version of the Cyface KNIME Nodes
 
