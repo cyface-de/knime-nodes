@@ -22,8 +22,10 @@
       provider-name="Cyface GmbH">
 
    <description>
-      The Cyface KNIME Nodes add functionality with a focus on time series 
+      The Cyface KNIME Nodes add functionality with a focus on data import, time series 
  analysis and geo information processing.
+ 
+ To generate data you may use our Android (https://play.google.com/store/apps/details?id=de.cyface.app) or iOS application or create your own App using our Software-Development-Kit for Android (https://github.com/cyface-de/android-backend) or iOS (https://github.com/cyface-de/ios-backend).
  
  These nodes are supported by NodePit (https://nodepit.com). 
  Do you have feedback, questions, comments or want to support 
