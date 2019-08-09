@@ -1,12 +1,12 @@
 # Changelog
 
 This is the changelog for the Cyface KNIME Nodes Project.
-It gives an overview of the most prominent changes in each release. 
-Minor fixes, changes “under the hood” and refactoring changes are not listed here. 
-We follow the [https://semver.org/spec/v2.0.0.html](Semantic Versioning) scheme and the guidelines from [https://keepachangelog.com/en/1.0.0/](“Keep a Changelog”) as close as possible.
+It gives an overview of the most prominent changes in each release.
+Minor fixes, changes “under the hood” and refactoring changes are not listed here.
+We follow the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) scheme and the guidelines from ["Keep a Changelog"](https://keepachangelog.com/en/1.0.0/) as close as possible.
 
 The Cyface KNIME Nodes are open sourced under GPLv3.
-The source code is available on [https://github.com/cyface-de/knime-nodes](Github).
+The source code is available on [Github](https://github.com/cyface-de/knime-nodes).
 
 ## [Unreleased]
 
