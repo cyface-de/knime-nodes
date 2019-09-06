@@ -8,7 +8,11 @@ We follow the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) scheme 
 The Cyface KNIME Nodes are open sourced under GPLv3.
 The source code is available on [Github](https://github.com/cyface-de/knime-nodes).
 
-## [Unreleased]
+## [2.4.1] - 2019-09-06
+### Fixed
+* Smoothing node now creates a valid output also for small inputs
+### Changed
+* Feature description was extended
 
 ## [2.4.0] - 2019-06-25
 ### Info
