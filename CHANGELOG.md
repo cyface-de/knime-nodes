@@ -9,6 +9,10 @@ The Cyface KNIME Nodes are open sourced under GPLv3.
 The source code is available on [Github](https://github.com/cyface-de/knime-nodes).
 
 ## [Unreleased]
+### Fixed
+* Smoothing node now creates a valid output also for small inputs
+### Changed
+* Feature description was extended
 
 ## [2.4.0] - 2019-06-25
 ### Info
