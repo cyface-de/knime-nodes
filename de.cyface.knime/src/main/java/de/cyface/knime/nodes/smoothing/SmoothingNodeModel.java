@@ -137,8 +137,7 @@ public class SmoothingNodeModel extends NodeModel {
 				algorithm = selectAlgorithm();
 			}
 		});
-		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;// new
-																				// SettingsModelString(SmoothingNodeConstants.INPUT_COL_SELECTION_SETTINGS_MODEL_CONFIG_NAME,"");//
+		this.inputColSelectionSettingsModel = inputColSelectionSettingsModel;
 		this.appendReplaceChooserSettingsModel = appendReplaceChooserSettingsModel;
 		this.appendReplaceChooserSettingsModel.addChangeListener(event -> {
 			if (appendReplaceChooserSettingsModel.getStringValue().equals(SmoothingNodeConstants.REPLACE_OPTION)) {
@@ -194,7 +193,7 @@ public class SmoothingNodeModel extends NodeModel {
 		inputColSelectionSettingsModel.validateSettings(settings);
 		appendReplaceChooserSettingsModel.validateSettings(settings);
 		appendColumnNameInputSettingsModel.validateSettings(settings);
-		// This is necessary since the actual values are ususally not loaded at this stage.
+		// This is necessary since the actual values are usually not loaded at this stage.
 		SettingsModelString appendColumnNameInputSettingsModelClone = appendColumnNameInputSettingsModel.createCloneWithValidatedValue(settings);
 		SettingsModelString appendReplaceChooserSettingsModelClone = appendReplaceChooserSettingsModel.createCloneWithValidatedValue(settings);
 		if (appendReplaceChooserSettingsModelClone.getStringValue().equals(SmoothingNodeConstants.APPEND_OPTION)
@@ -271,10 +270,10 @@ public class SmoothingNodeModel extends NodeModel {
 				
 				window.poll();
 			}
-
-			outputContainer.close();
 		} catch (NoSuchElementException e) {
 			LOGGER.warn("Window Size was larger than table. No smoothing possible!");
+		} finally {
+		    outputContainer.close();
 		}
 		return new BufferedDataTable[] { outputContainer.getTable() };
 	}
