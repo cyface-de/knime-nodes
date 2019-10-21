@@ -59,7 +59,7 @@ import de.cyface.knime.dialog.StringSelectionNodeOption;
  * 
  * @author Klemens Muthmann
  * @author Armin Schnabel
- * @version 2.1.0
+ * @version 2.2.0
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeModel extends NodeModel {
@@ -101,7 +101,16 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
                 if (readShort(inputFileStream) != (short)1) {
                     throw new InvalidSettingsException(
-                            "Either the input file was no file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+                            "Either the input file was no uncompressed file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+                }
+            } catch (final IOException e) {
+                throw new InvalidSettingsException(e);
+            }
+        } else if (inputType.equals("Events")) {
+            try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
+                if (readShort(inputFileStream) != (short)1) {
+                    throw new InvalidSettingsException(
+                            "Either the input file was no uncompressed file in Cyface Events binary format or it has the wrong version. Only version 1 is supported at the moment.");
                 }
             } catch (final IOException e) {
                 throw new InvalidSettingsException(e);
@@ -109,7 +118,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         } else {
             if ((inputFile.length() % 32) != 0) {
                 throw new InvalidSettingsException(
-                        "The input file seems to be no valid 3D point data file (i.e. accelerations, rotations or directions). If you selected a measurement file please select Measurement as file type. Otherwise check that your file is actually valid.");
+                        "The input file seems to be no valid uncompressed 3D point data file (i.e. accelerations, rotations or directions). If you selected a measurement file please select Measurement as file type. Otherwise check that your file is actually valid.");
             }
         }
 
