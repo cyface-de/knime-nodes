@@ -35,16 +35,16 @@
 				The node is capable of parsing an unzipped file in Cyface binary
 				format and extract all the data (geo locations, accelerations,
 				rotations and directions) from it into 4 separate tables.
+				It also supports the Cyface Events binary format.
 			</p>
 		</intro>
 		<option name="Input File">
-			Select an input file in Cyface binary format.
+			Select an input file in Cyface binary format (.cyf or .cyfe).
 		</option>
 		<option name="File Type">
-			The type of the file to read. This can either be a
-			complete Measurement file or only the sensor part (accelerations,
-			directions or rotations). In the second case all tables with no data
-			will remain empty.
+			The type of the file to read. This can be a complete Measurement file,
+			only the sensor part (accelerations, directions or rotations) or only the
+			Events. In the later cases all tables with no data will remain empty.
 		</option>
 	</fullDescription>
 
@@ -63,6 +63,10 @@
 		</outPort>
 		<outPort index="3" name="Directions">The output table containing the
 			smoothed signal either by replacing the input column or appended as a
+			new column.
+		</outPort>
+		<outPort index="4" name="Events">The output table containing the
+			event entries either by replacing the input column or appended as a
 			new column.
 		</outPort>
 	</ports>
