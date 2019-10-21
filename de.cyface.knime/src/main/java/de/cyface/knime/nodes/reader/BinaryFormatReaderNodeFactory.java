@@ -36,7 +36,7 @@ import de.cyface.knime.dialog.FileSelectionNodeOption.SelectionType;
  * 
  * @author Klemens Muthmann
  * @author Armin Schnabel
- * @version 1.1.0
+ * @version 1.0.2
  * @since 2.2.0
  */
 public class BinaryFormatReaderNodeFactory extends NodeFactory<BinaryFormatReaderNodeModel> {

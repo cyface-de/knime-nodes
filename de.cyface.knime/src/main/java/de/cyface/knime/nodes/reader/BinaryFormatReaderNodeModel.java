@@ -59,7 +59,7 @@ import de.cyface.knime.dialog.StringSelectionNodeOption;
  * 
  * @author Klemens Muthmann
  * @author Armin Schnabel
- * @version 2.2.0
+ * @version 2.1.0
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeModel extends NodeModel {
