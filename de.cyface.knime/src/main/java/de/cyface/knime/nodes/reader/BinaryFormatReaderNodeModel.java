@@ -19,11 +19,13 @@
 package de.cyface.knime.nodes.reader;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StreamCorruptedException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -35,6 +37,7 @@ import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.LongCell;
+import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -55,7 +58,8 @@ import de.cyface.knime.dialog.StringSelectionNodeOption;
  * data and contains the algorithm producing the output.
  * 
  * @author Klemens Muthmann
- * @version 2.0.0
+ * @author Armin Schnabel
+ * @version 2.1.0
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeModel extends NodeModel {
@@ -79,7 +83,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      */
     protected BinaryFormatReaderNodeModel(final FileSelectionNodeOption inputFileSelectionOption,
             final StringSelectionNodeOption stringSelectionOption) {
-        super(0, 4);
+        super(0, 5);
         this.inputFileSettings = inputFileSelectionOption.getSettingsModel();
         this.inputTypeSettings = stringSelectionOption.getSettingsModel();
     }
@@ -97,7 +101,16 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
                 if (readShort(inputFileStream) != (short)1) {
                     throw new InvalidSettingsException(
-                            "Either the input file was no file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+                            "Either the input file was no uncompressed file in Cyface binary format or it has the wrong version. Only version 1 is supported at the moment.");
+                }
+            } catch (final IOException e) {
+                throw new InvalidSettingsException(e);
+            }
+        } else if (inputType.equals("Events")) {
+            try (final InputStream inputFileStream = new FileInputStream(inputFilePath)) {
+                if (readShort(inputFileStream) != (short)1) {
+                    throw new InvalidSettingsException(
+                            "Either the input file was no uncompressed file in Cyface Events binary format or it has the wrong version. Only version 1 is supported at the moment.");
                 }
             } catch (final IOException e) {
                 throw new InvalidSettingsException(e);
@@ -105,12 +118,12 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         } else {
             if ((inputFile.length() % 32) != 0) {
                 throw new InvalidSettingsException(
-                        "The input file seems to be no valid 3D point data file (i.e. accelerations, rotations or directions). If you selected a measurement file please select Measurement as file type. Otherwise check that your file is actually valid.");
+                        "The input file seems to be no valid uncompressed 3D point data file (i.e. accelerations, rotations or directions). If you selected a measurement file please select Measurement as file type. Otherwise check that your file is actually valid.");
             }
         }
 
         return new DataTableSpec[] {getGeoLocationsTableSpec(), getPoint3DTableSpec(), getPoint3DTableSpec(),
-                getPoint3DTableSpec()};
+                getPoint3DTableSpec(), getEventsTableSpec()};
     }
 
     @Override
@@ -121,7 +134,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
 
         try (final InputStream inputFileStream = new FileInputStream(inputFile)) {
             final String inputType = inputTypeSettings.getStringValue();
-            if (inputType.equals("Measurement")) {
+            if (inputType.equals("Measurement") || inputType.equals("Events")) {
                 inputFileStream.skip(2); // Read over the file format version
             }
 
@@ -132,8 +145,9 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
                     : inputType.equals("Rotations") ? (int)inputFile.length() / 32 : 0;
             final int directionsCount = inputType.equals("Measurement") ? readInt(inputFileStream)
                     : inputType.equals("Directions") ? (int)inputFile.length() / 32 : 0;
+            final int eventsCount = inputType.equals("Events") ? readInt(inputFileStream) : 0;
             exec.checkCanceled();
-            final int processingSteps = geoLocationsCount + accelerationsCount + rotationsCount + directionsCount;
+            final int processingSteps = geoLocationsCount + accelerationsCount + rotationsCount + directionsCount + eventsCount;
 
             final ExecutionMonitor geoLocationsProgressMonitor = exec
                     .createSubProgress((double)geoLocationsCount / processingSteps);
@@ -167,7 +181,14 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
                             directionsProgressMonitor, processingSteps)
                     : createEmptyTable(getPoint3DTableSpec(), exec);
 
-            return new BufferedDataTable[] {geoLocationsTable, accelerationsTable, rotationsTable, directionsTable};
+            final ExecutionMonitor eventsProgressMonitor = exec
+                    .createSubProgress((double)eventsCount / processingSteps);
+            final BufferedDataTable eventsTable = inputType.equals("Events")
+                    ? readEventsTable(inputFileStream, eventsCount, exec,
+                            eventsProgressMonitor, processingSteps)
+                    : createEmptyTable(getEventsTableSpec(), exec);
+
+            return new BufferedDataTable[] {geoLocationsTable, accelerationsTable, rotationsTable, directionsTable, eventsTable};
         }
     }
 
@@ -235,6 +256,21 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      */
     private double readDouble(final InputStream input) throws IOException {
         return read(input, Double.BYTES).getDouble();
+    }
+
+    /**
+     * Reads the next eight byte from the <code>input</code> as a
+     * <code>double</code> value. The bytes should be ordered in Java typical big
+     * endian format.
+     * 
+     * @param input An open input stream capable of providing at least eight bytes
+     *            of data
+     * @return The <code>double</code> value read from the input stream
+     * @throws IOException If reading the stream fails
+     */
+    private String readString(final InputStream input, int bytes) throws IOException {
+        final ByteBuffer byteBuffer = read(input, bytes);
+        return StandardCharsets.UTF_8.decode(byteBuffer).toString();
     }
 
     /**
@@ -346,6 +382,49 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     }
 
     /**
+     * Reads <code>count</code> events from the <code>input</code> and
+     * provides them in the form of a new <code>BufferedDataTable</code>.
+     * 
+     * @param input The stream to read the events from
+     * @param count The number of events to read
+     * @param context The KNIME <code>ExecutionContext</code>
+     * @param monitor An <code>ExecutionMonitor</code> used to track reading
+     *            progress. This should be a sub monitor of the
+     *            <code>ExecutionContext</code>
+     * @param processingSteps The number of total processing steps during execution
+     *            of this node. This is required to track progress
+     *            appropriately
+     * @return A new <code>BufferedDataTable</code> containing all the events
+     *         read
+     * @throws IOException If reading the stream fails
+     * @throws CanceledExecutionException If execution was canceled by the user
+     *             while reading events.
+     */
+    private BufferedDataTable readEventsTable(final InputStream input, final int count,
+            final ExecutionContext context, final ExecutionMonitor monitor, final int processingSteps)
+            throws IOException, CanceledExecutionException {
+        final BufferedDataContainer eventsContainer = context.createDataContainer(getEventsTableSpec());
+        for (int i = 0; i < count; i++) {
+        	// Bytes: long timestamp, short event type enum, short value byte length, variable value UTF-8 bytes
+            final long timestamp = readLong(input);
+            final short eventType = readShort(input);
+            final short valueByteLength = readShort(input);
+            final String value = readString(input, (int) valueByteLength);
+            
+            final DataCell timestampCell = new LongCell(timestamp);
+            final DataCell eventTypeCell = new IntCell(eventType);
+            final DataCell valueCell = new StringCell(value);
+            final DataRow row = new DefaultRow(new RowKey(String.valueOf(i)), timestampCell, eventTypeCell,
+            		valueCell);
+            eventsContainer.addRowToTable(row);
+            context.checkCanceled();
+            monitor.setProgress((double)i / processingSteps);
+        }
+        eventsContainer.close();
+        return eventsContainer.getTable();
+    }
+
+    /**
      * @return The KNIME table specification for the geo locations table.
      */
     private DataTableSpec getGeoLocationsTableSpec() {
@@ -369,6 +448,17 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         final DataColumnSpec yColumnSpec = new DataColumnSpecCreator("y", DoubleCell.TYPE).createSpec();
         final DataColumnSpec zColumnSpec = new DataColumnSpecCreator("z", DoubleCell.TYPE).createSpec();
         final DataTableSpec spec = new DataTableSpec(timestampColumnSpec, xColumnSpec, yColumnSpec, zColumnSpec);
+        return spec;
+    }
+
+    /**
+     * @return The KNIME table specification for the events table.
+     */
+    private DataTableSpec getEventsTableSpec() {
+        final DataColumnSpec timestampColumnSpec = new DataColumnSpecCreator("Timestamp", LongCell.TYPE).createSpec();
+        final DataColumnSpec eventTypeColumnSpec = new DataColumnSpecCreator("EventType", IntCell.TYPE).createSpec();
+        final DataColumnSpec valueColumnSpec = new DataColumnSpecCreator("Value", StringCell.TYPE).createSpec();
+        final DataTableSpec spec = new DataTableSpec(timestampColumnSpec, eventTypeColumnSpec, valueColumnSpec);
         return spec;
     }
 
