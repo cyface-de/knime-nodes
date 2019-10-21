@@ -40,7 +40,7 @@
 		</intro>
 		<option name="Input File">
 			Select an input file in the uncompressed Cyface binary format (.cyf or .cyfe).
-			To uncompress Cyface binaries see this Readme: https://github.com/cyface-de/data-collector#administration
+			To uncompress Cyface binaries see the <a href="https://github.com/cyface-de/data-collector#administration">Cyface Data Collector Readme</a>.
 		</option>
 		<option name="File Type">
 			The type of the file to read. This can be a complete Measurement file,

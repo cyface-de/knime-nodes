@@ -83,7 +83,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      */
     protected BinaryFormatReaderNodeModel(final FileSelectionNodeOption inputFileSelectionOption,
             final StringSelectionNodeOption stringSelectionOption) {
-        super(0, 4);
+        super(0, 5);
         this.inputFileSettings = inputFileSelectionOption.getSettingsModel();
         this.inputTypeSettings = stringSelectionOption.getSettingsModel();
     }
@@ -123,7 +123,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
         }
 
         return new DataTableSpec[] {getGeoLocationsTableSpec(), getPoint3DTableSpec(), getPoint3DTableSpec(),
-                getPoint3DTableSpec()};
+                getPoint3DTableSpec(), getEventsTableSpec()};
     }
 
     @Override
