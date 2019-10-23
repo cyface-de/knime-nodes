@@ -39,7 +39,7 @@
 			</p>
 		</intro>
 		<option name="Input File">
-			Select an input file in the uncompressed Cyface binary format (.cyf or .cyfe).
+			Select an input file in the uncompressed Cyface binary format (i.e. .cyf, cyfa, .cyfr, .cyfd or .cyfe).
 			To uncompress Cyface binaries see the <a href="https://github.com/cyface-de/data-collector#administration">Cyface Data Collector Readme</a>.
 		</option>
 		<option name="File Type">
