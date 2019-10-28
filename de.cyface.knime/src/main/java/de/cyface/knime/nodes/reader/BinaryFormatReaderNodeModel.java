@@ -59,7 +59,7 @@ import de.cyface.knime.dialog.StringSelectionNodeOption;
  * 
  * @author Klemens Muthmann
  * @author Armin Schnabel
- * @version 2.1.0
+ * @version 2.1.1
  * @since 2.2.0
  */
 public final class BinaryFormatReaderNodeModel extends NodeModel {
@@ -259,16 +259,17 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     }
 
     /**
-     * Reads the next eight byte from the <code>input</code> as a
-     * <code>double</code> value. The bytes should be ordered in Java typical big
-     * endian format.
+     * Reads the next bytes from the <code>input</code> as a <code>String</code> value.
+     * The number of bytes read is defined by the parameter <code>bytes</code>.
+     * The bytes should be ordered in Java typical big endian format.
+     * The <code>StandardCharsets.UTF_8</code> is expected. 
      * 
      * @param input An open input stream capable of providing at least eight bytes
      *            of data
      * @return The <code>double</code> value read from the input stream
      * @throws IOException If reading the stream fails
      */
-    private String readString(final InputStream input, int bytes) throws IOException {
+    private String readString(final InputStream input, final int bytes) throws IOException {
         final ByteBuffer byteBuffer = read(input, bytes);
         return StandardCharsets.UTF_8.decode(byteBuffer).toString();
     }
