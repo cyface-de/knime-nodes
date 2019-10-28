@@ -35,7 +35,8 @@ import de.cyface.knime.dialog.FileSelectionNodeOption.SelectionType;
  * The factory for the Cyface binary format reader node. Creates the node's model and dialog.
  * 
  * @author Klemens Muthmann
- * @version 1.0.1
+ * @author Armin Schnabel
+ * @version 1.0.2
  * @since 2.2.0
  */
 public class BinaryFormatReaderNodeFactory extends NodeFactory<BinaryFormatReaderNodeModel> {
@@ -47,7 +48,7 @@ public class BinaryFormatReaderNodeFactory extends NodeFactory<BinaryFormatReade
     /**
      * The option where the user selects the type of the input file to read from.
      */
-    private final StringSelectionNodeOption fileTypeSelectionOption = new StringSelectionNodeOption("file-type", "Please select the type of the file you want to read!", 0, "Measurement", "Accelerations", "Rotations", "Directions");
+    private final StringSelectionNodeOption fileTypeSelectionOption = new StringSelectionNodeOption("file-type", "Please select the type of the file you want to read!", 0, "Measurement", "Accelerations", "Rotations", "Directions", "Events");
 
 	@Override
 	public BinaryFormatReaderNodeModel createNodeModel() {

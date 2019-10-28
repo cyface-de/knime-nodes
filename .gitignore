@@ -10,3 +10,9 @@ bin/
 target
 .classpath
 
+# IndelliJ
+.idea/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
