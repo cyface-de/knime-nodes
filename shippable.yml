@@ -41,10 +41,11 @@ build:
   cache_dir_list:
     - $HOME/.m2
   ci:
-    # create display for workflow tests
+    # https://github.com/Shippable/support/issues/5172
     - rm /etc/apt/sources.list.d/basho_riak.list
     - apt-get update
     - apt-get install xvfb -y
+    # create display for workflow tests
     - Xvfb :12345 & export DISPLAY=:12345
 
     # maven build
