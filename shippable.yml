@@ -22,6 +22,10 @@ language: java
 jdk:
   - oraclejdk8
 
+# Environment variables
+env:
+  - secure: BkbBqRptG7YLiHx0Q34lPyll6pGeeSOI5g1X6Ws9cjV4q9xJ3ItUbXggqofPo1r2KO9q5zv9IMWwU91w6fgPOx9G4Ufb4NlrkstE/+87xcSK/gRNdaruu2G8dgJZ3lK2nYzeh8oalYrgE8Rh9wOGwcdSXml3EavkW84j0PL8sOeh9gRjNwFYohSknw18f1CxnGkiIVco6QdVqbnUP6GCA8ltCk2TMakv7B2LGZkxEa3kCM7EUQxLwnuxF7qTyl6vNAFtuwaS3H1FnqcbfoJxFDcHyNxMq8sXSjeZ7A/x7CYLZHAv9PWc2/kbZ8/QGCXPKuOZ3CdOt1Rd1bC9iGwgfQ==
+
 # Let Shippable inject the SSH key for nodepit.com
 integrations:
   key:
@@ -57,7 +61,8 @@ build:
         echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config &&
         user_host=debian@nodepit.com &&
         dest_directory=/home/debian/nodepit/download/files/cyface/3.5 &&
-        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/* $user_host:$dest_directory";
+        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host 'mkdir -p $dest_directory' && scp -rp de.cyface.knime.p2/target/repository/* $user_host:$dest_directory" &&
+        ./update-product.sh https://nodepit.com/api/product/cyface $PRODUCT_EDIT_TOKEN CHANGELOG.md;
       fi;
   post_ci:
     # delete display
