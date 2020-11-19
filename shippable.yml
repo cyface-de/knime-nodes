@@ -63,8 +63,8 @@ build:
         label=3.5 &&
         download_directory=/home/debian/nodepit/download/files/cyface/$label &&
         download_zip=${download_directory}.zip &&
-        ssh-agent bash -c "ssh-add ~/.ssh/nodepit.pem && ssh $user_host '[ -e $download_directory ] && rm -r $download_directory; mkdir -p $download_directory' && scp -rp de.cyface.knime.p2/target/repository/* $user_host:$download_directory" &&
-        ssh-agent bash -c "ssh-add ~/.ssh/nodepit.pem && ssh $user_host '[ -e $download_zip ] && rm -r $download_zip'; scp -rp de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip $user_host:$download_zip" &&
+        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host '[ -e $download_directory ] && rm -r $download_directory; mkdir -p $download_directory' && scp -rp de.cyface.knime.p2/target/repository/* $user_host:$download_directory" &&
+        ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host '[ -e $download_zip ] && rm -r $download_zip'; scp -rp de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip $user_host:$download_zip" &&
         ./update-product.sh https://nodepit.com/api/product/cyface $PRODUCT_EDIT_TOKEN CHANGELOG.md;
       fi;
   post_ci:
