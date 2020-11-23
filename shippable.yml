@@ -45,18 +45,16 @@ build:
     - rm /etc/apt/sources.list.d/basho_riak.list
     - apt-get update
     - apt-get install xvfb -y
-    # create display for workflow tests
-    - Xvfb :12345 & export DISPLAY=:12345
 
     # maven build
-    - mvn -V -B clean install
+    - xvfb-run mvn -V -B clean verify
 
      # copy test and coverage results where shippable expects them
     - cp -r de.cyface.knime.tests/target/surefire-reports/. shippable/testresults/
     - cp -r de.cyface.knime.tests/target/site/jacoco/. shippable/codecoverage/
     - cp -r de.cyface.knime.tests/target/testflow-reports/. shippable/testresults/
 
-    # only upload to nodepit.com when this is running on master branch
+    # upload update site to nodepit.com when running on master branch
     - >
       if [ "$BRANCH" == "master" ] && [ "$IS_PULL_REQUEST" == false ]; then
         mkdir -p ~/.ssh &&
@@ -69,6 +67,3 @@ build:
         ssh-agent bash -c "ssh-add /tmp/ssh/nodepit && ssh $user_host '[ -e $download_zip ] && rm -r $download_zip'; scp -rp de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip $user_host:$download_zip" &&
         ./update-product.sh https://nodepit.com/api/product/cyface $PRODUCT_EDIT_TOKEN CHANGELOG.md;
       fi;
-  post_ci:
-    # delete display
-    - pkill -f "Xvfb :12345"
