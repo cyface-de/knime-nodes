@@ -1,5 +1,4 @@
-Cyface KNIME Nodes
-==================
+# Cyface KNIME Nodes
 
 [![Run Status](https://api.shippable.com/projects/5b22529108daf207007b4520/badge?branch=master)](https://app.shippable.com/github/cyface-de/knime-nodes)
 [![Coverage Badge](https://api.shippable.com/projects/5b22529108daf207007b4520/coverageBadge?branch=master)](https://app.shippable.com/github/cyface-de/knime-nodes)
@@ -15,57 +14,56 @@ Some of the Nodes are work in progress and will not work directly. Please see th
 - **Map Matching (WIP):** A node to map match a table of coordinates. This is still work in progress and does not work yet.
 - **Smooting:** A node for smoothing a data signal.
 
-Installation 
-------------
+## Installation
 
 Requirements:
- 
-* KNIME, https://www.knime.org 
 
-Steps to get Cyface KNIME Nodes inside KNIME: 
+- KNIME, <https://www.knime.org>
 
-1. Goto Help > Install new software ... menu 
-2. Press add button 
-3. Fill text fields with `http://download.nodepit.com/cyface/3.6` 
-4. Select --all sites-- in work with pulldown 
-5. Select Cyface KNIME Nodes 
-6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this) 
+Steps to get Cyface KNIME Nodes inside KNIME:
 
-Development 
------------
+1. Goto Help > Install new software ... menu
+2. Press add button
+3. Fill text fields with `http://download.nodepit.com/cyface/3.5`
+4. Select --all sites-- in work with pulldown
+5. Select Cyface KNIME Nodes
+6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this)
+
+## Development
 
 Development requirements:
- 
-* Eclipse, https://eclipse.org 
-* Maven, https://maven.apache.org 
 
-Steps to get development environment setup: 
+- Eclipse, <https://eclipse.org>
+- Maven, <https://maven.apache.org>
 
-1. Download, install and run [Eclipse Oxygen](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/oxygenr) 
-2. Clone this Git repository 
-3. Import root project folder (pom.xml) into Eclipse using `File → Import... → Maven → Existing Maven Projects` 
-4. Open subproject `targetplatform/de.cyface.knime.targetplatform.target` in Eclipse and select `Set as Active Target Platform` 
+Steps to get development environment setup:
 
-During import the Tycho Eclipse providers have to be be installed. If this is not done automatically by Eclipse, perform the following steps: 
+1. Download, install and run [Eclipse Oxygen](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/oxygenr)
+2. Clone this Git repository
+3. Import root project folder (pom.xml) into Eclipse using `File → Import... → Maven → Existing Maven Projects`
+4. Open subproject `targetplatform/de.cyface.knime.targetplatform.target` in Eclipse and select `Set as Active Target Platform`
 
-1. Goto Eclipse Preferences and browse to `Maven → Discovery → Open Catalog` 
-2. Install Tycho Integrations 
+During import the Tycho Eclipse providers have to be be installed. If this is not done automatically by Eclipse, perform the following steps:
 
-### Build 
+1. Goto Eclipse Preferences and browse to `Maven → Discovery → Open Catalog`
+2. Install Tycho Integrations
 
-The following command builds the entire project: 
+### Build
 
-``` 
-mvn clean package 
+The following command builds the entire project:
+
+```bash
+mvn clean package
 ```
 
-### Test 
+### Test
 
-The following command builds the entire project, creates an update site, runs unit tests and test workflows: 
+The following command builds the entire project, creates an update site, runs unit tests and test workflows:
 
-``` 
-mvn clean verify 
+```bash
+mvn clean verify
 ```
+
 **ATTENTION**: Make sure to use Java 8. Building this does not yet work with higher versions yet.
 
 ### Run the Knime node directly from Eclipse
@@ -86,7 +84,7 @@ In order to test changes made to the Cyface Binary Format Reader node you can ex
 - Navigate to `File > Export > Plug-in Development > Deployable plugins and fragments`
 - Select `de.cyface.knime` plugin and a destination directory
 
-_(Source: https://www.knime.com/developer/documentation/export)_
+_(Source: <https://www.knime.com/developer/documentation/export>)_
 
 ### Import manually exported Knime node into Knime
 
@@ -101,37 +99,31 @@ In order to test your changed, exported Cyface Binary Format Reader you can impo
 - Copy the generated (exported) JAR file into the `plugins` folder of the Knime installation
 - Restart Knime
 
-Releasing a new version
------------------------
+### Releasing a new version
 
 To release a new version of the Cyface KNIME nodes you should use the Tycho versions plugin. Just call:
 
-    mvn tycho-versions:set-version -DnewVersion=X.X.X-XXX
+```bash
+mvn tycho-versions:set-version -DnewVersion=X.X.X-XXX
+```
 
 and substitute X.X.X-XXX with your new version. The project is versioned using semantic versioning. A samll fix on version 1.0.0 thus should result in a new version 1.0.1. Extensions to the current API should result in 1.1.0 and breaking changes to the existing API should result in a new version 2.0.0. Snapshot versions on the dev branch can have the SNAPSHOT keyword attached, like for example 1.0.0-SNAPSHOT while true releases are qualifier free like 1.0.0.
 
 **ATTENTION**: Do not use the maven release plugin. This will not work, since there are some Eclipse configuration files, where you need to change the version as well. You may of course do that by hand, but that is tedious and error prone.
 
-### Release to the Nodepit repository
+Builds of the `master` branch are automatically pushed to and published on NodePit.
 
-- Push your release to Github
-- Set a tag using `git tag -a #VERSION_NAME`
-- Push the tag to Github
-- Mark the tag as a release using the Github.com UI
-- Successful release builds are then automatically pushed by our CI to Nodepit
+## Licensing
 
-Licensing
----------
+Copyright 2018, 2019, 2020 Cyface GmbH
 
-Copyright 2018, 2019 Cyface GmbH
- 
 This file is part of the Cyface KNIME Nodes.
 
 The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-  
+
 The Cyface KNIME Nodes is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
