@@ -20,21 +20,27 @@ jobs:
           path: ~/.m2
           key: 'm2-cache'
 
+      - name: Install
+        run: sudo apt-get install xvfb libgtk2.0-0 libxtst6 -y
+
       - name: Build
-        run: mvn -V -B clean install
+        run: xvfb-run mvn -V -B clean verify
+
+      - name: Test
+        run: xvfb-run testflowrunner/runTestflows.sh
 
       # - name: Publish to NodePit
       #   # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-      #   # if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
+      #   # TODO: Enable next line
+      #   # if: github.ref == 'refs/heads/master'
+      #   # TODO: Change `dest_directory` from "test" to "3.5"
       #   run: |
       #     mkdir -p ~/.ssh
       #     chmod 700 ~/.ssh
       #     echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
       #     chmod 600 ~/.ssh/id_rsa
       #     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-      #     branch=${GITHUB_REF#refs/heads/}
-      #     label=${branch#release/}
-      #     dest_directory=/home/debian/nodepit/download/files/cyface/$label
+      #     dest_directory=/home/debian/nodepit/download/files/cyface/test
       #     download_zip=${download_directory}.zip
       #     ssh $USER_HOST "mkdir -p $dest_directory"
       #     scp -rp de.cyface.knime.p2/target/repository/* $USER_HOST:$dest_directory

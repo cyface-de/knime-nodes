@@ -120,63 +120,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-eclipserun-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<argLine>-ea -Dlog4j.configuration=log4j.xml ${eclipserun.jvm.flags}</argLine>
-					<appArgLine>-noSplash -consoleLog -application org.knime.testing.NGTestflowRunner -root ./src/main/knime -xmlResultDir ${project.build.directory}/testflow-reports -views -logMessages -loadSaveLoad -data ${project.build.directory}/workspace</appArgLine>
-					<repositories>
-						<repository>
-							<url>http://update.knime.org/analytics-platform/3.6/</url>
-							<layout>p2</layout>
-						</repository>
-						<repository>
-							<url>${project.baseUri}/../de.cyface.knime.p2/target/repository</url>
-							<layout>p2</layout>
-						</repository>
-					</repositories>
-					<dependencies>
-						<dependency>
-							<artifactId>org.knime.features.base</artifactId>
-							<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-							<artifactId>org.knime.features.testingapplication</artifactId>
-							<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-							<artifactId>de.cyface.knime.feature</artifactId>
-							<type>eclipse-feature</type>
-						</dependency>
-					</dependencies>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>eclipse-run</goal>
-						</goals>
-						<phase>integration-test</phase>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>de.philippkatz.maven.plugins</groupId>
-				<artifactId>test-parser-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<resultsDirectory>${project.build.directory}/testflow-reports</resultsDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>testparser</goal>
-						</goals>
-						<phase>integration-test</phase>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 

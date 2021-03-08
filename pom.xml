@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2018 Cyface GmbH -->
+<!-- Copyright 2021 Cyface GmbH -->
 <!-- -->
 <!-- This file is part of the Cyface KNIME Nodes. -->
 <!-- -->
@@ -34,19 +34,14 @@
 		<tag>HEAD</tag>
 	</scm>
 
-	<ciManagement>
-		<system>Shippable</system>
-		<url>https://app.shippable.com/github/cyface-de/knime-nodes/</url>
-	</ciManagement>
-
 	<properties>
 		<eclipserun.jvm.flags />
 		<tycho-version>1.4.0</tycho-version>
 		<maven-release-plugin-version>2.5.3</maven-release-plugin-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-								<maven.compiler.source>1.8</maven.compiler.source>
-								<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<modules>
@@ -112,20 +107,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- on a Mac, JVM for Eclipse needs to be started with -XstartOnFirstThread -->
-	<profiles>
-		<profile>
-			<id>macosx-jvm-flags</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<eclipserun.jvm.flags>-XstartOnFirstThread</eclipserun.jvm.flags>
-			</properties>
-		</profile>
-	</profiles>
-
 </project>

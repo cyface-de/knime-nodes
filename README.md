@@ -114,7 +114,7 @@ Builds of the `master` branch are automatically pushed to and published on NodeP
 
 ## Licensing
 
-Copyright 2018, 2019, 2020 Cyface GmbH
+Copyright 2018, 2019, 2020, 2021 Cyface GmbH
 
 This file is part of the Cyface KNIME Nodes.
 
