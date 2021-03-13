@@ -16,3 +16,6 @@ target
 gradle/
 gradlew
 gradlew.bat
+
+knime-download/
+testflow-reports/
