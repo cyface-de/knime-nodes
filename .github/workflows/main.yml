@@ -26,21 +26,19 @@ jobs:
       - name: Build
         run: xvfb-run mvn -V -B clean verify
 
-      # - name: Test
-      #   run: xvfb-run de.cyface.knime.testflowrunner/runTestflows.sh
+      - name: Test
+        run: xvfb-run de.cyface.knime.testflowrunner/runTestflows.sh
 
       - name: Publish to NodePit
         # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-        # TODO: Enable next line
-        # if: github.ref == 'refs/heads/master'
-        # TODO: Change `dest_directory` from "test" to "3.5"
+        if: github.ref == 'refs/heads/master'
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-          download_directory=/home/debian/nodepit/download/files/cyface/test
+          download_directory=/home/debian/nodepit/download/files/cyface/3.5
           download_zip=$download_directory.zip
           ssh $USER_HOST "[ -e $download_directory ] && rm -r $download_directory; mkdir -p $download_directory"
           ssh $USER_HOST "[ -e $download_zip ] && rm -r $download_zip" 
