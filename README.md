@@ -1,7 +1,6 @@
 # Cyface KNIME Nodes
 
-[![Run Status](https://api.shippable.com/projects/5b22529108daf207007b4520/badge?branch=master)](https://app.shippable.com/github/cyface-de/knime-nodes)
-[![Coverage Badge](https://api.shippable.com/projects/5b22529108daf207007b4520/coverageBadge?branch=master)](https://app.shippable.com/github/cyface-de/knime-nodes)
+[![Actions Status](https://github.com/cyface-de/knime-nodes/workflows/CI/badge.svg)](https://github.com/cyface-de/knime-nodes/actions)
 
 These are the KNIME nodes developed and used by the Cyface GmbH. We do provide them without any warranty, but we are happy to share our experience ond get input from the community. If you got an improvement or found a bug please let us know.
 
@@ -115,7 +114,7 @@ Builds of the `master` branch are automatically pushed to and published on NodeP
 
 ## Licensing
 
-Copyright 2018, 2019, 2020 Cyface GmbH
+Copyright 2018, 2019, 2020, 2021 Cyface GmbH
 
 This file is part of the Cyface KNIME Nodes.
 
