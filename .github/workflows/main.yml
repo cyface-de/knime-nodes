@@ -40,10 +40,12 @@ jobs:
           echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-          dest_directory=/home/debian/nodepit/download/files/cyface/test
-          ssh $USER_HOST "mkdir -p $dest_directory"
-          scp -rp de.cyface.knime.p2/target/repository/* $USER_HOST:$dest_directory
-          scp -p de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip $USER_HOST:$dest_directory.zip
+          download_directory=/home/debian/nodepit/download/files/cyface/test
+          download_zip=$download_directory.zip
+          ssh $USER_HOST "[ -e $download_directory ] && rm -r $download_directory; mkdir -p $download_directory"
+          ssh $USER_HOST "[ -e $download_zip ] && rm -r $download_zip" 
+          scp -rp de.cyface.knime.p2/target/repository/* $USER_HOST:$download_directory
+          scp -p de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip $USER_HOST:$download_zip
           ./update-product.sh https://nodepit.com/api/product/cyface $PRODUCT_EDIT_TOKEN CHANGELOG.md
         env:
           PRODUCT_EDIT_TOKEN: ${{ secrets.PRODUCT_EDIT_TOKEN }}
