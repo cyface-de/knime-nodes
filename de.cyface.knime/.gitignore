@@ -1,1 +1,13 @@
-/lib/
+/lib/*
+!lib/barefoot.jar
+!lib/esri-geometry-api.jar
+!lib/GeographicLib-Java.jar
+!lib/hamcrest-core.jar
+!lib/jackson-core-asl.jar
+!lib/jeromq.jar
+!lib/json.jar
+!lib/junit.jar
+!lib/logback-classic.jar
+!lib/logback-core.jar
+!lib/postgresql.jar
+!lib/slf4j-api.jar

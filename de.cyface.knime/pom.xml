@@ -27,7 +27,7 @@
 	<artifactId>de.cyface.knime</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	
-	<repositories>
+	<!-- <repositories>
 		<repository>
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
@@ -36,19 +36,18 @@
 			<id>one-bus-away</id>
 			<url>http://nexus.onebusaway.org/nexus/content/repositories/public/</url>
 		</repository>
-	</repositories>
+	</repositories> -->
 	
-	<dependencies>
+	<!-- <dependencies>
 		<dependency>
 		    <groupId>com.bmw-carit</groupId>
 		    <artifactId>barefoot</artifactId>
 		    <version>0.1.1</version>
 		</dependency>
-	</dependencies>
+	</dependencies> -->
 	
-	<build>
+	<!-- <build>
 		<plugins>
-			<!-- https://stackoverflow.com/a/34510972 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -82,6 +81,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 
 </project>
