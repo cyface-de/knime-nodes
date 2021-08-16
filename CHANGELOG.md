@@ -19,6 +19,7 @@ The source code is available on [Github](https://github.com/cyface-de/knime-node
 ## [2.4.1] - 2019-09-06
 ### Fixed
 * Smoothing node now creates a valid output also for small inputs
+
 ### Changed
 * Feature description was extended
 
