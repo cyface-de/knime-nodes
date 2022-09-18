@@ -38,4 +38,4 @@ jobs:
         env:
           PRODUCT_EDIT_TOKEN: ${{ secrets.PRODUCT_EDIT_TOKEN }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-          SFTP_USER: cyface-knime
+          SFTP_USER: cyface
