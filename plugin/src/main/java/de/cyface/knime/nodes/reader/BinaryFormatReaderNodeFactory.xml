@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 Cyface GmbH -->
+<!-- -->
+<!-- This file is part of the Cyface Nodes. -->
+<!-- -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or
+	modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="./icon.png" type="Source">
+	<name>Cyface Binary Format Reader</name>
+
+	<shortDescription>
+		Reads a file in Cyface binary format and transforms
+		it to a KNIME table
+	</shortDescription>
+
+	<fullDescription>
+		<intro>
+			<p>
+				This package contains all the classes required for the Cyface
+				binary format reader node.
+			</p>
+			<p>
+				The node is capable of parsing an unzipped file in Cyface binary
+				format and extract all the data (geo locations, accelerations,
+				rotations and directions) from it into 4 separate tables.
+				It also supports the Cyface Events binary format.
+			</p>
+		</intro>
+		<option name="Input File">
+			Select an input file in the uncompressed Cyface binary format (i.e. .cyf, cyfa, .cyfr, .cyfd or .cyfe).
+			To uncompress Cyface binaries see the <a href="https://github.com/cyface-de/data-collector#administration">Cyface Data Collector Readme</a>.
+		</option>
+		<option name="File Type">
+			The type of the file to read. This can be a complete Measurement file,
+			only the sensor part (accelerations, directions or rotations) or only the
+			Events. In the later cases all tables with no data will remain empty.
+		</option>
+	</fullDescription>
+
+	<ports>
+		<outPort index="0" name="Geo Locations">The output table containing the
+			smoothed signal either by replacing the input column or appended as a
+			new column.
+		</outPort>
+		<outPort index="1" name="Accelerations">The output table containing the
+			smoothed signal either by replacing the input column or appended as a
+			new column.
+		</outPort>
+		<outPort index="2" name="Rotations">The output table containing the
+			smoothed signal either by replacing the input column or appended as a
+			new column.
+		</outPort>
+		<outPort index="3" name="Directions">The output table containing the
+			smoothed signal either by replacing the input column or appended as a
+			new column.
+		</outPort>
+		<outPort index="4" name="Events">The output table containing the
+			event entries either by replacing the input column or appended as a
+			new column.
+		</outPort>
+	</ports>
+</knimeNode>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 Cyface GmbH -->
+<!--   -->
+<!-- This file is part of the Cyface Nodes. -->
+<!--  -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!--  -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="./icon.png" type="Manipulator">
+    <name>Envelope Function</name>
+
+    <shortDescription>
+        Calculates the upper envelope function for another function.
+    </shortDescription>
+
+    <fullDescription>
+        <intro>
+            <p>This node takes an input table with a numeric input column. It calculates the upper envelope curve for that input column and returns a new table containing only the rows forming the envelope curve.</p>
+        </intro>
+        <option name="Input Column">Choose the input column containing the input function.</option>
+    </fullDescription>
+
+    <ports>
+        <inPort index="0" name="Input Signal Table">A table with at least one double compatible column serving as the input signal.</inPort>
+        <outPort index="0" name="Envelope Result Table">A table with all rows that are not part of the envelope function filtered out.</outPort>
+    </ports>
+</knimeNode>

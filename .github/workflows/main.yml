@@ -21,21 +21,32 @@ jobs:
           key: 'm2-cache'
 
       - name: Install
-        run: sudo apt-get install xvfb libgtk2.0-0 libxtst6 sshpass -y
+        run: sudo apt-get install xvfb libgtk2.0-0 libxtst6 -y
 
       - name: Build
         run: xvfb-run mvn -V -B clean verify
 
       - name: Test
-        run: xvfb-run de.cyface.knime.testflowrunner/runTestflows.sh
+        run: xvfb-run testflowrunner/runTestflows.sh
 
-      - name: Publish
+      - name: Upload Update Site
         # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
         run: |
-          ./upload-update-site.sh $SFTP_USER $SFTP_PASSWORD 3.5
-          ./update-product.sh https://nodepit.com/api/product/cyface $PRODUCT_EDIT_TOKEN CHANGELOG.md
+          branch=${GITHUB_REF#refs/heads/}
+          label=${branch#release/}
+          curl -s https://download.nodepit.com/developers/upload-update-site.sh |\
+            bash -s -- $SFTP_USER $SFTP_PASSWORD $label
         env:
-          PRODUCT_EDIT_TOKEN: ${{ secrets.PRODUCT_EDIT_TOKEN }}
-          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
           SFTP_USER: cyface
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+
+      - name: Upload Docs
+        # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
+        if: github.ref == 'refs/heads/release/3.5'
+        run: |
+          curl -s https://download.nodepit.com/developers/update-product.sh |\
+            bash -s -- -p PRODUCT.md -c CHANGELOG.md $PRODUCT_ID $PRODUCT_EDIT_TOKEN
+        env:
+          PRODUCT_ID: cyface
+          PRODUCT_EDIT_TOKEN: ${{ secrets.PRODUCT_EDIT_TOKEN }}

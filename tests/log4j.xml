@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2018 Cyface GmbH -->
+<!--   -->
+<!-- This file is part of the Cyface Nodes. -->
+<!--  -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!--  -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <!-- KNIME expects a 'logfile' appender, redirect this to the console -->
+  <appender name="logfile" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{HH:mm:ss.SSS} [%t] %-5p %c{1}:%L - %m%n"/>
+    </layout>
+  </appender>
+
+  <root>
+    <priority value ="error" />
+    <appender-ref ref="logfile" />
+  </root>
+
+</log4j:configuration>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 Cyface GmbH -->
+<!--   -->
+<!-- This file is part of the Cyface Nodes. -->
+<!--  -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!--  -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<knimeNode icon="./icon.png" type="Manipulator" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Equidistance Transfomer</name>
+
+    <shortDescription>
+        Takes a function f(x) defined by two columns containing the values for x and for f(x) and calculate a new function on x where f(x) are equdistant points which are interpolated between original values of f(x) if f(x) is not equdistant itself. The columns containing x and f(x) need to be numeric and sorted by x.
+    </shortDescription>
+
+    <fullDescription>
+        <intro>Insert long description here...</intro>
+
+
+        <option name="short name of first option (like in the dialog)">description of first option</option>
+        <option name="short name of second option (like in the dialog)">description of second option</option>
+        <!-- possibly more options that can also be grouped by tabs -->
+        <!--
+        <tab name="Standard Options">
+            <option name="short name of first option (like in the dialog)">description of first option</option>
+            <option name="short name of second option (like in the dialog)">description of second option</option>
+        </tab>
+        <tab name="Advanced Options">
+            <option name="short name of first advanced option (like in the dialog)">description of first advanced option</option>
+        </tab>
+        -->
+    </fullDescription>
+
+    <ports>
+        <inPort index="0" name="In-Port name">Description of first input port...</inPort>
+        <!-- possibly more input ports here-->
+        <outPort index="0" name="Out-Port name">Description of first output port...</outPort>
+        <!-- possibly more output ports here-->
+    </ports>
+</knimeNode>

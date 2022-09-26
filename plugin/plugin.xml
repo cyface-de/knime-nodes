@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Copyright 2018 Cyface GmbH -->
+<!--   -->
+<!-- This file is part of the Cyface Nodes. -->
+<!--  -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!--  -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<?eclipse version="3.0"?>
+<plugin>
+
+  <!-- Never change the id or this will not work on NodePit anymore -->
+  <extension point="org.knime.workbench.repository.categories">
+      <category
+            description=""
+            icon="src/main/resources/logo/nodepit.png"
+            level-id="nodepit"
+            name="NodePit"
+            path="/"/>
+      <category
+            description="Category contains all nodes required to test and evaluate the Cyface process."
+            icon="src/main/resources/logo/logo48.png"
+            level-id="cyfaceNodes"
+            name="Cyface"
+            path="/nodepit"/>
+   </extension>
+
+   <extension point="org.knime.workbench.repository.nodes">
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.timestamp.TimestampAlignerNodeFactory"/>
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.distance.EquidistanceTransfomerNodeFactory"/>
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.smoothing.SmoothingNodeFactory"/>
+   <!--<node category-path="/nodepit/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.export.ExportNodeFactory"/>
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.envelope.EnvelopeNodeFactory"/>
+   <node
+         category-path="/nodepit/cyfaceNodes"
+         deprecated="false"
+         factory-class="de.cyface.knime.nodes.reader.BinaryFormatReaderNodeFactory">
+   </node>
+</extension>
+   <extension
+         point="org.knime.product.splashExtension">
+      <splashExtension
+            icon="src/main/resources/logo/logo48.png"
+            icon24="src/main/resources/logo/logo24.png"
+            icon32="src/main/resources/logo/logo32.png"
+            id="de.cyface.knime.splash"
+            tooltip="Cyface">
+      </splashExtension>
+   </extension>
+
+</plugin>

@@ -1,11 +1,11 @@
 # Changelog
 
-This is the changelog for the Cyface KNIME Nodes Project.
+This is the changelog for the Cyface Nodes Project.
 It gives an overview of the most prominent changes in each release.
 Minor fixes, changes “under the hood” and refactoring changes are not listed here.
 We follow the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) scheme and the guidelines from ["Keep a Changelog"](https://keepachangelog.com/en/1.0.0/) as close as possible.
 
-The Cyface KNIME Nodes are open sourced under GPLv3.
+The Cyface Nodes are open sourced under GPLv3.
 The source code is available on [Github](https://github.com/cyface-de/knime-nodes).
 
 ## [2.5.1] - 2021-03-12
@@ -105,7 +105,7 @@ The source code is available on [Github](https://github.com/cyface-de/knime-node
 * Changing the selection of append and replace in the smoothing node does work now
 
 ### Added
-* Explanations on how to release new version of the Cyface KNIME Nodes
+* Explanations on how to release new version of the Cyface Nodes
 
 
 ## [1.2.0] - 2018-06-24
