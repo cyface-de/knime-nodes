@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -55,7 +55,7 @@ import de.cyface.knime.nodes.smoothing.algorithm.Algorithm;
 /**
  * A {@link NodeModel} for the smoothing node, which smoothes an input signal,
  * writing the result to an output signal.
- * 
+ *
  * @author Klemens Muthmann
  * @version 2.0.1
  * @since 1.0.0
@@ -101,7 +101,7 @@ public class SmoothingNodeModel extends NodeModel {
 	/**
 	 * Creates a new completely initialized {@link SmoothingNodeModel}, ready to
 	 * be executed.
-	 * 
+	 *
 	 * @param executor
 	 *            The executor used to either replace the input data or append
 	 *            results.
@@ -241,19 +241,19 @@ public class SmoothingNodeModel extends NodeModel {
 			// Ramp up
 			for (int i = 0; i < windowSize-1; i++) {
 			    exec.checkCanceled();
-			    
+
 				window.offer(iter.next());
 			}
 
 			// Execute
 			double itemsProcessed = .0;
-			
+
 			double[] windowValues = new double[windowSize];
 			while (iter.hasNext()) {
 			    exec.checkCanceled();
 			    exec.setProgress(((double)itemsProcessed)/inputTable.size());
 			    itemsProcessed += 1.0;
-			    
+
 				window.offer(iter.next());
 				DataRow currentRow = window.get(windowSize>1 ? (windowSize / 2) + 1 : 0);
 
@@ -267,7 +267,7 @@ public class SmoothingNodeModel extends NodeModel {
 				DataRow extendedRow = executor.createResultRow(currentRow, resultCell, inputColumnIndex);
 				outputContainer.addRowToTable(extendedRow);
 
-				
+
 				window.poll();
 			}
 		} catch (NoSuchElementException e) {

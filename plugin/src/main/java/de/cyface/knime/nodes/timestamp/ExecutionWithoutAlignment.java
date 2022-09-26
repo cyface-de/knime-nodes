@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -37,7 +37,7 @@ import org.knime.core.node.NodeLogger;
  * An executor that runs timestamp association without aligning the timestamp to
  * zero. This means timestamp ranges captured in non overlapping time ranges
  * will produce an empty table.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.2
  * @since 1.0.0
@@ -83,10 +83,10 @@ public class ExecutionWithoutAlignment implements Execution {
 				// Handle progress
 				final ExecutionMonitor monitor = context.createSubProgress(1.0);
 				int i = 0;
-				
+
 				for (DataRow row : firstTable) {
 				    context.checkCanceled();
-				    
+
 					try {
 						long timestamp = align(
 								getTimestamp(firstTimestampColumnName, row, firstTableTimestampColumnIndex),
@@ -124,7 +124,7 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	/**
 	 * For this implementation the {@link Execution} always zero.
-	 * 
+	 *
 	 * @param table The table to align.
      * @param columnName The name of the column to align
      * @return The alignment to apply to the column to align it.
@@ -135,7 +135,7 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	/**
 	 * Aligns a timestamp using the provided alignment.
-	 * 
+	 *
 	 * @param timestamp The timestamp to align.
 	 * @param alignment The alignment to use.
 	 * @return The aligned timestamp.
@@ -146,7 +146,7 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	/**
 	 * Tries to find the next row with a non missing timestamp value in the table.
-	 * 
+	 *
 	 * @param timestampColumnIndex
 	 *            The index of the column to extract the timestamp from
 	 * @param iter
@@ -171,7 +171,7 @@ public class ExecutionWithoutAlignment implements Execution {
 	 * Extracts the timestamp value from one row of an input table. Valid input
 	 * columns must contain cells of type <code>LongCell</code> or
 	 * <code>IntCell</code>.
-	 * 
+	 *
 	 * @param columnName
 	 *            The name of the timestamp column
 	 * @param row
@@ -203,7 +203,7 @@ public class ExecutionWithoutAlignment implements Execution {
 
 	/**
 	 * Appends one data row to the second, aligning values in both.
-	 * 
+	 *
 	 * @param firstRow The first row, which is the one to keep.
 	 * @param secondRow The second row, which is the one to concatenate.
 	 * @param firstRowAlignmentCellIndex The column number of the cell in the first row to align.

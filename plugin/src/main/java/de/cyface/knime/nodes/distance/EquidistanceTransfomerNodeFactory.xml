@@ -17,15 +17,15 @@
 <!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
 <knimeNode icon="./icon.png" type="Manipulator" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
     <name>Equidistance Transfomer</name>
-    
+
     <shortDescription>
         Takes a function f(x) defined by two columns containing the values for x and for f(x) and calculate a new function on x where f(x) are equdistant points which are interpolated between original values of f(x) if f(x) is not equdistant itself. The columns containing x and f(x) need to be numeric and sorted by x.
     </shortDescription>
-    
+
     <fullDescription>
         <intro>Insert long description here...</intro>
-        
-        
+
+
         <option name="short name of first option (like in the dialog)">description of first option</option>
         <option name="short name of second option (like in the dialog)">description of second option</option>
         <!-- possibly more options that can also be grouped by tabs -->
@@ -39,11 +39,11 @@
         </tab>
         -->
     </fullDescription>
-    
+
     <ports>
         <inPort index="0" name="In-Port name">Description of first input port...</inPort>
         <!-- possibly more input ports here-->
         <outPort index="0" name="Out-Port name">Description of first output port...</outPort>
         <!-- possibly more output ports here-->
-    </ports>    
+    </ports>
 </knimeNode>

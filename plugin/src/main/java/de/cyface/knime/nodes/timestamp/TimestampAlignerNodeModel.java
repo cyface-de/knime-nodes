@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -242,7 +242,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
     /**
      * Creates the result table specification from the two input table specifications.
-     * 
+     *
      * @param firstTableSpec The first input table specification.
      * @param secondTableSpec The second input table specification.
      * @return The result table specification.
@@ -269,7 +269,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
     /**
      * Renames the output columns if requested by the user.
-     * 
+     *
      * @param colSpecs The column specifications for the result table.
      * @param firstTableSpec The table specification of the first input table.
      * @param secondTableSpec The table specification of the second input table
@@ -289,7 +289,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
     /**
      * Renames a column in a table specification.
-     * 
+     *
      * @param tableSpec The table specification with the column to rename.
      * @param originalColumnName The original name of the column to rename.
      * @param renamedColumnName The new name of the column to rename.
@@ -308,7 +308,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
     /**
      * Checks if the provided column in the table is a processable timestamp column.
-     * 
+     *
      * @param tableSpec The table specification containing the timestamp column.
      * @param columnName The name of the timestamp column to check.
      * @throws InvalidSettingsException If the provided column is no valid timestamp column.
@@ -324,7 +324,7 @@ public class TimestampAlignerNodeModel extends NodeModel {
 
     /**
      * Provides a duplicate free column specification.
-     * 
+     *
      * @param tableSpec The table spec to check the column in.
      * @param columnSpecIndex The index of the column.
      * @param names The already used names together with their index.

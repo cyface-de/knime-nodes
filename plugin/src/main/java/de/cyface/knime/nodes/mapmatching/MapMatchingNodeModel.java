@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -62,7 +62,7 @@ public final class MapMatchingNodeModel extends NodeModel {
 	private final SettingsModelString mapMatchingFrameworkModel;
 	private final SettingsModelString serverAddressInputModel;
 	private final SettingsModelString serverPortInputModel;
-	private final SettingsModelString databaseNameInputModel; 
+	private final SettingsModelString databaseNameInputModel;
 	private final SettingsModelString databaseTableInputModel;
 	private final SettingsModelString databaseUserInputModel;
 	private final SettingsModelString databasePasswordInputModel;
@@ -84,7 +84,7 @@ public final class MapMatchingNodeModel extends NodeModel {
 		this.mapMatchingFrameworkModel = mapMatchingFrameworkModel;
 		this.serverAddressInputModel = serverAddressInputModel;
 		this.serverPortInputModel = serverPortInputModel;
-		this.databaseNameInputModel = databaseNameInputModel; 
+		this.databaseNameInputModel = databaseNameInputModel;
 		this.databaseTableInputModel = databaseTableInputModel;
 		this.databaseUserInputModel = databaseUserInputModel;
 		this.databasePasswordInputModel = databasePasswordInputModel;
@@ -115,7 +115,7 @@ public final class MapMatchingNodeModel extends NodeModel {
 		mapMatchingFrameworkModel.saveSettingsTo(settings);
 		serverAddressInputModel.saveSettingsTo(settings);
 		this.serverPortInputModel.saveSettingsTo(settings);
-		this.databaseNameInputModel.saveSettingsTo(settings); 
+		this.databaseNameInputModel.saveSettingsTo(settings);
 		this.databaseTableInputModel.saveSettingsTo(settings);
 		this.databaseUserInputModel.saveSettingsTo(settings);
 		this.databasePasswordInputModel.saveSettingsTo(settings);
@@ -133,7 +133,7 @@ public final class MapMatchingNodeModel extends NodeModel {
 		mapMatchingFrameworkModel.validateSettings(settings);
 		serverAddressInputModel.validateSettings(settings);
 		this.serverPortInputModel.validateSettings(settings);
-		this.databaseNameInputModel.validateSettings(settings); 
+		this.databaseNameInputModel.validateSettings(settings);
 		this.databaseTableInputModel.validateSettings(settings);
 		this.databaseUserInputModel.validateSettings(settings);
 		this.databasePasswordInputModel.validateSettings(settings);
@@ -151,7 +151,7 @@ public final class MapMatchingNodeModel extends NodeModel {
 		mapMatchingFrameworkModel.loadSettingsFrom(settings);
 		serverAddressInputModel.loadSettingsFrom(settings);
 		this.serverPortInputModel.loadSettingsFrom(settings);
-		this.databaseNameInputModel.loadSettingsFrom(settings); 
+		this.databaseNameInputModel.loadSettingsFrom(settings);
 		this.databaseTableInputModel.loadSettingsFrom(settings);
 		this.databaseUserInputModel.loadSettingsFrom(settings);
 		this.databasePasswordInputModel.loadSettingsFrom(settings);

@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -20,7 +20,7 @@ package de.cyface.knime.nodes.smoothing;
 
 /**
  * A utility class for storing all the constants required by the smoothing node.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.1.0
  * @since 1.0.0
@@ -74,7 +74,7 @@ public final class SmoothingNodeConstants {
 	 */
 	public final static String APPEND_REPLACE_CHOOSER_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smooting.settings.appendreplace";
 	/**
-	 * The identifier used by KNIME to identify the model for the text input field for the appended column name. 
+	 * The identifier used by KNIME to identify the model for the text input field for the appended column name.
 	 */
 	public final static String APPEND_COLUMN_NAME_INPUT_SETTINGS_MODEL_CONFIG_NAME = "de.cyface.smoothing.appendcolumnname";
 	/**

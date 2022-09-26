@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -41,7 +41,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
  * The <code>NodeModel</code> of the Cyface binary format exporter. This class handles validation of the input and writes the validated data to a file in Cyface binary format.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.1
  * @since 1.0.0
@@ -68,7 +68,7 @@ public class ExportNodeModel extends NodeModel {
 	 * The index of the input port reading directions.
 	 */
 	public final static int DIRECTION_TABLE_INDEX = 3;
-	
+
 	/**
 	 * The setting key for the name of the output file.
 	 */
@@ -77,7 +77,7 @@ public class ExportNodeModel extends NodeModel {
 	 * The setting storing the path to the output file.
 	 */
 	private final SettingsModelString outputFileNameSetting = new SettingsModelString(OUTPUT_FILE_NAME_SETTING, "");
-	
+
 	/**
 	 * The setting key for the column containing acceleration timestamps.
 	 */
@@ -110,7 +110,7 @@ public class ExportNodeModel extends NodeModel {
 	 * The setting storing the column containing the acceleration values in z direction.
 	 */
 	private final SettingsModelString accZColSetting = new SettingsModelString(ACC_Z_COL_SETTING,"");
-	
+
 	/**
      * The setting key for the column containing rotation timestamps.
      */
@@ -143,7 +143,7 @@ public class ExportNodeModel extends NodeModel {
 	 * The setting storing the column containing the rotations values in z direction.
 	 */
 	private final SettingsModelString rotZColSetting = new SettingsModelString(ROT_Z_COL_SETTING,"");
-	
+
 	/**
      * The setting key for the column containing direction timestamps.
      */
@@ -176,7 +176,7 @@ public class ExportNodeModel extends NodeModel {
 	 * The setting storing the column containing the directions value in z direction.
 	 */
 	private final SettingsModelString dirZColSetting = new SettingsModelString(DIR_Z_COL_SETTING,"");
-	
+
 	/**
      * The setting key for the column containing geo location timestamps.
      */
@@ -242,22 +242,22 @@ public class ExportNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(NodeSettingsWO settings) {
 		outputFileNameSetting.saveSettingsTo(settings);
-		
+
 		accTimeColSetting.saveSettingsTo(settings);
 		accXColSetting.saveSettingsTo(settings);
 		accYColSetting.saveSettingsTo(settings);
 		accZColSetting.saveSettingsTo(settings);
-		
+
 		rotTimeColSetting.saveSettingsTo(settings);
 		rotXColSetting.saveSettingsTo(settings);
 		rotYColSetting.saveSettingsTo(settings);
 		rotZColSetting.saveSettingsTo(settings);
-		
+
 		dirTimeColSetting.saveSettingsTo(settings);
 		dirXColSetting.saveSettingsTo(settings);
 		dirYColSetting.saveSettingsTo(settings);
 		dirZColSetting.saveSettingsTo(settings);
-		
+
 		geoTimeColSetting.saveSettingsTo(settings);
 		geoLatColSetting.saveSettingsTo(settings);
 		geoLonColSetting.saveSettingsTo(settings);
@@ -269,22 +269,22 @@ public class ExportNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 		outputFileNameSetting.validateSettings(settings);
-		
+
 		accTimeColSetting.validateSettings(settings);
 		accXColSetting.validateSettings(settings);
 		accYColSetting.validateSettings(settings);
 		accZColSetting.validateSettings(settings);
-		
+
 		rotTimeColSetting.validateSettings(settings);
 		rotXColSetting.validateSettings(settings);
 		rotYColSetting.validateSettings(settings);
 		rotZColSetting.validateSettings(settings);
-		
+
 		dirTimeColSetting.validateSettings(settings);
 		dirXColSetting.validateSettings(settings);
 		dirYColSetting.validateSettings(settings);
 		dirZColSetting.validateSettings(settings);
-		
+
 		geoTimeColSetting.validateSettings(settings);
 		geoLatColSetting.validateSettings(settings);
 		geoLonColSetting.validateSettings(settings);
@@ -296,22 +296,22 @@ public class ExportNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
 		outputFileNameSetting.loadSettingsFrom(settings);
-		
+
 		accTimeColSetting.loadSettingsFrom(settings);
 		accXColSetting.loadSettingsFrom(settings);
 		accYColSetting.loadSettingsFrom(settings);
 		accZColSetting.loadSettingsFrom(settings);
-		
+
 		rotTimeColSetting.loadSettingsFrom(settings);
 		rotXColSetting.loadSettingsFrom(settings);
 		rotYColSetting.loadSettingsFrom(settings);
 		rotZColSetting.loadSettingsFrom(settings);
-		
+
 		dirTimeColSetting.loadSettingsFrom(settings);
 		dirXColSetting.loadSettingsFrom(settings);
 		dirYColSetting.loadSettingsFrom(settings);
 		dirZColSetting.loadSettingsFrom(settings);
-		
+
 		geoTimeColSetting.loadSettingsFrom(settings);
 		geoLatColSetting.loadSettingsFrom(settings);
 		geoLonColSetting.loadSettingsFrom(settings);
@@ -480,7 +480,7 @@ public class ExportNodeModel extends NodeModel {
 		for (final DataRow row : geoLocationsTable) {
 		    context.checkCanceled();
 		    monitor.setProgress(processedItems/itemsToProcess);
-		    
+
 			buffer.putLong(((LongCell) row.getCell(geoLocationsSpec.findColumnIndex(geoTimeColSetting.getStringValue()))).getLongValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLatColSetting.getStringValue()))).getDoubleValue());
 			buffer.putDouble(((DoubleCell) row.getCell(geoLocationsSpec.findColumnIndex(geoLonColSetting.getStringValue()))).getDoubleValue());
@@ -493,7 +493,7 @@ public class ExportNodeModel extends NodeModel {
 		// need to .flip() !!
 		return payload;
 	}
-	
+
 	@Override
 	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 		return new DataTableSpec[0];

@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -27,7 +27,7 @@ import org.knime.core.node.NodeModel;
  * An {@link Execution} is a strategy providing detailed functionality for the
  * {@link NodeModel}s execute method. Usually it depends on the selected
  * options, which {@link Execution} is used.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
@@ -36,7 +36,7 @@ public interface Execution {
 	/**
 	 * Converts the specification from the input table to an output
 	 * specification.
-	 * 
+	 *
 	 * @param inputSpec
 	 *            The specification from the input table.
 	 * @return The expected specification for the output table.
@@ -47,7 +47,7 @@ public interface Execution {
 	 * Creates a new result row from a base row from the input table a
 	 * {@link DataCell} containing the calculated smoothed signal and an index
 	 * denoting the input table column with the input data.
-	 * 
+	 *
 	 * @param baseRow
 	 *            The input table base row containing the input values.
 	 * @param resultCell

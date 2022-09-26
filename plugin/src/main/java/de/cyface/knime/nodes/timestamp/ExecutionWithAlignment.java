@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -26,7 +26,7 @@ import org.knime.core.data.LongValue;
 
 /**
  * An executor that aligns the timestamp from both tables to zero prior to association.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.1
  * @since 1.0.0
@@ -35,7 +35,7 @@ public final class ExecutionWithAlignment extends ExecutionWithoutAlignment {
 
     /**
      * Calculates the alignment necessary to normalize all timestamps to a time starting with zero.
-     * 
+     *
      * @param table The table to align.
      * @param columnName The name of the column to align
      * @return The alignment to apply to the column to align it.
@@ -57,7 +57,7 @@ public final class ExecutionWithAlignment extends ExecutionWithoutAlignment {
 
     /**
      * Provides the minimum of two <code>long</code> values, one of which is stored in a KNIME <code>LongValue</code>.
-     * 
+     *
      * @param currentMin The current min Java <code>long</code> value
      * @param cell The value from a KNIME table to compare against.
      * @return The minimum <code>long</code> value with respect to the two provided inputs.
@@ -70,7 +70,7 @@ public final class ExecutionWithAlignment extends ExecutionWithoutAlignment {
 
     /**
      * Provides the minimum of two <code>int</code> values, one of which is stored in a KNIME <code>IntValue</code>.
-     * 
+     *
      * @param currentMin The current min Java <code>int</code> value
      * @param cell The value from a KNIME table to compare against.
      * @return The minimum <code>int</code> value with respect to the two provided inputs.

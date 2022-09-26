@@ -1,13 +1,13 @@
 /*
  * Copyright 2019 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -56,7 +56,7 @@ import de.cyface.knime.dialog.StringSelectionNodeOption;
  * The <code>NodeModel</code> for the Cyface binary reader node. This class
  * represents the heart of the node. It provides capabilities to validate input
  * data and contains the algorithm producing the output.
- * 
+ *
  * @author Klemens Muthmann
  * @author Armin Schnabel
  * @version 2.1.1
@@ -77,7 +77,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Creates a new completely initialized instance of this class, providing a node
      * with no input and four output ports.
-     * 
+     *
      * @param inputFileSelectionOption
      * @param stringSelectionOption
      */
@@ -194,7 +194,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
 
     /**
      * Creates a new empty data table for the provided <code>DataTableSpec</code>.
-     * 
+     *
      * @param spec The specification for which to create an empty data table.
      * @param context The KNIME <code>ExecutionContext</code> within the current execution.
      * @return An empty <code>BufferedDataTable</code> for the provided <code>DataTableSpec</code>.
@@ -208,7 +208,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads the next two byte from the <code>input</code> as a <code>short</code>
      * value. The bytes should be ordered in Java typical big endian format.
-     * 
+     *
      * @param input An open input stream capable of providing at least two bytes of
      *            data.
      * @return The <code>short</code> value read from the input stream.
@@ -221,7 +221,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads the next four byte from the <code>input</code> as an <code>int</code>
      * value. The bytes should be ordered in Java typical big endian format.
-     * 
+     *
      * @param input An open input stream capable of providing at least four bytes of
      *            data.
      * @return The <code>double</code> value read from the input stream.
@@ -234,7 +234,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads the next eight byte from the <code>input</code> as a <code>long</code>
      * value. The bytes should be ordered in Java typical big endian format.
-     * 
+     *
      * @param input An open input stream capable of providing at least eight bytes
      *            of data.
      * @return The <code>long</code> value read from the input stream.
@@ -248,7 +248,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * Reads the next eight byte from the <code>input</code> as a
      * <code>double</code> value. The bytes should be ordered in Java typical big
      * endian format.
-     * 
+     *
      * @param input An open input stream capable of providing at least eight bytes
      *            of data
      * @return The <code>double</code> value read from the input stream
@@ -262,8 +262,8 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
      * Reads the next bytes from the <code>input</code> as a <code>String</code> value.
      * The number of bytes read is defined by the parameter <code>bytes</code>.
      * The bytes should be ordered in Java typical big endian format.
-     * The <code>StandardCharsets.UTF_8</code> is expected. 
-     * 
+     * The <code>StandardCharsets.UTF_8</code> is expected.
+     *
      * @param input An open input stream capable of providing at least eight bytes
      *            of data
      * @return The <code>double</code> value read from the input stream
@@ -276,7 +276,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
 
     /**
      * Read a certain amount of bytes from the input stream and return them in form of a <code>ByteBuffer</code>.
-     * 
+     *
      * @param input An open <code>InputStream</code> capable of providing at least <code>bytes</code> bytes of data.
      * @param bytes The number of bytes to read.
      * @return A <code>ByteBuffer</code> containing the read bytes
@@ -300,7 +300,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads <code>count</code> geo locations from the <code>input</code> and
      * provides them in the form of a new <code>BufferedDataTable</code>.
-     * 
+     *
      * @param input The stream to read the geo locations from
      * @param count The number of geo locations to read
      * @param context The KNIME <code>ExecutionContext</code>
@@ -345,7 +345,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads <code>count</code> 3D points from the <code>input</code> and provides them in the form of a new
      * <code>BufferedDataTable</code>. These might be accelerations, rotations or directions ins space.
-     * 
+     *
      * @param input The stream to read the points from
      * @param count The number of points to read
      * @param context The KNIME <code>ExecutionContext</code>
@@ -385,7 +385,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
     /**
      * Reads <code>count</code> events from the <code>input</code> and
      * provides them in the form of a new <code>BufferedDataTable</code>.
-     * 
+     *
      * @param input The stream to read the events from
      * @param count The number of events to read
      * @param context The KNIME <code>ExecutionContext</code>
@@ -411,7 +411,7 @@ public final class BinaryFormatReaderNodeModel extends NodeModel {
             final short eventType = readShort(input);
             final short valueByteLength = readShort(input);
             final String value = readString(input, (int) valueByteLength);
-            
+
             final DataCell timestampCell = new LongCell(timestamp);
             final DataCell eventTypeCell = new IntCell(eventType);
             final DataCell valueCell = new StringCell(value);

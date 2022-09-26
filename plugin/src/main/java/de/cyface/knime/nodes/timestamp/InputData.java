@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -22,7 +22,7 @@ import org.knime.core.data.DataTable;
 
 /**
  * A value object wrapping everything required as input for one execution of this node.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
@@ -47,7 +47,7 @@ public final class InputData {
 
     /**
      * Creates a new completely initialized object of this class.
-     * 
+     *
      * @param firstTable The first table to align.
      * @param secondTable The second table to align.
      * @param firstTimestampColumnName The name of the column to align from the first table.

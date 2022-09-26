@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -46,7 +46,7 @@ import de.cyface.knime.nodes.timestamp.TimestampAlignerNodeModel;
 /**
  * The Node model validating the input and executing the envelope function algorithm on the data.
  * This is the heart of the implementation of this node.
- * 
+ *
  * @author Klemens Muthmann
  * @version 2.0.0
  * @since 1.2.0
@@ -65,7 +65,7 @@ public final class EnvelopeNodeModel extends NodeModel {
 
     /**
      * Create a new completely initialized <code>NodeModel</code> with one input and one output.
-     * 
+     *
      * @param inputColumnSelection A {@link NodeOption} for input column selection.
      */
     public EnvelopeNodeModel(final ColumnSelectionNodeOption inputColumnSelection) {
@@ -173,7 +173,7 @@ public final class EnvelopeNodeModel extends NodeModel {
 
     /**
      * Creates the KNIME table specification for the output table based on the input spcification.
-     * 
+     *
      * @param inSpec The input table specification.
      * @return A table specification for the envelope node output table.
      */

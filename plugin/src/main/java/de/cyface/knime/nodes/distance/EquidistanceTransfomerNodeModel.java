@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -176,7 +176,7 @@ public class EquidistanceTransfomerNodeModel extends NodeModel {
     /**
      * Provides the linearly interpolated value between the two points <tt>(prevX, prevFx)</tt> and
      * <tt>(nextX, nextFx)</tt>.
-     * 
+     *
      * @param prevX The x value of the earlier point.
      * @param nextX The x value of the later point.
      * @param prevFx The f(x) value of the earlier point.
@@ -194,7 +194,7 @@ public class EquidistanceTransfomerNodeModel extends NodeModel {
      * Transforms every valid input to a double value for further processing.
      * Longs and integers are just parsed, while dates are intepreted as longs
      * in UTC milliseconds and then transformed to a double.
-     * 
+     *
      * @param row
      *            The row to get the value from.
      * @param index
@@ -232,7 +232,7 @@ public class EquidistanceTransfomerNodeModel extends NodeModel {
     /**
      * Validates the provided input specification for compatiblity with this node.
      * To be compatible it requires at least one numeric or time column.
-     * 
+     *
      * @param inSpec The input specification to validate.
      * @throws InvalidSettingsException If validation was not successful.
      */
@@ -245,7 +245,7 @@ public class EquidistanceTransfomerNodeModel extends NodeModel {
 
     /**
      * Creates the KNIME table specification for the output table of the equidistance transformer node.
-     * 
+     *
      * @param inSpec The specification of the input table as a basis to create the output specification on.
      * @return The table specification for the output table.
      */

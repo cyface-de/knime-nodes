@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -24,7 +24,7 @@ import de.cyface.knime.nodes.smoothing.algorithm.TriangularSmoothing;
 
 /**
  * A listing of the available filters for smoothing.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
@@ -40,12 +40,12 @@ public enum Filter {
 	 * The algorithms name as it is going to appear on the UI.
 	 */
 	private final String name;
-	
+
 	private final Algorithm algorithm;
 
 	/**
 	 * Creates a new completely initialized {@link Filter}.
-	 * 
+	 *
 	 * @param name
 	 *            The algorithms name as it is going to appear on the UI.
 	 */
@@ -60,7 +60,7 @@ public enum Filter {
 	public String getName() {
 		return name;
 	}
-	
+
 	public Algorithm getAlgorithm() {
 		return algorithm;
 	}

@@ -22,11 +22,11 @@
 		<artifactId>knime-parent</artifactId>
 		<version>2.5.1</version>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.cyface.knime</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	
+
 	<!-- <repositories>
 		<repository>
 		    <id>jitpack.io</id>
@@ -37,7 +37,7 @@
 			<url>http://nexus.onebusaway.org/nexus/content/repositories/public/</url>
 		</repository>
 	</repositories> -->
-	
+
 	<!-- <dependencies>
 		<dependency>
 		    <groupId>com.bmw-carit</groupId>
@@ -45,7 +45,7 @@
 		    <version>0.1.1</version>
 		</dependency>
 	</dependencies> -->
-	
+
 	<!-- <build>
 		<plugins>
 			<plugin>

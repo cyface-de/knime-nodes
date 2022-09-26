@@ -1,13 +1,13 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
+ *
  * This file is part of the Cyface Nodes.
  *
  * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -25,7 +25,7 @@ import de.cyface.knime.dialog.ColumnSelectionNodeOption;
 /**
  * Responsible for displaying the configuration dialog shown for example when
  * clicking configure in the nodes context menu.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
@@ -34,7 +34,7 @@ public final class EnvelopeNodeDialog extends DefaultNodeSettingsPane {
 
 	/**
 	 * Creates the dialog displayed when configuring an envelope function node.
-	 * 
+	 *
 	 * @param inputColumnSelection An option to select the input column from all
 	 *                             available and compatible columns from the input
 	 *                             table.
