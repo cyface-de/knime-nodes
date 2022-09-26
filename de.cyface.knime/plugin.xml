@@ -21,37 +21,43 @@
   <!-- Never change the id or this will not work on NodePit anymore -->
   <extension point="org.knime.workbench.repository.categories">
       <category
+            description=""
+            icon="src/main/resources/logo/nodepit.png"
+            level-id="nodepit"
+            name="NodePit"
+            path="/"/>
+      <category
             description="Category contains all nodes required to test and evaluate the Cyface process."
             icon="src/main/resources/logo/logo48.png"
             level-id="cyfaceNodes"
             name="Cyface"
-            path="/"/>
+            path="/nodepit"/>
    </extension>
-   
+
    <extension point="org.knime.workbench.repository.nodes">
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.timestamp.TimestampAlignerNodeFactory"/>
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.distance.EquidistanceTransfomerNodeFactory"/>
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.smoothing.SmoothingNodeFactory"/>
-   <!--<node category-path="/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
+   <!--<node category-path="/nodepit/cyfaceNodes" factory-class="de.cyface.mapmatching.MapMatchingNodeFactory"/>-->
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.export.ExportNodeFactory"/>
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.envelope.EnvelopeNodeFactory"/>
    <node
-         category-path="/cyfaceNodes"
+         category-path="/nodepit/cyfaceNodes"
          deprecated="false"
          factory-class="de.cyface.knime.nodes.reader.BinaryFormatReaderNodeFactory">
    </node>
@@ -66,5 +72,5 @@
             tooltip="Cyface">
       </splashExtension>
    </extension>
-   
+
 </plugin>
