@@ -16,15 +16,15 @@
 <!-- You should have received a copy of the GNU General Public License -->
 <!-- along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>. -->
 <site>
-   <description name="Cyface GmbH KNIME Nodes Update Site">
-      Cyface GmbH KNIME Nodes Update Site
-   </description>
-   <feature id="de.cyface.knime.feature">
-      <category name="Cyface"/>
-   </feature>
-   <category-def name="Cyface" label="Cyface KNIME Nodes">
-      <description>
-         This category contains the Cyface KNIME Nodes.
-      </description>
-   </category-def>
+	<description name="Update Site for NodePit">
+		Update Site for NodePit
+	</description>
+	<feature id="de.cyface.knime.feature">
+		<category name="nodepit"/>
+	</feature>
+	<category-def name="nodepit" label="NodePit">
+		<description>
+			Category for NodePit
+		</description>
+	</category-def>
 </site>
