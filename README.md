@@ -23,7 +23,7 @@ Steps to get Cyface Nodes inside KNIME:
 
 1. Goto Help > Install new software ... menu
 2. Press add button
-3. Fill text fields with `http://download.nodepit.com/cyface/3.5`
+3. Fill text fields with `https://download.nodepit.com/cyface/3.5`
 4. Select --all sites-- in work with pulldown
 5. Select Cyface Nodes
 6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this)
@@ -114,7 +114,7 @@ Builds of the `master` branch are automatically pushed to and published on NodeP
 
 ## Licensing
 
-Copyright 2018, 2019, 2020, 2021 Cyface GmbH
+Copyright 2018, 2019, 2020, 2021, 2022 Cyface GmbH
 
 This file is part of the Cyface Nodes.
 
