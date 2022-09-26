@@ -110,7 +110,7 @@ and substitute X.X.X-XXX with your new version. The project is versioned using s
 
 **ATTENTION**: Do not use the maven release plugin. This will not work, since there are some Eclipse configuration files, where you need to change the version as well. You may of course do that by hand, but that is tedious and error prone.
 
-Builds of the `master` branch are automatically pushed to and published on NodePit.
+Builds of `master` and `release/*` branches are automatically pushed to and published on NodePit.
 
 ## Licensing
 

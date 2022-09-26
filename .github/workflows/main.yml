@@ -31,17 +31,19 @@ jobs:
 
       - name: Upload Update Site
         # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
         run: |
+          branch=${GITHUB_REF#refs/heads/}
+          label=${branch#release/}
           curl -s https://download.nodepit.com/developers/upload-update-site.sh |\
-            bash -s -- $SFTP_USER $SFTP_PASSWORD test
+            bash -s -- $SFTP_USER $SFTP_PASSWORD $label
         env:
           SFTP_USER: cyface
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
 
       - name: Upload Docs
         # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/release/3.5'
         run: |
           curl -s https://download.nodepit.com/developers/update-product.sh |\
             bash -s -- -p PRODUCT.md -c CHANGELOG.md $PRODUCT_ID $PRODUCT_EDIT_TOKEN
