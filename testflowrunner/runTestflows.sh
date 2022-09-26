@@ -18,7 +18,7 @@ KNIME_VERSION=${KNIME_VERSION_MAJOR}.${KNIME_VERSION_MINOR}.${KNIME_VERSION_PATC
 
 # Update site with the Cyface Nodes (relative path)
 # https://unix.stackexchange.com/a/156287
-PATTERN="../de.cyface.knime.p2/target/de.cyface.knime.p2-*.zip"
+PATTERN="../p2/target/de.cyface.knime.p2-*.zip"
 FILES=( $PATTERN )
 NODES_UPDATE_SITE="${FILES[0]}"
 

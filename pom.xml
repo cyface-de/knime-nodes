@@ -45,11 +45,11 @@
 	</properties>
 
 	<modules>
-		<module>de.cyface.knime</module>
-		<module>de.cyface.knime.feature</module>
-		<module>de.cyface.knime.p2</module>
-		<module>de.cyface.knime.tests</module>
-		<module>de.cyface.knime.targetplatform</module>
+		<module>plugin</module>
+		<module>feature</module>
+		<module>p2</module>
+		<module>tests</module>
+		<module>targetplatform</module>
 	</modules>
 
 	<build>
