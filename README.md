@@ -1,4 +1,4 @@
-# Cyface KNIME Nodes
+# Cyface Nodes
 
 [![Actions Status](https://github.com/cyface-de/knime-nodes/workflows/CI/badge.svg)](https://github.com/cyface-de/knime-nodes/actions)
 
@@ -19,13 +19,13 @@ Requirements:
 
 - KNIME, <https://www.knime.org>
 
-Steps to get Cyface KNIME Nodes inside KNIME:
+Steps to get Cyface Nodes inside KNIME:
 
 1. Goto Help > Install new software ... menu
 2. Press add button
 3. Fill text fields with `http://download.nodepit.com/cyface/3.5`
 4. Select --all sites-- in work with pulldown
-5. Select Cyface KNIME Nodes
+5. Select Cyface Nodes
 6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this)
 
 ## Development
@@ -100,7 +100,7 @@ In order to test your changed, exported Cyface Binary Format Reader you can impo
 
 ### Releasing a new version
 
-To release a new version of the Cyface KNIME nodes you should use the Tycho versions plugin. Just call:
+To release a new version of the Cyface Nodes you should use the Tycho versions plugin. Just call:
 
 ```bash
 mvn tycho-versions:set-version -DnewVersion=X.X.X-XXX
@@ -116,17 +116,17 @@ Builds of the `master` branch are automatically pushed to and published on NodeP
 
 Copyright 2018, 2019, 2020, 2021 Cyface GmbH
 
-This file is part of the Cyface KNIME Nodes.
+This file is part of the Cyface Nodes.
 
-The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+The Cyface Nodes is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+The Cyface Nodes is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with the Cyface KNIME Nodes.  If not, see <http://www.gnu.org/licenses/>.
+along with the Cyface Nodes.  If not, see <http://www.gnu.org/licenses/>.

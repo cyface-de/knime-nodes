@@ -1,20 +1,20 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
- * This file is part of the Cyface KNIME Nodes.
  *
- * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * This file is part of the Cyface Nodes.
+ *
+ * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ *
+ * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ * along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
 package de.cyface.knime.nodes.timestamp;
 
@@ -35,7 +35,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  * provides two drop down menus for selecting appropriate columns from the first
  * and the second table. Appropriate columns contain either integer or long
  * values.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.1.0
  * @since 1.0.0

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Cyface GmbH -->
 <!--   -->
-<!-- This file is part of the Cyface KNIME Nodes. -->
+<!-- This file is part of the Cyface Nodes. -->
 <!--  -->
-<!-- The Cyface KNIME Nodes is free software: you can redistribute it and/or modify -->
+<!-- The Cyface Nodes is free software: you can redistribute it and/or modify -->
 <!-- it under the terms of the GNU General Public License as published by -->
 <!-- the Free Software Foundation, either version 3 of the License, or -->
 <!-- (at your option) any later version. -->
 <!--  -->
-<!-- The Cyface KNIME Nodes is distributed in the hope that it will be useful, -->
+<!-- The Cyface Nodes is distributed in the hope that it will be useful, -->
 <!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
 <!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
 <!-- GNU General Public License for more details. -->
 <!-- -->
 <!-- You should have received a copy of the GNU General Public License -->
-<!-- along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>. -->
+<!-- along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>. -->
 <feature
       id="de.cyface.knime.feature"
       label="Cyface Nodes"
@@ -22,24 +22,24 @@
       provider-name="Cyface GmbH">
 
    <description>
-      The Cyface KNIME Nodes add functionality with a focus on data import, time series 
+      The Cyface Nodes add functionality with a focus on data import, time series
  analysis and geo information processing.
- 
+
  To generate data you may use our Android (https://play.google.com/store/apps/details?id=de.cyface.app) or iOS application or create your own App using our Software-Development-Kit for Android (https://github.com/cyface-de/android-backend) or iOS (https://github.com/cyface-de/ios-backend).
- 
- These nodes are supported by NodePit (https://nodepit.com). 
- Do you have feedback, questions, comments or want to support 
- KNIME node development at Cyface? Then send us an email to 
+
+ These nodes are supported by NodePit (https://nodepit.com).
+ Do you have feedback, questions, comments or want to support
+ KNIME node development at Cyface? Then send us an email to
  mail@cyface.de!
    </description>
 
    <copyright>
-      The Cyface KNIME Nodes are nodes developed and maintained 
+      The Cyface Nodes are nodes developed and maintained
  by the Cyface GmbH. https://cyface.de
    </copyright>
 
    <license url="http://www.gnu.org/licenses/gpl.html">
-      The Cyface KNIME Nodes are availabel under the GNU General Public License Version 3.
+      The Cyface Nodes are available under the GNU General Public License Version 3.
    </license>
 
    <plugin

@@ -1,20 +1,20 @@
 /*
  * Copyright 2018 Cyface GmbH
- * 
- * This file is part of the Cyface KNIME Nodes.
  *
- * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * This file is part of the Cyface Nodes.
+ *
+ * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ *
+ * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ * along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
 package de.cyface.knime.dialog;
 
@@ -28,7 +28,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModel;
  * is usually represented by a Swing UI element and its current state is stored
  * as a {@link SettingsModel}. The {@link SettingsModel} is the connection
  * between the {@link NodeDialog} and the {@link NodeModel}.
- * 
+ *
  * @author Klemens Muthmann
  * @version 1.0.0
  * @since 1.0.0
@@ -56,7 +56,7 @@ public abstract class NodeOption<T extends SettingsModel, D> {
 	 * Creates a new {@link NodeOption} without a valid component. Before using
 	 * this object you need to call {@link #setComponent(DialogComponent)}. This
 	 * is usually done inside the constructor of this classes subclasses.
-	 * 
+	 *
 	 * @param configIdentifier
 	 *            The identifier used by KNIME to identifie the
 	 *            {@link SettingsModel}.

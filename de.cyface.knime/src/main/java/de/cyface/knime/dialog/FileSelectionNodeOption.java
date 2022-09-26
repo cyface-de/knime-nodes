@@ -1,20 +1,20 @@
 /*
  * Copyright 2019 Cyface GmbH
- * 
- * This file is part of the Cyface KNIME Nodes.
  *
- * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * This file is part of the Cyface Nodes.
+ *
+ * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ *
+ * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ * along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
 package de.cyface.knime.dialog;
 
@@ -24,7 +24,7 @@ import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
 /**
  * A node option presenting the user with the choice to select content from the file system to load into the node.
- * 
+ *
  * @author Klemens Muthmann
  * @since 2.3.0
  * @version 1.0.0
@@ -47,7 +47,7 @@ public final class FileSelectionNodeOption extends StringSettingsModelOption {
     /**
      * The type of dialog to use. This maps directly to the appropriate constants provided by <code>JFileChooser</code>.
      * This class only exists to avoid usage of old style Java 4 int constant enums.
-     * 
+     *
      * @author Klemens Muthmann
      * @version 1.0.0
      * @since 2.3.0
@@ -74,7 +74,7 @@ public final class FileSelectionNodeOption extends StringSettingsModelOption {
 
         /**
          * Creates a new completely initialized object of this class.
-         * 
+         *
          * @param fileChooserValue The <code>JFileChooser</code> value corresponding to this option.
          */
         private DialogType(final int fileChooserValue) {
@@ -91,7 +91,7 @@ public final class FileSelectionNodeOption extends StringSettingsModelOption {
 
     /**
      * Specifies what kind of objects the dialog should support to select
-     * 
+     *
      * @author Klemens Muthmann
      * @since 2.3.0
      * @version 1.0.0

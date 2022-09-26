@@ -1,24 +1,24 @@
-/* @(#)$RCSfile$ 
+/* @(#)$RCSfile$
  * $Revision$ $Date$ $Author$
  *
  */
 /*
  * Copyright 2018 Cyface GmbH
- * 
- * This file is part of the Cyface KNIME Nodes.
  *
- * The Cyface KNIME Nodes is free software: you can redistribute it and/or modify
+ * This file is part of the Cyface Nodes.
+ *
+ * The Cyface Nodes is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * The Cyface KNIME Nodes is distributed in the hope that it will be useful,
+ *
+ * The Cyface Nodes is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with the Cyface KNIME Nodes. If not, see <http://www.gnu.org/licenses/>.
+ * along with the Cyface Nodes. If not, see <http://www.gnu.org/licenses/>.
  */
 package de.cyface;
 
@@ -27,7 +27,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * This is the eclipse bundle activator.
- * Note: KNIME node developers probably won't have to do anything in here, 
+ * Note: KNIME node developers probably won't have to do anything in here,
  * as this class is only needed by the eclipse platform/plugin mechanism.
  * If you want to move/rename this file, make sure to change the plugin.xml
  * file in the project root directory accordingly.
@@ -51,7 +51,7 @@ public class CyfaceNodePlugin extends Plugin {
 
     /**
      * This method is called upon plug-in activation.
-     * 
+     *
      * @param context The OSGI bundle context
      * @throws Exception If this plugin could not be started
      */
@@ -63,7 +63,7 @@ public class CyfaceNodePlugin extends Plugin {
 
     /**
      * This method is called when the plug-in is stopped.
-     * 
+     *
      * @param context The OSGI bundle context
      * @throws Exception If this plugin could not be stopped
      */
@@ -75,7 +75,7 @@ public class CyfaceNodePlugin extends Plugin {
 
     /**
      * Returns the shared instance.
-     * 
+     *
      * @return Singleton instance of the Plugin
      */
     public static CyfaceNodePlugin getDefault() {
