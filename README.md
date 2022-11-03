@@ -22,11 +22,11 @@ Requirements:
 Steps to get Cyface Nodes inside KNIME:
 
 1. Goto Help > Install new software ... menu
-2. Press add button
-3. Fill text fields with `https://download.nodepit.com/cyface/3.5`
-4. Select --all sites-- in work with pulldown
-5. Select Cyface Nodes
-6. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this)
+1. Press add button
+1. Fill text fields with `https://download.nodepit.com/cyface/3.5`
+1. Select --all sites-- in work with pulldown
+1. Select Cyface Nodes
+1. Install software & restart (for now an "Unsigned Content" warning can popup during the installation, you can safely ignore this)
 
 ## Development
 
@@ -37,15 +37,18 @@ Development requirements:
 
 Steps to get development environment setup:
 
-1. Download, install and run [Eclipse Oxygen](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/oxygenr)
-2. Clone this Git repository
-3. Import root project folder (pom.xml) into Eclipse using `File → Import... → Maven → Existing Maven Projects`
-4. Open subproject `targetplatform/de.cyface.knime.targetplatform.target` in Eclipse and select `Set as Active Target Platform`
+1. Download, install and run [Eclipse](https://www.eclipse.org/downloads/packages/release/2020-06/r/eclipse-ide-java-developers)
+1. Clone this Git repository
+1. Import root project folder (pom.xml) into Eclipse using `File → Import... → Maven → Existing Maven Projects`
+1. In the 'Package Explorer' tab expand the subproject `targetplatform` and open (double-click) the `de.cyface.knime.targetplatform.target` file. Eclipse opens a new tab `Taget Definition`. Click the blue link `Set as Active Target Platform` at the top right.
 
 During import the Tycho Eclipse providers have to be be installed. If this is not done automatically by Eclipse, perform the following steps:
 
-1. Goto Eclipse Preferences and browse to `Maven → Discovery → Open Catalog`
-2. Install Tycho Integrations
+1. Goto `Eclipse > Window > Preferences` and browse to `Maven → Discovery → Open Catalog`
+1. Install Tycho Integrations
+
+If you cannot find this option restart Eclipse and try again.
+The update process can take a quite while - the progress bar can keep still for a few minutes. Better don't wait for it to finish.
 
 ### Build
 
