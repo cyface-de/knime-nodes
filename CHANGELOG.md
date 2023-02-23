@@ -8,6 +8,10 @@ We follow the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) scheme 
 The Cyface Nodes are open sourced under GPLv3.
 The source code is available on [Github](https://github.com/cyface-de/knime-nodes).
 
+## [2.5.3] - 2023-02-23
+### Info
+* Works with current KNIME 5.0 nightly
+
 ## [2.5.2] - 2022-09-26
 ### Changed
 * Move nodes to the NodePit category
