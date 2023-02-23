@@ -114,7 +114,7 @@ Builds of `master` and `release/*` branches are automatically pushed to and publ
 
 ## Licensing
 
-Copyright 2018, 2019, 2020, 2021, 2022 Cyface GmbH
+Copyright 2018, 2019, 2020, 2021, 2022, 2023 Cyface GmbH
 
 This file is part of the Cyface Nodes.
 
