@@ -10,6 +10,7 @@ The source code is available on [Github](https://github.com/cyface-de/knime-node
 
 ## [2.5.3] - 2023-02-23
 ### Info
+* Requires at least KNIME 3.6 – please make sure you’re using an update site URL corresponding to your KNIME version.
 * Works with current KNIME 5.0 nightly
 
 ## [2.5.2] - 2022-09-26
