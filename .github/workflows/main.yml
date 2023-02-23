@@ -48,7 +48,7 @@ jobs:
 
       - name: Upload Docs
         # https://stackoverflow.com/questions/58139406/only-run-job-on-specific-branch-with-github-actions
-        if: github.ref == 'refs/heads/release/3.5'
+        if: github.ref == 'refs/heads/release/3.6'
         run: |
           curl -s https://download.nodepit.com/developers/update-product.sh |\
             bash -s -- -p PRODUCT.md -c CHANGELOG.md $PRODUCT_ID $PRODUCT_EDIT_TOKEN
