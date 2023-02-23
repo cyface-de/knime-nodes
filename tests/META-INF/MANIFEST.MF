@@ -6,5 +6,5 @@ Bundle-Version: 2.5.2.qualifier
 Bundle-Vendor: Cyface GmbH
 Fragment-Host: de.cyface.knime;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.knime.testing;bundle-version="[3.6.0,5.0.0)",
+Require-Bundle: org.knime.testing;bundle-version="[3.6.0,6.0.0)",
  org.junit;bundle-version="[4.8.2,5.0.0)"
